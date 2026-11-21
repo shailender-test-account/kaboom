@@ -1,0 +1,292 @@
+{
+  "tenantId": 1,
+  "clientId": 9,
+  "productionOrigin": "https://kaboomremix.com",
+  "reviewLabel": "HP REVIEW",
+  "cadenceDays": [0, 5, 12],
+  "safety": "Preview-only draft preparation. No live changes, rule changes, enrollment, sending, calls or automatic qualification changes.",
+  "approvalChecklist": [
+    "Review product positioning and confirm current HP offering availability, scope and approved claims.",
+    "Review the proposed cadence: first email, wait five days, second email, wait seven days, final email.",
+    "Choose and verify the approved sender identity and reply handling; no sender is assigned to these drafts.",
+    "Choose whether to promote these drafts or copy approved content into the existing live destinations. Preview database records do not move to production simply by publishing code.",
+    "Verify every CTA against the final published journey URL, complete journey navigation and unsubscribe handling before activating any sequence.",
+    "Resolve the Data Migration Services mapping explicitly; it currently references the SaaS/DaaS sequence and should not be assumed to be equivalent.",
+    "Enable only the approved product/category rules after their same-client journey and sequence are ready. Do not bypass a disabled specific mapping with a fallback.",
+    "Recheck current Warm eligibility, consent, DNC, identity reviews and product attribution before routing; preserve existing enrollment history and do not restart completed sequences."
+  ],
+  "tracks": [
+    {
+      "key": "security",
+      "name": "Future of Security",
+      "slug": "hp-review-future-of-security",
+      "category": "Security",
+      "product": "HP Security Services",
+      "mapping": "HP Security Services product rule. Review the disabled rule; do not enable it during preparation.",
+      "pages": [
+        {
+          "title": "Where endpoint risk creates operational friction",
+          "stage": "aware",
+          "intro": "A security discussion should start with your endpoint operating model, not a generic device-refresh pitch.",
+          "bullets": [
+            "Map exposed workflows: email attachments, browser activity, remote access and privileged administration.",
+            "Identify which endpoints and users carry sensitive data, and who owns endpoint protection and incident response.",
+            "Establish the current baseline: incident frequency, investigation effort and recovery dependencies. Do not assume a breach or a buying requirement."
+          ]
+        },
+        {
+          "title": "Evaluate an HP security fit",
+          "stage": "engage",
+          "intro": "Assess whether an HP Wolf Security or HP Security Services discussion fits the identified environment. Availability, licensing and supported deployment must be confirmed with HP.",
+          "bullets": [
+            "Separate prevention, endpoint isolation, monitoring and recovery requirements rather than treating them as one purchase.",
+            "Compare the proposed capability with existing endpoint controls, operating systems and device-management tooling.",
+            "Define a limited evaluation with IT and security owners: scope, success measures, integration constraints and review date."
+          ]
+        },
+        {
+          "title": "Scope a security discovery conversation",
+          "stage": "advance-engage",
+          "intro": "If this is relevant, reply to your invitation with the details below. This briefing does not schedule a call or create an order.",
+          "bullets": [
+            "Priority risk or workflow, existing endpoint controls, and approximate device or user scope if known.",
+            "Security and IT owners, deployment constraints, and any planned evaluation window.",
+            "Desired next step: an architecture discussion, a scoped assessment, or a product evaluation after HP confirms fit."
+          ]
+        }
+      ],
+      "emails": [
+        {
+          "subject": "A focused endpoint-security discussion for your team",
+          "paragraphs": [
+            "Hi {{firstName}},",
+            "Would it be useful to review where endpoint risk creates the most operational work for your IT and security teams?",
+            "A focused discussion could map your exposed workflows, existing controls and response responsibilities, then assess whether HP Security Services or an HP Wolf Security conversation is relevant. We would confirm supported capabilities and deployment requirements before proposing a solution.",
+            "Reply with your main endpoint-security priority and the right IT or security owner, or review the briefing below."
+          ]
+        },
+        {
+          "subject": "Which endpoint-security gap is worth evaluating first?",
+          "paragraphs": [
+            "Hi {{firstName}},",
+            "Following up on the endpoint-security briefing: the most useful starting point is a defined gap, such as risky document workflows, browser exposure or recovery effort—not an assumption that another security product is needed.",
+            "If there is a relevant gap, we can frame a small evaluation against your existing controls, with agreed scope and success measures.",
+            "Would you prefer an architecture discussion, a scoped evaluation, or to revisit this later?"
+          ]
+        },
+        {
+          "subject": "Should we revisit endpoint security at a better time?",
+          "paragraphs": [
+            "Hi {{firstName}},",
+            "I will close this follow-up for now. If endpoint protection or response effort is on your roadmap, we can revisit a focused HP security discussion when the timing is appropriate.",
+            "You can reply with a suitable month or the relevant owner. If this is not relevant, no action is needed."
+          ]
+        }
+      ]
+    },
+    {
+      "key": "daas",
+      "name": "Future of SaaS and DaaS",
+      "slug": "hp-review-future-of-saas-and-daas",
+      "category": "Business Services",
+      "product": "HP Device-as-a-Service",
+      "mapping": "Business Services / managed-device category mapping. Keep specific product rules ahead of category rules. Data Migration Services requires a separate mapping decision.",
+      "pages": [
+        {
+          "title": "Assess your device-lifecycle operating model",
+          "stage": "aware",
+          "intro": "Device-as-a-Service is a lifecycle and commercial-model discussion. It is not the same as an application-software subscription, and savings should not be assumed.",
+          "bullets": [
+            "Map procurement, deployment, support, refresh and end-of-life responsibilities across the device estate.",
+            "Identify friction in onboarding, distributed support, refresh planning or asset visibility.",
+            "Record device scope, contract dates, finance preferences and service responsibilities before comparing operating models."
+          ]
+        },
+        {
+          "title": "Compare a managed-device service with your baseline",
+          "stage": "engage",
+          "intro": "Evaluate an HP managed-device or Device-as-a-Service option only against a documented operational requirement and a confirmed HP service scope.",
+          "bullets": [
+            "Compare the current ownership model with proposed lifecycle services and commercial terms; request itemized inclusions and exclusions.",
+            "Confirm geographic coverage, supported devices, support responsibilities, service levels and data-handling requirements.",
+            "Use a scoped cost and service comparison; do not claim guaranteed cost reductions, financing terms or availability."
+          ]
+        },
+        {
+          "title": "Prepare a lifecycle-service assessment",
+          "stage": "advance-engage",
+          "intro": "Reply to your invitation with the information below if you want to explore the operating model. This briefing makes no commercial commitment.",
+          "bullets": [
+            "Approximate device estate and locations, upcoming refresh or onboarding needs, and existing support arrangements.",
+            "IT, procurement and finance owners, plus relevant contract or planning dates.",
+            "The outcome you want to test: lifecycle consistency, support coverage, device visibility or a clearer cost baseline."
+          ]
+        }
+      ],
+      "emails": [
+        {
+          "subject": "Could a managed-device model fit your next refresh?",
+          "paragraphs": [
+            "Hi {{firstName}},",
+            "If device deployment, support or refresh planning is creating work across your organization, it may be useful to compare the current model with an HP managed-device or Device-as-a-Service option.",
+            "The starting point would be your device scope, lifecycle responsibilities and finance preferences. Any service coverage, commercial terms and expected benefit would need to be confirmed against that baseline.",
+            "Would a lifecycle-model discussion be useful? Reply with your priority, or review the briefing below."
+          ]
+        },
+        {
+          "subject": "What should a device-service comparison include?",
+          "paragraphs": [
+            "Hi {{firstName}},",
+            "A useful managed-device comparison should make deployment, support, refresh and end-of-life responsibilities explicit—not simply compare a headline monthly price.",
+            "We can help structure the questions for an HP discussion around your locations, device mix, service expectations and contract timing, subject to confirming the available offering.",
+            "Which part of the lifecycle needs attention first?"
+          ]
+        },
+        {
+          "subject": "A better time to review device-lifecycle services?",
+          "paragraphs": [
+            "Hi {{firstName}},",
+            "I will leave the device-lifecycle discussion here for now. If a refresh, expansion or support-contract review is approaching, that may be a better time to compare operating models.",
+            "Reply with the relevant planning window or owner if you would like to revisit this. Otherwise, no action is needed."
+          ]
+        }
+      ]
+    },
+    {
+      "key": "managed-workspace",
+      "name": "The Managed Workspace",
+      "slug": "hp-review-the-managed-workspace",
+      "category": "Business Services",
+      "product": "HP Proactive Insights",
+      "mapping": "HP Proactive Insights product rule. Use this dedicated sequence for review instead of silently reusing the generic Future of Work sequence. HP Anyware Services needs its own approved product mapping if selected.",
+      "pages": [
+        {
+          "title": "Find the workspace issues worth investigating",
+          "stage": "aware",
+          "intro": "Start with observable device and employee-experience problems, not a presumed need to replace the fleet.",
+          "bullets": [
+            "Identify recurring performance complaints, support demand, configuration drift or gaps in fleet visibility.",
+            "Separate device-health issues from application, network and access problems so the investigation has a clear owner.",
+            "Record the affected users, available telemetry, current tools and the business impact that can actually be measured."
+          ]
+        },
+        {
+          "title": "Assess an HP Proactive Insights discussion",
+          "stage": "engage",
+          "intro": "Explore whether HP Proactive Insights or another confirmed HP workspace service can address the identified visibility and management gap. This is a fit hypothesis, not an assertion of purchase intent.",
+          "bullets": [
+            "Confirm current offering availability, supported devices, telemetry requirements and integration with existing endpoint-management tools.",
+            "Review privacy, security, access and data-governance requirements before considering any telemetry deployment.",
+            "Agree a bounded assessment with the IT operations owner and measurable outcomes; do not promise reduced downtime without evidence."
+          ]
+        },
+        {
+          "title": "Define a workspace assessment",
+          "stage": "advance-engage",
+          "intro": "If relevant, reply to your invitation with the details below. A service assessment is separate from authorizing any deployment.",
+          "bullets": [
+            "The recurring issue, approximate affected scope and current management or support tooling.",
+            "IT operations owner, privacy or security approvers, and any desired assessment window.",
+            "A baseline and success measure, such as repeat incidents, investigation time or visibility of device-health issues."
+          ]
+        }
+      ],
+      "emails": [
+        {
+          "subject": "A focused review of device-health and workspace visibility",
+          "paragraphs": [
+            "Hi {{firstName}},",
+            "Are recurring device issues or gaps in workspace visibility making it harder for IT to prioritize support?",
+            "If so, we can frame a discussion about HP Proactive Insights or a relevant HP workspace service around the specific issue, your existing tooling and the scope of affected users. Availability and technical fit would be confirmed first.",
+            "Reply with the issue you want to investigate, or review the briefing below."
+          ]
+        },
+        {
+          "subject": "Start with one measurable workspace issue",
+          "paragraphs": [
+            "Hi {{firstName}},",
+            "A useful workspace assessment starts with one measurable issue: repeat device incidents, investigation effort or limited visibility into device health.",
+            "Before considering telemetry or a service, the IT owner should confirm the current baseline, privacy requirements, integrations and the outcome worth testing.",
+            "Is there a specific issue your team would want to assess?"
+          ]
+        },
+        {
+          "subject": "When should we revisit workspace visibility?",
+          "paragraphs": [
+            "Hi {{firstName}},",
+            "I will close this follow-up for now. If device-health visibility or proactive IT operations becomes a priority, we can revisit a scoped HP service discussion.",
+            "Reply with a suitable time or owner if helpful. Otherwise, no action is needed."
+          ]
+        }
+      ]
+    },
+    {
+      "key": "future-of-work",
+      "name": "Future of Work",
+      "slug": "hp-review-future-of-work",
+      "category": "IT Hardware",
+      "product": null,
+      "mapping": "Broad Future of Work fallback only when no specific product/category rule applies. Retain existing published journey content; these are separate review pages, not a replacement of the live journey.",
+      "pages": [
+        {
+          "title": "Choose the workplace requirement first",
+          "stage": "aware",
+          "intro": "A broad workplace discussion should establish the requirement before choosing a device, collaboration solution or service.",
+          "bullets": [
+            "Identify the relevant workload: employee computing, meeting-room collaboration, endpoint security or device-lifecycle operations.",
+            "Define affected teams and locations, current tools, constraints and the business outcome sought.",
+            "Do not infer a budget, refresh project, AI requirement or buying timeframe from account membership or general engagement."
+          ]
+        },
+        {
+          "title": "Match the requirement to an HP discussion",
+          "stage": "engage",
+          "intro": "Select a focused next conversation across HP's four offering categories, with product availability and fit confirmed before a recommendation.",
+          "bullets": [
+            "IT Hardware: compare device capabilities with actual workloads; evaluate HP AI PCs only if relevant applications, privacy and deployment requirements support the case.",
+            "Business Collaboration: explore meeting-room and hybrid-work needs, including HP Poly options where platform compatibility and room requirements fit.",
+            "Security: scope a distinct endpoint-risk discussion rather than treating security as a generic device-refresh claim.",
+            "Business Services: review lifecycle and IT-operations requirements against confirmed service coverage and responsibilities."
+          ]
+        },
+        {
+          "title": "Select the right next conversation",
+          "stage": "advance-engage",
+          "intro": "Reply to your invitation with the category that matters and the outcome you want to explore. This does not book a meeting or declare a purchase.",
+          "bullets": [
+            "Your priority: IT Hardware, Business Collaboration, Security or Business Services.",
+            "Current challenge, relevant owner and approximate scope if known.",
+            "Preferred next step and timing: requirements discussion, technical evaluation or a later follow-up."
+          ]
+        }
+      ],
+      "emails": [
+        {
+          "subject": "Which workplace priority deserves a focused HP discussion?",
+          "paragraphs": [
+            "Hi {{firstName}},",
+            "If your team is reviewing workplace technology, it would be useful to start with the outcome rather than a product pitch.",
+            "The relevant discussion might concern employee devices, hybrid collaboration, endpoint security or lifecycle services. We can narrow the scope around your current environment, owners and timing before considering an HP option.",
+            "Reply with your priority, or review the short briefing below."
+          ]
+        },
+        {
+          "subject": "A requirements-led next step for workplace technology",
+          "paragraphs": [
+            "Hi {{firstName}},",
+            "Following up on the workplace briefing: the next step need not be a broad presentation. It could be a focused requirements discussion about one device workload, a collaboration space, a security gap or a lifecycle-service need.",
+            "If there is an active priority, which category and owner should the conversation focus on? We would confirm technical fit and availability before proposing an HP solution."
+          ]
+        },
+        {
+          "subject": "Should we revisit your workplace priorities later?",
+          "paragraphs": [
+            "Hi {{firstName}},",
+            "I will close this follow-up for now. If a workplace technology review becomes relevant, you can reply with the priority category and a suitable time.",
+            "If this is not relevant, no action is needed."
+          ]
+        }
+      ]
+    }
+  ]
+}

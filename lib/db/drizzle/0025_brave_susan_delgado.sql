@@ -1,0 +1,2 @@
+ALTER TABLE "companies" ADD COLUMN IF NOT EXISTS "last_researched_at" timestamp with time zone;--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "companies_tenant_client_research_idx" ON "companies" USING btree ("tenant_id","client_id","last_researched_at","id");

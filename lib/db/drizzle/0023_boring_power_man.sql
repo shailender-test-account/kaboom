@@ -1,0 +1,1 @@
+ALTER TABLE "intent_research_runs" ADD COLUMN "confirmed_request_count" integer DEFAULT 0 NOT NULL;

@@ -1,0 +1,4 @@
+ALTER TABLE "intent_monitoring_configs" ADD COLUMN IF NOT EXISTS "last_lane_counts" jsonb NOT NULL DEFAULT '{"warm":{"eligible":0,"scheduled":0,"completed":0,"deferred":0,"failed":0},"prospect":{"eligible":0,"scheduled":0,"completed":0,"deferred":0,"failed":0}}'::jsonb;--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "intent_research_run_accounts_account_status_idx" ON "intent_research_run_accounts" ("tenant_id","account_id","status");--> statement-breakpoint
+ALTER TABLE "intent_monitoring_configs" DROP CONSTRAINT IF EXISTS "intent_monitoring_configs_daily_limit_ck";--> statement-breakpoint
+ALTER TABLE "intent_monitoring_configs" ADD CONSTRAINT "intent_monitoring_configs_daily_limit_ck" CHECK ("daily_limit" IN (100,200,400,500,1000));

@@ -1,0 +1,27 @@
+{
+  "_comment": "Routing and scoring rules used by the LLM transcript analyser. All threshold values here are injected into the system prompt at runtime — changing them changes the LLM's routing behaviour without any code change or redeploy.",
+  "model": "gpt-5.4",
+  "maxCompletionTokens": 4096,
+  "teamRouting": {
+    "salesMinScore": 6,
+    "marketingMaxScore": 5,
+    "_note": "salesMinScore: interest_score at or above this value → owning_team='sales'. marketingMaxScore: score at or below this value → owning_team='marketing'. If a score falls between the two (should not happen with integer 1-10 scale), default to 'marketing'."
+  },
+  "interestScoreBands": {
+    "cold": { "min": 1, "max": 3, "label": "Cold",  "color": "#ef4444" },
+    "warm": { "min": 4, "max": 6, "label": "Warm",  "color": "#f59e0b" },
+    "hot":  { "min": 7, "max": 10, "label": "Hot",   "color": "#10b981" }
+  },
+  "actionTimings": [
+    "within_48h",
+    "this_week",
+    "next_week",
+    "next_month",
+    "no_action"
+  ],
+  "validSentiments":          ["positive", "neutral", "negative"],
+  "validOwningTeams":         ["sales", "marketing"],
+  "validBudgetStatuses":      ["confirmed", "unclear", "limited", "no_budget", "Not mentioned"],
+  "validDecisionAuthorities": ["decision_maker", "influencer", "gatekeeper", "unknown", "Not mentioned"],
+  "validTimelines":           ["immediate", "1_to_3_months", "3_to_6_months", "6_plus_months", "unknown", "Not mentioned"]
+}

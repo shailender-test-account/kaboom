@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contest Page — Iframe Tracking Harness</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* ── Dev-only banner ── */
+  .dev-banner {
+    background: #7c3aed; color: white; text-align: center; padding: 6px 12px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  /* ── Header ── */
+  header {
+    background: #1e293b; border-bottom: 1px solid #334155;
+    padding: 14px 20px; display: flex; align-items: center; gap: 16px;
+  }
+  header h1 { font-size: 15px; font-weight: 700; color: #f1f5f9; }
+
+  /* ── Layout ── */
+  .layout { display: grid; grid-template-columns: 1fr 400px; flex: 1; overflow: hidden; }
+
+  /* ── Iframe column ── */
+  .iframe-col { display: flex; flex-direction: column; border-right: 1px solid #334155; }
+  .iframe-toolbar {
+    background: #1e293b; border-bottom: 1px solid #334155;
+    padding: 10px 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .iframe-toolbar label { font-size: 11px; color: #94a3b8; font-weight: 600; white-space: nowrap; }
+  .iframe-toolbar input {
+    flex: 1; min-width: 240px; padding: 6px 10px; border-radius: 5px;
+    border: 1px solid #475569; background: #0f172a; color: #e2e8f0; font-size: 12px;
+    outline: none; font-family: monospace;
+  }
+  .iframe-toolbar input:focus { border-color: #0284c7; }
+  .iframe-toolbar button {
+    padding: 6px 14px; border-radius: 5px; border: none; cursor: pointer;
+    font-size: 12px; font-weight: 700; background: #0284c7; color: white;
+    transition: background 0.2s; white-space: nowrap;
+  }
+  .iframe-toolbar button:hover { background: #0369a1; }
+  .iframe-toolbar button.secondary { background: #334155; }
+  .iframe-toolbar button.secondary:hover { background: #475569; }
+
+  iframe {
+    flex: 1; border: none; width: 100%; min-height: 600px;
+    background: white;
+  }
+
+  /* ── Event log column ── */
+  .log-col { display: flex; flex-direction: column; overflow: hidden; }
+  .log-header {
+    background: #1e293b; border-bottom: 1px solid #334155;
+    padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .log-header h2 { font-size: 13px; font-weight: 700; color: #f1f5f9; }
+  .log-header button {
+    padding: 4px 10px; border-radius: 4px; border: 1px solid #475569;
+    background: transparent; color: #94a3b8; font-size: 11px; cursor: pointer;
+  }
+  .log-header button:hover { background: #1e293b; color: #e2e8f0; }
+
+  #event-log {
+    flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 6px;
+    background: #0f172a; min-height: 0;
+  }
+  .log-entry {
+    border-radius: 6px; padding: 8px 10px; border: 1px solid;
+    font-size: 11px; line-height: 1.5; flex-shrink: 0;
+  }
+  .log-entry.request  { border-color: #1d4ed8; background: #1e3a5f22; }
+  .log-entry.response { border-color: #15803d; background: #14532d22; }
+  .log-entry.warn     { border-color: #b45309; background: #78350f22; }
+  .log-entry.info     { border-color: #475569; background: #1e293b; }
+  .log-entry .le-time { color: #64748b; font-size: 10px; }
+  .log-entry .le-event { color: #60a5fa; font-weight: 700; }
+  .log-entry .le-status { font-weight: 700; }
+  .log-entry.response .le-status.ok { color: #4ade80; }
+  .log-entry.response .le-status.fail { color: #f87171; }
+  .log-entry pre { color: #94a3b8; margin-top: 4px; white-space: pre-wrap; word-break: break-all; }
+
+  /* ── Checklist ── */
+  .checklist-panel {
+    background: #1e293b; border-top: 1px solid #334155; padding: 12px 14px;
+    font-size: 11px; color: #94a3b8; line-height: 1.7; flex-shrink: 0;
+  }
+  .checklist-panel strong { color: #e2e8f0; }
+  .checklist-panel code {
+    font-family: monospace; background: #0f172a; border-radius: 3px;
+    padding: 1px 5px; color: #7dd3fc;
+  }
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 3px; margin: 6px 0; }
+  .checklist li { display: flex; align-items: flex-start; gap: 6px; }
+  .check-icon { width: 14px; flex-shrink: 0; color: #475569; }
+  .checklist li.checked .check-icon { color: #4ade80; }
+
+  /* ── Limitation notice ── */
+  .limit-notice {
+    background: #1e293b; border-top: 1px solid #334155;
+    padding: 10px 14px; font-size: 11px; color: #64748b; flex-shrink: 0;
+    border-left: 3px solid #b45309;
+  }
+  .limit-notice strong { color: #fbbf24; }
+</style>
+<script src="/contest-punctuation.js" defer></script>
+</head>
+<body>
+
+<div class="dev-banner">⚠ Development harness — do not deploy or access in production environments</div>
+
+<header>
+  <h1>Contest Page — Iframe Tracking Smoke Test</h1>
+</header>
+
+<div class="layout">
+
+  <!-- Iframe column -->
+  <div class="iframe-col">
+    <div class="iframe-toolbar">
+      <label>Contest URL</label>
+      <input id="url-input" type="text" placeholder="/poly-contest-rescue.html  (no ?cid=)" value="/poly-contest-rescue.html" />
+      <button onclick="loadIframe()">Load</button>
+      <button class="secondary" onclick="clearLog()">Clear log</button>
+    </div>
+    <div class="iframe-toolbar" style="background:#0f172a;border-bottom:1px solid #1e3a5f;">
+      <label style="color:#7dd3fc;">pf:identify</label>
+      <input id="identify-email" type="text" placeholder="email (e.g. demo@example.com)" style="max-width:220px;" value="demo@example.com" />
+      <input id="identify-cid" type="text" placeholder="cid (optional)" style="max-width:120px;" />
+      <button onclick="sendIdentify()" style="background:#7c3aed;">Send pf:identify →iframe</button>
+    </div>
+    <iframe id="contest-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+  </div>
+
+  <!-- Event log column -->
+  <div class="log-col">
+    <div class="log-header">
+      <h2>Tracking Events</h2>
+      <button onclick="clearLog()">Clear</button>
+    </div>
+
+    <div id="event-log">
+      <div class="log-entry info">
+        <div class="le-time">—</div>
+        Enter the contest URL above and click <strong>Load</strong> to begin.
+        Events fired by the page will appear here.
+      </div>
+    </div>
+
+    <div class="checklist-panel">
+      <strong>Smoke-test checklist</strong>
+      <ul class="checklist" id="checklist">
+        <li id="ck-scenario_selected">
+          <span class="check-icon">☐</span>
+          <span><code>scenario_selected</code> fires when a scenario card is clicked</span>
+        </li>
+        <li id="ck-registration_completed">
+          <span class="check-icon">☐</span>
+          <span><code>registration_completed</code> fires with contact email attached</span>
+        </li>
+        <li id="ck-entry_submitted">
+          <span class="check-icon">☐</span>
+          <span><code>entry_submitted</code> returns <code>tracked:true</code></span>
+        </li>
+        <li id="ck-pf_identify">
+          <span class="check-icon">☐</span>
+          <span><code>pf:identify</code> sent → buffered events replayed with identity</span>
+        </li>
+        <li id="ck-pf_resize">
+          <span class="check-icon">☐</span>
+          <span><code>pf:resize</code> received and iframe height applied</span>
+        </li>
+      </ul>
+      <p style="color:#64748b;font-size:10px;margin-top:6px">
+        ℹ <code>page_view</code> fires before the spy is injected and will not appear in this log.
+        Verify it in the server logs or a network proxy (e.g. browser DevTools → Network).
+      </p>
+    </div>
+
+    <div class="limit-notice">
+      <strong>Cookie-partitioning limitation:</strong> when embedded cross-domain,
+      the browser may block the <code>pf_vt</code> cookie (Chromium, Safari ITP).
+      Pre-registration events will land on an anonymous shadow contact and be merged
+      once the registration form is submitted with a known email.
+      <br><br>
+      <strong style="color:#4ade80">postMessage workaround:</strong> if the embedding
+      page knows the visitor's identity (e.g. from a CRM widget or SSO session), it can
+      post <code>{ type: 'pf:identify', email, cid }</code> to the iframe at any time.
+      The contest page will update its identity state and replay any buffered
+      pre-identification events with identity attached so the server can retroactively
+      link them to the correct contact.
+      <br><br>
+      <strong>Trust gates:</strong> the listener only accepts messages from
+      <code>window.parent</code> (direct embedding page only) whose origin matches
+      this page's own origin <em>or</em> an explicit
+      <code>&lt;meta name="pf:embed-trusted-origin" content="https://partner.example.com"&gt;</code>
+      declared inside the contest page. Messages from any other window or origin are
+      silently dropped. Raw <code>cid</code> values are additionally restricted to
+      same-origin parents only — cross-origin partners should send <code>email</code>
+      and use a server-signed embed token for strong contact-ID binding.
+      <br><br>
+      Do <strong>not</strong> pass a raw contact ID in the embed URL —
+      sequential IDs are guessable and would let any third party poison another
+      contact's activity log.
+    </div>
+  </div>
+
+</div>
+
+<script>
+'use strict';
+const log = document.getElementById('event-log');
+const checked = new Set();
+const frame = document.getElementById('contest-frame');
+
+window.addEventListener('message', function(event) {
+  if (event.source !== frame.contentWindow || event.origin !== window.location.origin) return;
+  const msg = event.data;
+  if (!msg || msg.version !== 1) return;
+  if (msg.type === 'pf:ready') {
+    addEntry('info', `<div class="le-time">${ts()}</div><code>pf:ready</code> received; sending attribution init.`);
+    sendInit();
+  } else if (msg.type === 'pf:resize') {
+    const height = Math.max(600, Math.min(5000, Math.ceil(Number(msg.height) || 0)));
+    frame.style.height = height + 'px';
+    markCheck('pf_resize');
+    addEntry('info', `<div class="le-time">${ts()}</div><code>pf:resize</code> applied: ${height}px`);
+  }
+});
+
+function ts() {
+  const d = new Date();
+  return d.toTimeString().slice(0, 8) + '.' + String(d.getMilliseconds()).padStart(3, '0');
+}
+
+function addEntry(cls, html) {
+  const el = document.createElement('div');
+  el.className = 'log-entry ' + cls;
+  el.innerHTML = html;
+  // Remove placeholder
+  const ph = log.querySelector('.log-entry.info');
+  if (ph && ph.textContent.includes('Enter')) ph.remove();
+  log.appendChild(el);
+  log.scrollTop = log.scrollHeight;
+}
+
+function markCheck(eventName) {
+  if (checked.has(eventName)) return;
+  checked.add(eventName);
+  const li = document.getElementById('ck-' + eventName);
+  if (!li) return;
+  li.classList.add('checked');
+  li.querySelector('.check-icon').textContent = '✓';
+}
+
+function clearLog() {
+  log.innerHTML =
+    '<div class="log-entry info"><div class="le-time">—</div>Log cleared.</div>';
+  checked.clear();
+  document.querySelectorAll('.checklist li').forEach(li => {
+    li.classList.remove('checked');
+    li.querySelector('.check-icon').textContent = '☐';
+  });
+}
+
+// ── Fetch spy ─────────────────────────────────────────────────────────────────
+// Wraps window.fetch inside the (same-origin) iframe ONCE so /track calls are
+// intercepted and logged here.  Uses a sentinel property to avoid double-wrapping
+// on reload, and captures the resolved Response so we can read the body.
+
+function injectSpy(frame) {
+  let win;
+  try { win = frame.contentWindow; } catch (_) { return; }
+  if (!win) return;
+
+  // Guard against double-wrap when the user reloads without clearing
+  if (win.__pf_spy_active) {
+    addEntry('info', `<div class="le-time">${ts()}</div>Spy already active in this frame.`);
+    return;
+  }
+
+  try {
+    const origFetch = win.fetch.bind(win);
+    win.__pf_spy_active = true;
+
+    win.fetch = function spyFetch(url, opts) {
+      const urlStr = String(url);
+      const isTrack = urlStr.includes('/track');
+
+      if (!isTrack) return origFetch(url, opts);
+
+      let body = {};
+      try { body = JSON.parse(opts && opts.body ? opts.body : '{}'); } catch (_) {}
+
+      addEntry('request',
+        `<div class="le-time">${ts()}</div>` +
+        `<span class="le-event">⬆ ${body.event || '?'}</span>` +
+        (body.cid ? ` <span style="color:#f87171;font-weight:700">⚠ cid=${body.cid} (raw ID — review!)</span>` : '') +
+        (body.visitorToken ? ` <span style="color:#a78bfa">vt=…${String(body.visitorToken).slice(-6)}</span>` : ' <span style="color:#f59e0b">no vt</span>') +
+        (body.contact ? ` <span style="color:#34d399">email=set</span>` : '') +
+        `<pre>${JSON.stringify({ event: body.event, hasVt: !!body.visitorToken, hasCid: !!body.cid, hasEmail: !!body.contact, props: body.props }, null, 2)}</pre>`
+      );
+
+      return origFetch(url, opts).then(async resp => {
+        let json = {};
+        try { json = await resp.clone().json(); } catch (_) {}
+
+        const tracked = json.ok && json.tracked !== false;
+        addEntry('response',
+          `<div class="le-time">${ts()}</div>` +
+          `<span class="le-event">⬇ ${body.event || '?'}</span> ` +
+          `<span class="le-status ${tracked ? 'ok' : 'fail'}">${tracked ? '✓ tracked' : '✗ not tracked'}</span>` +
+          ` HTTP ${resp.status}` +
+          `<pre>${JSON.stringify(json, null, 2)}</pre>`
+        );
+
+        if (tracked) markCheck(body.event);
+        return resp;
+      }).catch(err => {
+        addEntry('warn',
+          `<div class="le-time">${ts()}</div>` +
+          `<span class="le-event">${body.event || '?'}</span> fetch error: ${err.message}`
+        );
+        throw err;
+      });
+    };
+
+    addEntry('info', `<div class="le-time">${ts()}</div>Spy ready — tracking calls from the iframe will appear here.`);
+  } catch (e) {
+    addEntry('warn',
+      `<div class="le-time">${ts()}</div>` +
+      `Could not inject spy: ${e.message}.  Is the iframe same-origin?`
+    );
+  }
+}
+
+function loadIframe() {
+  const url = document.getElementById('url-input').value.trim() || '/poly-contest-rescue.html';
+  const frame = document.getElementById('contest-frame');
+
+  // Reset spy sentinel so fresh injection works after explicit reload
+  try {
+    if (frame.contentWindow) frame.contentWindow.__pf_spy_active = false;
+  } catch (_) {}
+
+  frame.onload = () => {
+    injectSpy(frame);
+    sendInit();
+  };
+  frame.src = url;
+  clearLog();
+  addEntry('info', `<div class="le-time">${ts()}</div>Loading: <code>${url}</code>`);
+}
+
+// ── pf:identify handshake test ────────────────────────────────────────────────
+// Posts { type: 'pf:identify', email, cid } to the loaded iframe.
+//
+// Trust model enforced by the contest page:
+//   • Only the direct parent frame is accepted (evt.source === window.parent).
+//   • The sending origin must match the iframe page's own origin OR the value
+//     of <meta name="pf:embed-trusted-origin"> declared inside poly-contest-rescue.html.
+//   • cid is ONLY forwarded to the tracker when the message comes from a
+//     same-origin parent (guessable sequential IDs; cross-origin gets email only).
+//
+// In this harness the iframe is same-origin, so both email and cid work.
+// For a cross-origin production embed: add the meta tag to the contest page,
+// send only email via postMessage, and rely on a signed embed token for cid.
+function sendIdentify() {
+  const frame = document.getElementById('contest-frame');
+  if (!frame || !frame.contentWindow) {
+    addEntry('warn', `<div class="le-time">${ts()}</div>No iframe loaded — click Load first.`);
+    return;
+  }
+
+  const email = document.getElementById('identify-email').value.trim();
+  const cid   = document.getElementById('identify-cid').value.trim();
+
+  if (!email && !cid) {
+    addEntry('warn', `<div class="le-time">${ts()}</div>Enter an email or cid before sending pf:identify.`);
+    return;
+  }
+
+  const msg = { type: 'pf:identify' };
+  if (email) msg.email = email;
+  if (cid)   msg.cid   = cid;
+
+  // Use the exact iframe origin as targetOrigin so the browser only delivers
+  // the message when the frame is actually on that origin (defense-in-depth).
+  let targetOrigin = '*';
+  try {
+    const iframeOrigin = new URL(frame.src, location.href).origin;
+    if (iframeOrigin) targetOrigin = iframeOrigin;
+  } catch (_) {}
+
+  frame.contentWindow.postMessage(msg, targetOrigin);
+
+  addEntry('info',
+    `<div class="le-time">${ts()}</div>` +
+    `<span style="color:#7dd3fc;font-weight:700">↳ pf:identify sent</span>` +
+    ` <span style="color:#64748b">→ targetOrigin: ${targetOrigin}</span>` +
+    (email ? ` <span style="color:#34d399">email=set</span>` : '') +
+    (cid   ? ` <span style="color:#a78bfa">cid=${cid} (same-origin only)</span>` : '') +
+    `<pre>${JSON.stringify(msg, null, 2)}</pre>`
+  );
+
+  // Mark the handshake checklist item — buffered replays will appear as
+  // normal request/response entries in the log via the fetch spy.
+  markCheck('pf_identify');
+}
+
+function sendInit() {
+  const frame = document.getElementById('contest-frame');
+  if (!frame || !frame.contentWindow) return;
+  const email = document.getElementById('identify-email').value.trim();
+  const msg = {
+    type: 'pf:init',
+    version: 1,
+    attribution: {
+      parentUrl: window.location.origin + window.location.pathname,
+      utmSource: 'iframe-harness',
+      utmMedium: 'embed-test',
+      utmCampaign: 'poly-contest-smoke-test',
+    },
+  };
+  if (email) msg.email = email;
+  frame.contentWindow.postMessage(msg, window.location.origin);
+  addEntry('info', `<div class="le-time">${ts()}</div><code>pf:init</code> sent with test attribution${email ? ' and email' : ''}.`);
+}
+</script>
+</body>
+</html>

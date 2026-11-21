@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS "deals_reporting_scope_idx" ON "deals" USING btree ("tenant_id","client_id","company_id");

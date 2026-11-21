@@ -1,0 +1,3152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 2-Minute Meeting Rescue | HP Poly</title>
+<!-- Open Graph / LinkedIn share card -->
+<!-- IMPORTANT: og:image and og:url MUST be absolute URLs — LinkedIn's crawler
+     cannot resolve relative paths and will show "Cannot display preview". -->
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://kaboom-ai.com/poly-contest-rescue.html">
+<meta property="og:title"       content="I found the fix for my meeting nightmares: you can too 🎧">
+<meta property="og:description" content="Play the HP Poly 2-Minute Meeting Rescue. Get personalised headset recommendations for your real-world scenario and enter to win a Poly headset.">
+<meta property="og:image"       content="https://kaboom-ai.com/images/poly-og-share.jpg">
+<meta property="og:image:width"  content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt"   content="HP Poly 2-Minute Meeting Rescue challenge">
+<!-- Twitter / X card (LinkedIn also reads these as fallback) -->
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="I found the fix for my meeting nightmares: you can too 🎧">
+<meta name="twitter:description" content="Play the HP Poly 2-Minute Meeting Rescue and win a Poly headset.">
+<meta name="twitter:image"       content="https://kaboom-ai.com/images/poly-og-share.jpg">
+<!-- Cross-origin embed configuration. Messages containing identity or attribution
+     are accepted only from this exact parent origin. -->
+<meta name="pf:embed-trusted-origin" content="https://tapintofuture.com">
+<meta name="pf:embed-protocol-version" content="1">
+<style>
+/* ── HP | Poly Brand Tokens ── */
+:root {
+  --hp-blue:       #0096D6;   /* HP Bright Blue */
+  --hp-blue-dk:    #0071A4;
+  --hp-blue-deep:  #1464CC;   /* HP cover-panel blue (matches brand reference) */
+  --cover-stripe-blue: #1857D5;
+  --hp-red:        #E8112D;   /* HP Brand Red — for accent highlights */
+  --hp-cyan:       #00C7D4;
+  --hp-violet:     #6B46C1;
+  --hp-navy:       #1A2B4A;
+  --hp-navy-dk:    #0F1E35;
+  --hp-white:      #FFFFFF;
+  --hp-gray-0:     #F8F9FA;
+  --hp-gray-1:     #F4F4F4;
+  --hp-gray-2:     #E0E0E0;
+  --hp-gray-3:     #ADADAD;
+  --hp-text:       #1A1A1A;
+  --hp-text-2:     #525252;
+  --hp-green:      #008542;
+  --hp-orange:     #E35205;
+  --hp-gold:       #FFB800;
+  --hp-font: Arial, 'Nimbus Sans', 'Helvetica Neue', sans-serif;
+  --radius: 12px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--hp-font); background: var(--hp-gray-0); color: var(--hp-text); min-height: 100vh; }
+
+/* ── Nav ── */
+#hp-nav {
+  background: var(--hp-white); border-bottom: 1px solid var(--hp-gray-2);
+  padding: 0 28px; height: 60px; display: flex; align-items: center; gap: 14px;
+  position: sticky; top: 0; z-index: 300; box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+.nav-logo {
+  font-size: 15px; font-weight: 800; letter-spacing: -0.5px;
+  color: var(--hp-navy); line-height: 1;
+}
+.nav-logo span { color: var(--hp-blue); }
+.nav-divider { width: 1px; height: 28px; background: var(--hp-gray-2); }
+.nav-contest-name { font-size: 13px; font-weight: 600; color: var(--hp-text-2); }
+
+/* ── Progress bar ── */
+#progress-bar { height: 3px; background: var(--hp-gray-2); position: sticky; top: 60px; z-index: 299; }
+#progress-fill { height: 100%; background: linear-gradient(90deg, var(--hp-blue), var(--hp-cyan)); transition: width 0.5s ease; width: 0%; }
+
+/* ── Step indicator ── */
+#step-indicator {
+  position: sticky; top: 63px; z-index: 298;
+  background: var(--hp-white); border-bottom: 1px solid var(--hp-gray-2);
+  padding: 10px 28px; display: flex; align-items: center; gap: 0; overflow-x: auto;
+}
+.step-tab {
+  display: flex; align-items: center; gap: 8px; padding: 0 20px 0 0;
+  font-size: 12px; color: var(--hp-gray-3); font-weight: 500; white-space: nowrap;
+}
+.step-tab:not(:last-child)::after { content: '›'; margin-right: 0; padding-right: 0; color: var(--hp-gray-2); }
+.step-tab .stab-num {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  background: var(--hp-gray-2); color: var(--hp-gray-3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800;
+}
+.step-tab.active { color: var(--hp-blue); }
+.step-tab.active .stab-num { background: var(--hp-blue); color: white; }
+.step-tab.done { color: var(--hp-green); }
+.step-tab.done .stab-num { background: var(--hp-green); color: white; }
+
+/* ── Main Layout ── */
+#contest { max-width: 1012px; margin: 0 auto; padding: 0 20px 80px; }
+/* scroll-margin-top keeps scrollIntoView targets BELOW the ~130px sticky
+   header stack (topbar + progress + step tabs) — without it every step's
+   top content lands hidden underneath the header. */
+.step { display: none; animation: fadeUp 0.45s ease; padding: 22px 0 0; scroll-margin-top: 140px; }
+.s2-challenge-col, #success-screen { scroll-margin-top: 140px; }
+.step.active { display: block; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── Step 1: HP Cover ── */
+.hp-cover {
+  position: relative;
+  min-height: 508px;
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg);
+  background: #fff;
+}
+.hp-cover-photo {
+  position: absolute; inset: 0;
+}
+.hp-cover-photo img {
+  width: 100%; height: 100%; object-fit: cover; object-position: 42% center; display: block;
+}
+.hp-cover-copy {
+  position: absolute; z-index: 2; inset: 0 0 0 auto;
+  width: 52%; padding: 72px 58px 54px 100px;
+  display: flex; flex-direction: column; justify-content: center;
+  background: #fff;
+  clip-path: polygon(17% 0, 100% 0, 100% 100%, 0 100%);
+  line-height: 1.3;
+}
+.hp-cover-eyebrow {
+  color: var(--cover-stripe-blue); font-size: 11px; font-weight: 900;
+  letter-spacing: 2.2px; text-transform: uppercase; margin-bottom: 12px;
+}
+.hp-cover-title {
+  max-width: 390px; color: #101010; font-size: 35px; line-height: 1.08;
+  font-weight: 850; letter-spacing: -1px; margin-bottom: 18px;
+}
+.hp-cover-title span { color: var(--cover-stripe-blue); }
+.hp-cover-tagline {
+  color: #252525; font-size: 15px; line-height: 1.45; margin-bottom: 22px;
+}
+.hp-cover-gift {
+  color: #333; font-size: 13px; line-height: 1.4; margin-top: 15px;
+}
+.cover-stripe {
+  position: absolute; z-index: 1; right: 6%;
+  width: 30px; height: 160px; background: var(--cover-stripe-blue);
+  transform: skewX(-18deg); pointer-events: none;
+}
+.cover-stripe.top { top: -55px; }
+.cover-stripe.bottom { bottom: -58px; right: 3%; height: 185px; }
+.hp-cover-logo { width: 45px; height: auto; margin-top: 24px; }
+.hp-cover-left {
+  position: static; width: fit-content;
+}
+.btn-hp-cover {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 132px; min-height: 44px; padding: 11px 24px;
+  background: var(--cover-stripe-blue); color: #fff;
+  border: none; border-radius: 6px;
+  cursor: pointer; font-size: 15px; font-weight: 800;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+}
+.btn-hp-cover:hover {
+  filter: brightness(.92); transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(24,87,213,.28);
+}
+.btn-hp-cover:active { transform: translateY(0); }
+.btn-hp-cover-mobile {
+  display: none !important;
+}
+/* Scenario picker section (revealed after Play Now) */
+.scenario-pick-wrap {
+  background: #fff; border-radius: var(--radius);
+  padding: 36px 40px; box-shadow: var(--shadow); margin-top: 24px;
+  animation: fadeUp 0.4s ease;
+}
+.scenario-pick-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--cover-stripe-blue); margin-bottom: 8px;
+}
+.scenario-pick-title {
+  font-size: 22px; font-weight: 800; color: var(--hp-navy); margin-bottom: 6px;
+}
+.scenario-pick-sub { font-size: 14px; color: var(--hp-text-2); margin-bottom: 28px; }
+
+/* Scenario card grid */
+.scenario-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--hp-text-2); margin-bottom: 14px;
+}
+.scenario-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 0; }
+.scenario-card {
+  border-radius: 10px; border: 2px solid var(--hp-gray-2);
+  cursor: pointer; transition: all 0.22s; overflow: hidden; position: relative;
+  background: #fff;
+}
+.scenario-card:hover { border-color: var(--cover-stripe-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(24,87,213,0.18); }
+.scenario-card.selected { border-color: var(--cover-stripe-blue); background: #F1F5FF; }
+.scenario-card.selected::after {
+  content: '✓'; position: absolute; top: 10px; right: 10px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--cover-stripe-blue); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; line-height: 22px; text-align: center;
+}
+.scenario-card.selected .scenario-card-title { color: var(--cover-stripe-blue); }
+#step-1 .btn-primary:not(.btn-inactive) { background: var(--cover-stripe-blue); }
+#step-1 .btn-primary:not(.btn-inactive):hover {
+  background: #1247B2;
+  box-shadow: 0 4px 12px rgba(24,87,213,0.34);
+}
+#tab-1.active { color: var(--cover-stripe-blue); }
+#tab-1.active .stab-num { background: var(--cover-stripe-blue); }
+.scenario-scene-bg {
+  width: 100%; height: 110px; display: flex; align-items: center; justify-content: center;
+  font-size: 36px; position: relative; overflow: hidden;
+}
+.scenario-card-body { padding: 14px 16px 18px; }
+.scenario-card-title { font-size: 14px; font-weight: 700; color: var(--hp-navy); margin-bottom: 5px; }
+.scenario-card-desc { font-size: 12px; color: var(--hp-text-2); line-height: 1.5; }
+
+.hero-cta-row { display: flex; align-items: center; gap: 16px; }
+.badge-play { font-size: 12px; color: var(--hp-text-2); }
+
+/* ── Step 2 States ── */
+/* ── Step 2: Registration modal (fixed, overlays the playing scene) ── */
+#reg-modal-backdrop {
+  display: none;
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(10,18,40,0.72);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+#reg-modal-backdrop.visible { display: flex; }
+.reg-modal-box {
+  background: white; border-radius: 16px; padding: 36px 40px;
+  max-width: 520px; width: 100%; box-shadow: 0 24px 64px rgba(0,0,0,0.32);
+  max-height: 90vh; overflow-y: auto;
+  animation: fadeUp 0.3s ease;
+}
+.reg-modal-scenario-bar {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--hp-gray-1); border-radius: 8px;
+  padding: 12px 16px; margin-bottom: 24px;
+}
+.reg-modal-scenario-bar .rmsi { font-size: 26px; flex-shrink: 0; }
+.reg-modal-scenario-bar strong { display: block; font-size: 14px; font-weight: 700; color: var(--hp-navy); }
+.reg-modal-scenario-bar span { font-size: 12px; color: var(--hp-text-2); }
+.reg-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--hp-blue); margin-bottom: 8px; }
+.reg-heading { font-size: 22px; font-weight: 700; color: var(--hp-navy); margin-bottom: 4px; }
+.reg-sub { font-size: 14px; color: var(--hp-text-2); margin-bottom: 24px; }
+
+/* ── Step 2: Side-by-side layout (scene left · questions right) ── */
+.s2-layout {
+  display: grid; grid-template-columns: 1fr 400px; gap: 32px; align-items: center;
+}
+/* Widen the step-2 layout beyond the 1012px page container on large screens so
+   the scene renders ~15% larger WITHOUT scaling/overlapping the question column. */
+@media (min-width: 1240px) {
+  .s2-layout { width: calc(100% + 88px); margin-left: -44px; }
+}
+.s2-scene-col { position: sticky; top: 130px; z-index: 1; }
+.s2-challenge-col {
+  background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 22px 24px 20px;
+  opacity: 0; transform: translateX(16px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  pointer-events: none;
+}
+.s2-challenge-col.revealed { opacity: 1; transform: translateX(0); pointer-events: auto; }
+
+/* 2B — Animation scene */
+.anim-scene {
+  width: 100%; aspect-ratio: 16/9; border-radius: var(--radius);
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.anim-bg {
+  position: absolute; inset: 0;
+  animation: kenBurns 30s ease-in-out infinite alternate;
+}
+@keyframes kenBurns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.06) translate(-1%, -1%); }
+}
+.anim-caption {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
+  background: linear-gradient(transparent, rgba(10,18,40,0.85));
+  padding: 32px 24px 20px; color: white;
+}
+.anim-caption-title { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+.anim-caption-sub { font-size: 12px; opacity: 0.7; }
+.anim-timer-bar {
+  position: absolute; bottom: 0; left: 0; height: 3px;
+  background: linear-gradient(90deg, var(--hp-cyan), var(--hp-blue));
+  transition: width 1s linear; z-index: 20;
+}
+.anim-skip {
+  position: absolute; top: 14px; right: 14px; z-index: 20;
+  background: rgba(255,255,255,0.15); backdrop-filter: blur(4px);
+  color: white; border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 6px; padding: 6px 14px; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; font-family: var(--hp-font);
+}
+.anim-skip:hover { background: rgba(255,255,255,0.25); }
+
+/* Problem indicator badges */
+.prob-badge {
+  position: absolute; display: none; flex-direction: column; align-items: center;
+  gap: 4px; transform: translate(-50%, -50%); z-index: 15;
+  animation: badgePop 0.4s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+.prob-badge.visible { display: flex; }
+@keyframes badgePop { from { opacity:0; transform:translate(-50%,-50%) scale(0.4); } to { opacity:1; transform:translate(-50%,-50%) scale(1); } }
+.prob-badge-ring {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(227,82,5,0.2); border: 2.5px solid var(--hp-orange);
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+  animation: badgePulse 1.6s ease-in-out infinite;
+}
+@keyframes badgePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(227,82,5,0.45); }
+  50%      { box-shadow: 0 0 0 14px rgba(227,82,5,0); }
+}
+.prob-badge-label {
+  background: rgba(10,18,40,0.88); color: white;
+  font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+  white-space: nowrap; backdrop-filter: blur(4px);
+}
+
+/* Sound wave animation */
+.sound-waves {
+  position: absolute; top: 20px; left: 20px; z-index: 12;
+  display: flex; align-items: flex-end; gap: 3px; height: 28px;
+}
+.wave-bar {
+  width: 4px; border-radius: 2px; background: var(--hp-cyan); opacity: 0.7;
+}
+.wave-bar:nth-child(1) { animation: waveBounce 0.6s ease-in-out infinite; height: 8px; }
+.wave-bar:nth-child(2) { animation: waveBounce 0.6s ease-in-out 0.1s infinite; height: 16px; }
+.wave-bar:nth-child(3) { animation: waveBounce 0.6s ease-in-out 0.2s infinite; height: 24px; }
+.wave-bar:nth-child(4) { animation: waveBounce 0.6s ease-in-out 0.15s infinite; height: 18px; }
+.wave-bar:nth-child(5) { animation: waveBounce 0.6s ease-in-out 0.05s infinite; height: 10px; }
+@keyframes waveBounce { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.3); } }
+
+/* Alert flash overlay */
+.alert-flash {
+  position: absolute; inset: 0; z-index: 16; pointer-events: none;
+  background: rgba(227,82,5,0.08);
+  animation: flashFade 0.6s ease forwards;
+}
+@keyframes flashFade { to { opacity: 0; } }
+
+/* ── Step 2B: scene fills left col; challenge section is static in right col ── */
+.anim-scene { min-height: 420px; }
+#challenge-section { /* normal flow inside .s2-challenge-col — no overlay positioning */ }
+
+/* Challenge picker */
+.challenge-intro { background: transparent; border-radius: 0; padding: 0; box-shadow: none; }
+.challenge-prompt { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #111; margin-bottom: 8px; }
+.challenge-heading { font-size: 18px; font-weight: 700; color: var(--hp-navy); margin-bottom: 4px; }
+.challenge-sub { font-size: 13px; color: var(--hp-text-2); margin-bottom: 14px; }
+.challenge-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--hp-gray-1); border: 1.5px solid var(--hp-gray-2);
+  border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 700;
+  color: var(--hp-text-2); margin-bottom: 12px;
+  transition: all 0.2s;
+}
+.challenge-badge.complete { background: #E8F9F0; border-color: var(--hp-green); color: var(--hp-green); }
+.challenge-options { display: flex; flex-direction: column; gap: 8px; }
+.challenge-opt {
+  display: flex; align-items: center; gap: 12px; padding: 11px 16px;
+  border-radius: 8px; border: 1.5px solid var(--hp-gray-2); background: white;
+  cursor: pointer; transition: all 0.18s; font-size: 13px; line-height: 1.4;
+  user-select: none;
+}
+.challenge-opt:hover { border-color: var(--hp-blue); background: #F0F8FD; }
+.challenge-opt.selected { border-color: var(--hp-blue); background: #E8F4FB; }
+.challenge-opt.disabled { opacity: 0.45; cursor: not-allowed; }
+.copt-check {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  border: 1.5px solid var(--hp-gray-2); background: var(--hp-gray-1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; color: transparent;
+  transition: all 0.18s;
+}
+.challenge-opt.selected .copt-check { background: var(--hp-blue); border-color: var(--hp-blue); color: white; }
+
+/* ── Step 3: Two-column layout ── */
+/* ── Step 3: Full-viewport no-scroll layout ── */
+/* ID specificity beats .step { display:none } so scope to .active only */
+#step-3.active {
+  display: flex;
+  padding: 0;
+  margin: 0 -20px;         /* cancel #contest's side padding */
+  height: calc(100dvh - 146px); /* nav 60 + progress 3 + indicator 44 + step-top-pad 22 + safety 17 */
+  overflow: hidden;
+}
+.s3-layout {
+  display: flex; width: 100%; height: 100%; overflow: hidden;
+}
+
+/* ── Left: scenario photo panel ── */
+.s3-scene-panel {
+  width: 258px; flex-shrink: 0;
+  position: relative; overflow: hidden;
+  background: var(--hp-blue-deep);
+}
+/* kept id=step3-scene-bg so revealSolutions JS works unchanged */
+#step3-scene-bg {
+  position: absolute; inset: 0;
+  background: center/cover no-repeat var(--hp-blue-deep);
+  transition: background-image 0.5s ease;
+}
+.s3-scene-overlay {
+  position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.25) 58%, transparent 100%);
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+}
+.s3-challenges-box {
+  background: rgba(4,18,29,0.9);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(93,205,255,0.32);
+  border-radius: 10px; padding: 14px 13px 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.34);
+}
+.s3-chal-label {
+  font-size: 10px; font-weight: 900; letter-spacing: 1.7px;
+  text-transform: uppercase; color: #55c9ff; margin-bottom: 9px;
+}
+.sol-challenge-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.sol-pill {
+  width: 100%; box-sizing: border-box;
+  background: rgba(0,105,153,0.94); border: 1px solid rgba(86,203,255,0.82);
+  border-radius: 5px; padding: 6px 9px; font-size: 10.5px; line-height: 1.35;
+  font-weight: 750; color: #fff;
+}
+.s3-other-challenges {
+  margin-top: 10px; padding-top: 9px;
+  border-top: 1px solid rgba(255,255,255,0.24);
+}
+.s3-other-label {
+  font-size: 8.5px; font-weight: 850; letter-spacing: 1.3px;
+  text-transform: uppercase; color: rgba(255,255,255,0.82); margin-bottom: 7px;
+}
+.sol-other-pills { display: flex; gap: 4px; flex-wrap: wrap; }
+.sol-other-pill {
+  padding: 3px 7px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.36);
+  background: rgba(255,255,255,0.14);
+  color: #fff; font-size: 8.5px; font-weight: 700;
+}
+.s3-scenario-name {
+  font-size: 9.5px; color: rgba(255,255,255,0.78); margin-top: 9px;
+  font-style: italic;
+}
+.s3-scene-foot { color: white; }
+.s3-scene-eyebrow {
+  font-size: 9px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--hp-blue); margin-bottom: 4px;
+}
+/* kept id=step3-scene-title so revealSolutions JS works unchanged */
+#step3-scene-title { font-size: 14px; font-weight: 700; line-height: 1.3; }
+
+/* ── Right: product panels ── */
+.s3-products-col {
+  flex: 1; display: flex; flex-direction: column;
+  overflow: hidden; border-left: 1px solid var(--hp-gray-2);
+  background: var(--hp-gray-0);
+}
+.s3-rec-grid {
+  flex: 1; display: grid; grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+.s3-action-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 20px; background: white;
+  border-top: 1px solid var(--hp-gray-2); flex-shrink: 0;
+}
+
+/* ── Product card v2 (no-scroll) ── */
+.rec-card-v2 {
+  display: flex; flex-direction: column; overflow: hidden;
+  border-right: 1px solid var(--hp-gray-2); background: white;
+}
+.rec-card-v2:last-child { border-right: none; }
+.rec-card-v2 .rec-card-header {
+  padding: 8px 15px; font-size: 9px; font-weight: 800;
+  letter-spacing: 1.5px; text-transform: uppercase; color: white; flex-shrink: 0;
+}
+.rec-card-header.primary   { background: var(--hp-blue); }
+.rec-card-header.alternate { background: #111; }
+
+/* ── Annotation image zone ── */
+.rec-annot-wrap {
+  position: relative; flex: 1; overflow: hidden;
+  background: #fff;
+}
+.rec-annot-img {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  /* horizontal padding leaves room for callout labels */
+  padding: 14px 19%;
+}
+.rec-annot-img img {
+  width: 100%; max-width: 100%; max-height: 100%; aspect-ratio: 1;
+  object-fit: contain; box-sizing: border-box;
+  border-radius: 50%; padding: 5%;
+  background: #fff;
+  border: 3px solid rgba(0,150,214,0.16);
+  box-shadow: 0 10px 28px rgba(0,102,153,0.13);
+}
+.rec-card-img-placeholder {
+  width: 80px; height: 80px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: white; letter-spacing: -0.5px;
+}
+/* SVG arrow lines — drawn over the image */
+.rec-annot-svg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; overflow: visible;
+}
+/* Feature callout labels */
+.rec-callout {
+  position: absolute; z-index: 3; transform: translateY(-50%);
+  max-width: 27%; display: flex; align-items: center;
+}
+.rec-callout.left  { left: 5px; }
+.rec-callout.right { right: 5px; flex-direction: row-reverse; }
+.rec-callout span {
+  display: block; background: white;
+  border-radius: 4px; padding: 4px 7px;
+  font-size: 9px; font-weight: 700; color: var(--hp-navy);
+  box-shadow: 0 1px 5px rgba(0,0,0,0.16);
+  line-height: 1.35; white-space: normal;
+  border-left: 2.5px solid transparent;
+  transform-origin: center;
+  animation: recFeaturePulse 3.2s ease-in-out infinite;
+  animation-delay: var(--feature-delay, 0s);
+}
+.rec-callout.right span { border-left: none; border-right: 2.5px solid transparent; }
+@keyframes recFeaturePulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 1px 5px rgba(0,0,0,0.16); }
+  50% { transform: scale(1.045); box-shadow: 0 3px 11px rgba(0,150,214,0.24); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rec-callout span { animation: none; }
+}
+
+/* ── Card footer ── */
+.rec-card-foot {
+  background: white; padding: 11px 14px 12px; flex-shrink: 0;
+  border-top: 1px solid #e8ecf0;
+}
+.rec-card-v2 .rec-card-name   { font-size: 15px; font-weight: 800; color: var(--hp-navy); margin-bottom: 2px; }
+.rec-card-v2 .rec-card-tagline { font-size: 10px; color: var(--hp-text-2); margin-bottom: 7px; line-height: 1.35; }
+.rec-bullets-h {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 4px;
+}
+.rec-bullets-h li {
+  font-size: 10px; font-weight: 600; color: var(--hp-navy);
+  background: #EDF5FF; padding: 2px 8px; border-radius: 10px;
+  border: 1px solid #C8E0F7;
+}
+/* kept for fallback — old card styles still referenced in some places */
+.rec-card { display: none; }
+.rec-tech { display: none; }
+.solutions-context { display: none; }
+
+/* ── Form Shared ── */
+.content-card { background: white; border-radius: var(--radius); padding: 22px 24px; box-shadow: var(--shadow); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field.full { grid-column: 1 / -1; }
+.field label { font-size: 11px; font-weight: 700; color: var(--hp-text-2); text-transform: uppercase; letter-spacing: 0.5px; }
+.field input:not([type=checkbox]), .field select {
+  padding: 11px 13px; border-radius: 6px; font-size: 14px; font-family: var(--hp-font);
+  border: 1.5px solid var(--hp-gray-2); background: white; color: var(--hp-text);
+  width: 100%; outline: none; transition: border-color 0.18s, box-shadow 0.18s; appearance: none;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--hp-blue); box-shadow: 0 0 0 3px rgba(0,150,214,0.12);
+}
+.field input::placeholder { color: var(--hp-gray-3); }
+.field .field-err { font-size: 11px; color: #d32f2f; display: none; }
+.field.has-error input, .field.has-error select { border-color: #d32f2f; }
+.field.has-error .field-err { display: block; }
+
+.consent-row {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 14px; border-radius: 6px; border: 1.5px solid var(--hp-gray-2);
+  cursor: pointer; background: var(--hp-gray-0); transition: border-color 0.18s;
+}
+.consent-row:hover { border-color: var(--hp-blue); }
+.consent-row input[type=checkbox] { appearance: auto; -webkit-appearance: checkbox; width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; accent-color: var(--hp-blue); cursor: pointer; }
+.consent-row span { font-size: 12px; color: var(--hp-text-2); line-height: 1.6; }
+.consent-row a { color: var(--hp-blue); }
+
+.radio-row { display: flex; gap: 8px; }
+.radio-opt {
+  flex: 1; padding: 11px 10px; border-radius: 6px; text-align: center;
+  border: 1.5px solid var(--hp-gray-2); cursor: pointer; font-size: 13px;
+  font-weight: 600; transition: all 0.18s; background: white; color: var(--hp-text-2);
+}
+.radio-opt:hover { border-color: var(--hp-blue); color: var(--hp-blue); }
+.radio-opt.selected { border-color: var(--hp-blue); background: #E8F4FB; color: var(--hp-blue); }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 28px; border-radius: 7px; font-size: 14px; font-weight: 700;
+  cursor: pointer; border: none; font-family: var(--hp-font); transition: all 0.2s;
+  text-decoration: none; white-space: nowrap;
+}
+.btn-primary { background: var(--hp-blue); color: white; }
+.btn-primary:hover { background: var(--hp-blue-dk); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,113,164,0.4); }
+.btn-primary:disabled,
+.btn-primary.btn-inactive { background: var(--hp-gray-3); color: white; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-outline { background: transparent; color: var(--hp-blue); border: 1.5px solid var(--hp-blue); }
+.btn-outline:hover { background: #E8F4FB; }
+.btn-ghost { background: transparent; color: var(--hp-text-2); border: 1.5px solid var(--hp-gray-2); }
+.btn-ghost:hover { border-color: var(--hp-gray-3); color: var(--hp-text); }
+.btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; gap: 12px; }
+.btn-row-right { display: flex; justify-content: flex-end; margin-top: 28px; gap: 12px; }
+
+/* ── Step 4: Gift ── */
+.prize-reveal {
+  background: #fff;
+  border: 1.5px solid var(--hp-gray-2);
+  border-top: 4px solid var(--hp-blue);
+  border-radius: var(--radius);
+  padding: 16px 22px; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 16px;
+  animation: prizeReveal 0.6s cubic-bezier(.34,1.56,.64,1);
+  position: relative; overflow: hidden;
+}
+/* Blurred scene strip — activated by JS setting --prize-bg */
+.prize-reveal::before {
+  content: ''; position: absolute; inset: -6px; z-index: 0;
+  background-image: var(--prize-bg, none);
+  background-size: cover; background-position: center;
+  filter: blur(7px) brightness(0.18) saturate(0.4);
+  opacity: 0; transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.prize-reveal.has-photo::before { opacity: 1; }
+/* Keep content above blur */
+.prize-reveal > * { position: relative; z-index: 1; }
+/* When photo is active, flip text to white */
+.prize-reveal.has-photo { border-color: transparent; }
+.prize-reveal.has-photo .prize-text h2 { color: #fff; }
+.prize-reveal.has-photo .prize-text p { color: rgba(255,255,255,0.88); }
+.prize-reveal.has-photo .prize-text .prize-legal { color: rgba(255,255,255,0.6); }
+@keyframes prizeReveal { from { opacity:0; transform: scale(0.92) translateY(10px); } to { opacity:1; transform: none; } }
+.prize-icon { font-size: 52px; flex-shrink: 0; }
+.prize-text h2 { font-size: 20px; font-weight: 800; color: var(--hp-navy); margin-bottom: 5px; }
+.prize-text p { font-size: 14px; color: var(--hp-text-2); line-height: 1.5; }
+.prize-text .prize-legal { font-size: 11px; color: var(--hp-gray-3); margin-top: 5px; font-style: italic; }
+
+/* ── Success ── */
+#success-screen { display: none; padding: 48px 0; animation: fadeUp 0.6s ease; }
+#success-screen.active { display: block; }
+.success-card { background: white; border-radius: var(--radius); padding: 48px 40px; box-shadow: var(--shadow-lg); text-align: center; }
+.success-check { width: 76px; height: 76px; border-radius: 50%; background: var(--hp-green); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+.success-check svg { width: 36px; height: 36px; }
+.success-title { font-size: 28px; font-weight: 800; color: var(--hp-navy); margin-bottom: 8px; }
+.success-sub { font-size: 15px; color: var(--hp-text-2); line-height: 1.7; margin-bottom: 28px; }
+.success-disclaimer {
+  font-size: 12px; color: var(--hp-gray-3); line-height: 1.6;
+  border: 1px solid var(--hp-gray-2); border-radius: 6px; padding: 12px 16px;
+  margin: 20px 0; text-align: left; background: var(--hp-gray-0);
+}
+.success-recs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; text-align: left; }
+.success-rec {
+  background: var(--hp-gray-0); border: 1px solid var(--hp-gray-2);
+  border-radius: 8px; padding: 14px 16px;
+}
+.success-rec .srec-label { font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--hp-blue); margin-bottom: 4px; }
+.success-rec .srec-name { font-size: 14px; font-weight: 700; color: var(--hp-navy); }
+.success-links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
+
+/* ── LinkedIn share button ── */
+.btn-linkedin { background: #0A66C2; color: white; }
+.btn-linkedin:hover { background: #004182; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(10,102,194,0.4); }
+
+/* ── Success scene photo strip ── */
+.success-scene-strip {
+  width: 100%; height: 140px; border-radius: 10px;
+  margin: 0 0 20px; position: relative; overflow: hidden;
+  background: var(--hp-navy-dk);
+}
+.success-scene-strip img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: brightness(0.65) saturate(0.9);
+}
+.success-scene-label {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(10,18,40,0.88));
+  padding: 24px 16px 12px; color: white;
+  font-size: 12px; font-weight: 600; text-align: left; letter-spacing: 0.2px;
+}
+.success-scene-label small { display: block; font-size: 10px; font-weight: 500; opacity: 0.65; margin-top: 2px; }
+
+/* ── Confetti ── */
+.confetti-piece {
+  position: fixed; width: 9px; height: 9px; top: -10px;
+  animation: cfFall linear forwards; border-radius: 3px; z-index: 999; pointer-events: none;
+}
+@keyframes cfFall { to { transform: translateY(110vh) rotate(760deg); opacity: 0; } }
+
+/* ── Utility ── */
+.section-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--hp-blue); margin-bottom: 8px; }
+.section-heading { font-size: clamp(18px, 3vw, 24px); font-weight: 700; color: var(--hp-navy); line-height: 1.3; margin-bottom: 6px; }
+.section-sub { font-size: 14px; color: var(--hp-text-2); line-height: 1.6; margin-bottom: 24px; }
+.mt-16 { margin-top: 16px; }
+
+/* ── Responsive ── */
+/* ── Step 3 responsive ── */
+@media (max-width: 960px) {
+  #step-3.active {
+    height: calc(100dvh - 110px); /* indicator hidden on smaller viewports */
+    margin: 0 -20px;
+  }
+  .s3-scene-panel { width: 200px; }
+}
+@media (max-width: 700px) {
+  /* Stack vertically on phones */
+  #step-3.active {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+    margin: 0 -12px;
+  }
+  .s3-layout { flex-direction: column; }
+  .s3-scene-panel { width: 100%; height: 200px; }
+  .s3-scene-overlay { flex-direction: row; align-items: flex-end; gap: 12px; padding: 12px; }
+  .s3-challenges-box { flex: 1; }
+  .s3-scene-foot { text-align: right; white-space: nowrap; }
+  .s3-products-col { border-left: none; border-top: 1px solid var(--hp-gray-2); }
+  .s3-rec-grid { grid-template-columns: 1fr; height: auto; overflow: visible; }
+  .rec-card-v2 { border-right: none; border-bottom: 1px solid var(--hp-gray-2); }
+  .rec-annot-wrap { min-height: 260px; }
+}
+@media (max-width: 760px) {
+  .hp-cover { min-height: 0; }
+  .hp-cover-photo { position: relative; height: 310px; }
+  .hp-cover-photo img { object-position: 48% center; }
+  .hp-cover-copy {
+    position: relative; width: 100%; padding: 28px 24px 30px;
+    clip-path: none;
+  }
+  .cover-stripe { display: none; }
+  .hp-cover-left { display: block; width: 100%; }
+  .btn-hp-cover { width: 100%; min-height: 50px; }
+  .hp-cover-title { font-size: 32px; }
+  .s2-layout { grid-template-columns: 1fr; }
+  .s2-scene-col { position: static; }
+  .anim-scene { min-height: 320px; }
+  .s2-challenge-col { margin-top: 0; }
+  .reg-modal-box { padding: 28px 24px; }
+}
+@media (max-width: 640px) {
+  .scenario-pick-wrap { padding: 24px 16px; }
+  .scenario-grid { grid-template-columns: 1fr; }
+  .rec-cards-grid { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .radio-row { flex-direction: column; }
+  .success-recs { grid-template-columns: 1fr; }
+  #step-indicator { display: none; }
+  .prize-reveal { flex-direction: column; text-align: center; }
+  /* Touch-friendly targets and stacked CTAs */
+  .btn { min-height: 46px; font-size: 15px; }
+  .btn-row, .hero-cta-row { flex-direction: column-reverse; gap: 10px; }
+  .btn-row .btn, .hero-cta-row .btn { width: 100%; }
+  #contest { padding-left: 12px; padding-right: 12px; }
+  #hp-nav { padding-left: 14px; padding-right: 14px; }
+  .nav-contest-name { font-size: 12px; }
+  /* Registration modal — centred card, responsive on small phones.
+     Keep align-items: center (default) so it stays vertically centred.
+     Tight backdrop padding + dvh max-height so nothing overflows. */
+  #reg-modal-backdrop { padding: 12px; }
+  .reg-modal-box {
+    padding: 20px 16px;
+    max-width: 100%;
+    border-radius: 14px;
+    max-height: 88dvh;   /* dvh accounts for the mobile URL bar */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .reg-modal-scenario-bar { padding: 10px 12px; margin-bottom: 12px; gap: 10px; }
+  .reg-modal-scenario-bar .rmsi { font-size: 22px; }
+  .reg-heading { font-size: 18px; margin-bottom: 4px; }
+  .reg-sub { font-size: 13px; margin-bottom: 14px; }
+  /* Compact the form rows so the whole form fits on most phones */
+  .reg-modal-box .form-grid { gap: 10px; }
+  .reg-modal-box .field input:not([type=checkbox]),
+  .reg-modal-box .field select { padding: 10px 12px; font-size: 16px; } /* 16px prevents iOS auto-zoom */
+  .reg-modal-box .consent-row { padding: 8px 12px; }
+  .reg-modal-box .consent-row span { font-size: 11px; line-height: 1.5; }
+  /* Submit button stays sticky at the bottom of the scrollable card */
+  #reg-submit-btn {
+    position: sticky; bottom: 0;
+    width: 100%; z-index: 5;
+    margin-top: 14px;
+    box-shadow: 0 -10px 18px rgba(255,255,255,0.97), 0 2px 8px rgba(0,113,164,0.25);
+  }
+  .anim-caption { padding: 20px 14px 12px; }
+  .solutions-context, .prize-reveal { padding: 20px 16px; }
+}
+@media (max-width: 420px) {
+  .hp-cover-title { font-size: 26px; }
+}
+/* Embedded desktop/tablet Step 3 must not depend on iframe viewport height:
+   that would create a parent/child auto-resize feedback loop. */
+html.pf-embedded #step-3.active { height: 760px; }
+@media (max-width: 700px) {
+  html.pf-embedded #step-3.active { height: auto; }
+}
+</style>
+<!-- Preload scenario photos so the blurred background in Step 3 renders instantly -->
+<link rel="preload" as="image" href="/images/poly-scenes/airport-meeting-rescue.png">
+<link rel="preload" as="image" href="/images/poly-scenes/support-floor.png">
+<link rel="preload" as="image" href="/images/poly-scenes/executive-home-devices.png">
+<script src="/contest-punctuation.js" defer></script>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav id="hp-nav">
+  <div class="nav-logo">
+    <img src="/images/hp-logo.png" alt="HP" height="34" style="display:block;">
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-contest-name">The 2-Minute Meeting Rescue</div>
+</nav>
+
+<div id="progress-bar"><div id="progress-fill"></div></div>
+<div id="step-indicator">
+  <div class="step-tab active" id="tab-1"><div class="stab-num">1</div>&nbsp;Choose Scenario</div>
+  <div class="step-tab" id="tab-2"><div class="stab-num">2</div>&nbsp;Register &amp; Diagnose</div>
+  <div class="step-tab" id="tab-3"><div class="stab-num">3</div>&nbsp;See Two Solutions</div>
+  <div class="step-tab" id="tab-4"><div class="stab-num">4</div>&nbsp;Claim Your Gift</div>
+</div>
+
+<div id="contest">
+
+  <!-- ══ STEP 1: Cover + Scenario ══ -->
+  <div class="step active" id="step-1">
+
+    <!-- HP-branded cover panel -->
+    <div class="hp-cover" id="hp-cover">
+      <div class="hp-cover-photo">
+        <img src="/images/poly-scenes/airport-meeting-rescue.png" alt="Professional joining a meeting from an airport lounge">
+      </div>
+      <div class="hp-cover-copy">
+        <div class="cover-stripe top" aria-hidden="true"></div>
+        <div class="cover-stripe bottom" aria-hidden="true"></div>
+        <div class="hp-cover-eyebrow">HP | Poly presents</div>
+        <h1 class="hp-cover-title">The 2-minute meeting <span>rescue mission</span></h1>
+        <p class="hp-cover-tagline">Choose a meeting nightmare.<br>Find the risks.<br>Unlock the right Poly rescue.</p>
+        <div class="hp-cover-left">
+          <button class="btn-hp-cover" id="cover-play-btn" onclick="revealScenarios()">
+            Play now
+          </button>
+        </div>
+        <p class="hp-cover-gift">Get a chance to win exciting gifts.</p>
+        <img class="hp-cover-logo" src="/images/hp-logo.png" alt="HP">
+      </div>
+    </div>
+
+    <!-- Scenario picker — hidden until Play Now clicked -->
+    <div id="scenario-section" style="display:none;">
+      <div class="scenario-pick-wrap">
+        <div class="scenario-pick-eyebrow">Step 1 of 4 · Choose Your Scenario</div>
+        <h2 class="scenario-pick-title">Where do calls and meetings go wrong most often in your organization?</h2>
+        <p class="scenario-pick-sub">Choose the scenario where employees most often face technical challenges during calls and virtual meetings.</p>
+        <div class="scenario-grid" id="scenario-grid">
+          <div class="scenario-card" data-scenario="airport">
+            <div class="scenario-scene-bg" style="background:linear-gradient(rgba(24,87,213,0.16),rgba(24,87,213,0.12)),url('/images/poly-scenes/airport-meeting-rescue.png') 44% 42%/cover no-repeat,var(--cover-stripe-blue);"></div>
+            <div class="scenario-card-body">
+              <div class="scenario-card-title">Busy Airport Lounge</div>
+              <div class="scenario-card-desc">An executive takes a critical call amid gate announcements, crowds and movement.</div>
+            </div>
+          </div>
+          <div class="scenario-card" data-scenario="support">
+            <div class="scenario-scene-bg" style="background:linear-gradient(rgba(0,84,166,0.45),rgba(20,100,204,0.35)),url('/images/poly-scenes/support-floor.png') 80% 15%/cover no-repeat,var(--hp-blue-deep);"></div>
+            <div class="scenario-card-body">
+              <div class="scenario-card-title">Noisy Customer Support Floor</div>
+              <div class="scenario-card-desc">A support executive handles a customer call in a high-noise open office.</div>
+            </div>
+          </div>
+          <div class="scenario-card" data-scenario="home">
+            <div class="scenario-scene-bg" style="background:linear-gradient(rgba(0,84,166,0.45),rgba(20,100,204,0.35)),url('/images/poly-scenes/executive-home-devices.png') 55% 25%/cover no-repeat,var(--hp-blue-deep);"></div>
+            <div class="scenario-card-body">
+              <div class="scenario-card-title">Two-Device Meeting at Home</div>
+              <div class="scenario-card-desc">An executive juggles a laptop and phone in the same meeting — and struggles.</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-cta-row" style="margin-top:28px; justify-content:flex-end;">
+          <span class="badge-play" id="play-hint">Select a scenario to continue</span>
+          <button class="btn btn-primary btn-inactive" id="play-now-btn" style="--step1-cta:var(--cover-stripe-blue)">START THE RESCUE →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ STEP 2: Prize form modal + animated scene + challenge questions ══ -->
+
+  <!-- Registration modal — fixed overlay, shown over the playing animation -->
+  <div id="reg-modal-backdrop">
+    <div class="reg-modal-box">
+      <div class="reg-modal-scenario-bar">
+        <span class="rmsi" id="reg-modal-icon">✈️</span>
+        <div>
+          <strong id="reg-modal-scene-name">Busy Airport Lounge</strong>
+          <span>Step 2 of 4 · Prize Entry</span>
+        </div>
+      </div>
+      <div class="reg-eyebrow">🎁 Win a Poly Headset</div>
+      <h2 class="reg-heading">Tell us where to send your Prize, in case you win!</h2>
+      <p class="reg-sub">Takes 30 seconds · No spam · Unsubscribe any time</p>
+      <form id="reg-form" onsubmit="submitRegistration(event)">
+        <div class="form-grid">
+          <div class="field" id="f-name-field">
+            <label for="f-name">Name *</label>
+            <input type="text" id="f-name" placeholder="Aarav Mehta" autocomplete="given-name" required>
+            <span class="field-err">Please enter your name</span>
+          </div>
+          <div class="field" id="f-org-field">
+            <label for="f-org">Organisation *</label>
+            <input type="text" id="f-org" placeholder="Company name" autocomplete="organization" required>
+            <span class="field-err">Please enter your organisation</span>
+          </div>
+          <div class="field" id="f-desig-field">
+            <label for="f-desig">Designation *</label>
+            <input type="text" id="f-desig" placeholder="IT Director" autocomplete="organization-title" required>
+            <span class="field-err">Please enter your designation</span>
+          </div>
+          <div class="field" id="f-email-field">
+            <label for="f-email">Business Email *</label>
+            <input type="email" id="f-email" placeholder="name@company.com" autocomplete="work email" required>
+            <span class="field-err">Please enter a valid business email</span>
+          </div>
+          <div class="field full">
+            <div class="consent-row" onclick="toggleCheck('chk-privacy', event)">
+              <input type="checkbox" id="chk-privacy">
+              <span>By continuing, I agree to the <a href="#" onclick="return false">contest terms and privacy policy</a>. HP Inc. will use my details to send my result and prize entry. *</span>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-ghost" onclick="closeRegModal()">← Back</button>
+          <button type="submit" class="btn btn-primary" id="reg-submit-btn">ENTER THE PRIZE DRAW →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="step" id="step-2">
+    <div class="s2-layout">
+
+      <!-- Left col: animation plays immediately when step 2 opens -->
+      <div class="s2-scene-col">
+        <div class="anim-scene" id="anim-scene">
+          <div class="anim-bg" id="anim-bg" style="background:linear-gradient(135deg,#1a3a5c,#2d6a9f); display:flex; align-items:center; justify-content:center; font-size:80px;">✈️</div>
+          <div class="sound-waves">
+            <div class="wave-bar"></div><div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          </div>
+          <div id="prob-badges"></div>
+          <div class="anim-caption">
+            <div class="anim-caption-title" id="anim-caption-title">Busy Airport Lounge — Executive Call</div>
+            <div class="anim-caption-sub">Watch for the moments when this meeting starts to fall apart…</div>
+          </div>
+          <div class="anim-timer-bar" id="anim-timer-bar" style="width:100%;"></div>
+          <button class="anim-skip" onclick="skipAnimation()">Skip animation ›</button>
+        </div>
+      </div>
+
+      <!-- Right col: 3-question stepper — slides in after prize form submitted -->
+      <div class="s2-challenge-col" id="s2-challenge-col">
+
+        <!-- Q1: Meeting challenges (multi-select, choose 2) -->
+        <div id="challenge-section">
+          <div class="challenge-prompt">Step 2 of 4 · Diagnose · Q1 of 3</div>
+          <h2 class="challenge-heading">Which two meeting challenges do you see most often in your organisation?</h2>
+          <p class="challenge-sub">Choose exactly 2 — your selections shape the recommendations.</p>
+          <div class="challenge-badge" id="challenge-badge">0 / 2 selected</div>
+          <div class="challenge-options" id="challenge-opts"></div>
+          <div class="btn-row" style="margin-top:24px;">
+            <button class="btn btn-ghost" onclick="resetStep2()">← Back</button>
+            <button class="btn btn-primary" id="challenge-next-btn" disabled onclick="goToQ2()">NEXT →</button>
+          </div>
+        </div>
+
+        <!-- Q2: Mobility (single-select) -->
+        <div id="q2-section" style="display:none;">
+          <div class="challenge-prompt">Step 2 of 4 · Diagnose · Q2 of 3 — Mobility</div>
+          <h2 class="challenge-heading">How important is it to move freely while staying connected to your call?</h2>
+          <p class="challenge-sub">This helps us recommend the right form factor for your work style.</p>
+          <div class="challenge-options" id="q2-opts">
+            <div class="challenge-opt" data-val="veryimportant" onclick="selectSingleOpt('mobility','veryimportant','q2-opts','q2-next-btn')">
+              <div class="copt-check">✓</div><span>Very important — I'm frequently on the move</span>
+            </div>
+            <div class="challenge-opt" data-val="important" onclick="selectSingleOpt('mobility','important','q2-opts','q2-next-btn')">
+              <div class="copt-check">✓</div><span>Important — I move occasionally</span>
+            </div>
+            <div class="challenge-opt" data-val="notvery" onclick="selectSingleOpt('mobility','notvery','q2-opts','q2-next-btn')">
+              <div class="copt-check">✓</div><span>Not very important — I usually stay seated</span>
+            </div>
+            <div class="challenge-opt" data-val="notimportant" onclick="selectSingleOpt('mobility','notimportant','q2-opts','q2-next-btn')">
+              <div class="copt-check">✓</div><span>Not important — I rarely take calls outside my desk</span>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:24px;">
+            <button class="btn btn-ghost" onclick="goToQ1()">← Back</button>
+            <button class="btn btn-primary" id="q2-next-btn" disabled onclick="goToQ3()">NEXT →</button>
+          </div>
+        </div>
+
+        <!-- Q3: Wearing style (single-select) → reveals solutions -->
+        <div id="q3-section" style="display:none;">
+          <div class="challenge-prompt">Step 2 of 4 · Diagnose · Q3 of 3 — Wearing Style</div>
+          <h2 class="challenge-heading" id="q3-heading">What would you prefer for calls while travelling?</h2>
+          <p class="challenge-sub" id="q3-sub">This helps us match you to the right Poly headset style.</p>
+          <div class="challenge-options" id="q3-opts">
+            <div class="challenge-opt" data-val="overear" onclick="selectSingleOpt('wearingStyle','overear','q3-opts','q3-next-btn')">
+              <div class="copt-check">✓</div><span id="q3-opt-overear">Over-ear — maximum coverage and comfort</span>
+            </div>
+            <div class="challenge-opt" data-val="onear" onclick="selectSingleOpt('wearingStyle','onear','q3-opts','q3-next-btn')">
+              <div class="copt-check">✓</div><span id="q3-opt-onear">On-ear — compact but comfortable</span>
+            </div>
+            <div class="challenge-opt" data-val="inear" onclick="selectSingleOpt('wearingStyle','inear','q3-opts','q3-next-btn')">
+              <div class="copt-check">✓</div><span id="q3-opt-inear">In-ear — lightweight and easy to carry</span>
+            </div>
+            <div class="challenge-opt" data-val="nopref" onclick="selectSingleOpt('wearingStyle','nopref','q3-opts','q3-next-btn')">
+              <div class="copt-check">✓</div><span id="q3-opt-nopref">No preference — performance matters most</span>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:24px;">
+            <button class="btn btn-ghost" onclick="goToQ2()">← Back</button>
+            <button class="btn btn-primary" id="q3-next-btn" disabled onclick="revealSolutions()">SEE THE BEST SOLUTIONS →</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ STEP 3: Two Solutions — full-viewport, no scroll ══ -->
+  <div class="step" id="step-3">
+    <div class="s3-layout">
+
+      <!-- Left: scenario photo panel -->
+      <div class="s3-scene-panel">
+        <div id="step3-scene-bg"></div>
+        <div class="s3-scene-overlay">
+          <!-- Challenges summary at top -->
+          <div class="s3-challenges-box">
+            <div class="s3-chal-label">Your Primary 2 Challenges</div>
+            <div class="sol-challenge-pills" id="sol-pills"></div>
+            <div class="s3-other-challenges">
+              <div class="s3-other-label">Other challenges considered</div>
+              <div class="sol-other-pills" id="sol-other-pills"></div>
+            </div>
+            <div class="s3-scenario-name" id="sol-scenario-label"></div>
+          </div>
+          <!-- Scenario label at bottom -->
+          <div class="s3-scene-foot">
+            <div class="s3-scene-eyebrow">Your Scenario</div>
+            <div id="step3-scene-title">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: two product panels stacked in a grid -->
+      <div class="s3-products-col">
+        <div class="s3-rec-grid" id="rec-cards-grid"></div>
+        <div class="s3-action-bar">
+          <button class="btn btn-ghost" onclick="goTo(2)">← Back</button>
+          <div style="font-size:11px;color:var(--hp-text-2);text-align:center;flex:1;">Two genuine Poly solutions matched to your answers</div>
+          <button class="btn btn-primary" onclick="goToStep4()">CLAIM YOUR GIFT →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ STEP 4: Gift + Demo Form ══ -->
+  <div class="step" id="step-4">
+    <div class="prize-reveal">
+      <div class="prize-icon">
+        <img src="/images/poly-scenes/prize-bouquet.jpg" alt="HP Poly Prize Headset"
+          style="width:90px;height:90px;border-radius:14px;object-fit:cover;box-shadow:0 4px 16px rgba(0,0,0,0.18);"
+          onerror="this.outerHTML='🎁'">
+      </div>
+      <div class="prize-text">
+        <h2>Claim your gift entry</h2>
+        <p><strong>3 lucky winners will receive a Poly headset.</strong> Complete the form below to enter the draw.</p>
+        <p class="prize-legal">This is an entry into the prize draw, not a guaranteed gift. Final eligibility and legal terms to be confirmed before launch.</p>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <div class="section-eyebrow">Step 4 of 4 · Almost There</div>
+      <h2 class="section-heading" style="margin-bottom:14px;">Just a few more details</h2>
+      <form id="gift-form" onsubmit="submitEntry(event)">
+        <div class="form-grid">
+          <!-- Prefilled from registration -->
+          <div class="field" id="gf-name-field">
+            <label for="gf-name">Name</label>
+            <input type="text" id="gf-name" placeholder="Aarav Mehta" required>
+          </div>
+          <div class="field" id="gf-org-field">
+            <label for="gf-org">Organisation</label>
+            <input type="text" id="gf-org" placeholder="Company name" required>
+          </div>
+          <!-- New fields -->
+          <div class="field" id="gf-mobile-field">
+            <label for="gf-mobile">Mobile Number *</label>
+            <input type="tel" id="gf-mobile" placeholder="+91 98765 43210" required>
+            <span class="field-err">Please enter your mobile number</span>
+          </div>
+          <div class="field" id="gf-brand-field">
+            <label for="gf-brand">Current Headset Brand</label>
+            <select id="gf-brand">
+              <option value="">Select brand</option>
+              <option>Poly</option><option>Jabra</option><option>Logitech</option>
+              <option>EPOS</option><option>Sennheiser / EPOS</option><option>Other</option>
+              <option>No standard brand</option><option>Not sure</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label>Would you like a free demo of the recommended solutions?</label>
+            <div class="radio-row" id="demo-group">
+              <div class="radio-opt" onclick="selectDemo('yes', this)">Yes, contact me</div>
+              <div class="radio-opt" onclick="selectDemo('no', this)">Not right now</div>
+            </div>
+          </div>
+          <div class="field full">
+            <div class="consent-row" onclick="toggleCheck('gf-chk-contest', event)">
+              <input type="checkbox" id="gf-chk-contest">
+              <span>I agree to the <a href="#" onclick="return false">contest rules</a> and <a href="#" onclick="return false">privacy terms</a>. Three winners will be selected at random from all valid entries. *</span>
+            </div>
+          </div>
+          <div class="field full">
+            <div class="consent-row" onclick="toggleCheck('gf-chk-marketing', event)">
+              <input type="checkbox" id="gf-chk-marketing">
+              <span>I consent to receive marketing communications about HP Poly products. I can opt out at any time.</span>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-ghost" onclick="goTo(3)">← Back</button>
+          <button type="submit" class="btn btn-primary" id="gift-submit-btn">SUBMIT MY ENTRY →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══ SUCCESS ══ -->
+  <div id="success-screen">
+    <div class="success-card">
+      <div class="success-check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h2 class="success-title">You're in the draw! 🎉</h2>
+      <p class="success-sub">
+        Thank you for completing The 2-Minute Meeting Rescue.<br>
+        We'll be in touch soon with your result and prize draw update.
+      </p>
+      <!-- Scenario photo strip — populated by JS after submission -->
+      <div id="success-scene-strip" class="success-scene-strip" style="display:none;"></div>
+      <div class="success-disclaimer">
+        <strong>Prize draw note:</strong> This submission enters you into the HP Poly headset prize draw.
+        Three winners will be selected at random from all valid entries.
+        This is not a guaranteed gift. Full contest terms and eligibility criteria apply.
+      </div>
+      <div style="font-size:13px;font-weight:700;color:var(--hp-text-2);text-align:left;margin-bottom:10px;">Your recommended solutions:</div>
+      <div class="success-recs" id="success-recs"></div>
+      <div class="success-links">
+        <button class="btn btn-linkedin" id="linkedin-share-btn" onclick="shareOnLinkedIn()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.59 0 4.25 2.36 4.25 5.44v6.3zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM3.56 20.45h3.57V9H3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.8 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+          Share my result
+        </button>
+        <a href="https://www.hp.com/us-en/workplaces/future-of-collaboration.html" target="_blank" class="btn btn-outline">Future of Collaboration magazine</a>
+        <button class="btn btn-ghost" onclick="restartContest()">↺ Restart contest</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /contest -->
+
+<script>
+// ══════════════════════════════════════════════════════════════════════════════
+// CANONICAL SHARE URL
+// When this page is embedded in a third-party event site iframe the share URL
+// must point to the production HP Poly page, not window.location (which would
+// resolve to the embedding site or the Replit dev domain).
+// Update this constant if the production URL changes.
+// ══════════════════════════════════════════════════════════════════════════════
+// Share the contest page itself — it carries the OG/Twitter meta tags
+// (title, description, 1200x630 image) that LinkedIn needs to render the
+// preview card. The previous HP.com URL had no scrapeable OG data, so
+// LinkedIn showed "Cannot display preview".
+const SHARE_BASE_URL = 'https://kaboom-ai.com/poly-contest-rescue.html';
+
+// ══════════════════════════════════════════════════════════════════════════════
+// CONTEST DATA — edit here to update scenarios, challenges and recommendations
+// ══════════════════════════════════════════════════════════════════════════════
+const CONTEST_DATA = {
+  scenarios: {
+    airport: {
+      title: 'Busy Airport Lounge',
+      icon: '✈️',
+      bgGradient: 'linear-gradient(135deg,#1a3a5c,#2d6a9f)',
+      bgImage: '/images/poly-scenes/executive-airport.png',
+      // ytVideoId is loaded dynamically from the journey editor (PATCH /api/journeys/:id/scenario-videos).
+      // Set a real YouTube video ID there; leave null to fall back to the Ken Burns photo animation.
+      ytVideoId: null,
+      challenges: [
+        { id:'bg_noise',  text:'Gate or crowd noise drowned out my voice on the call' },
+        { id:'cant_hear', text:'Couldn\'t hear the other side clearly in a noisy environment' },
+        { id:'voice',     text:'My voice sounded muffled or unclear to other participants' },
+        { id:'switching', text:'Headset wasn\'t compatible with all my devices while travelling' },
+        { id:'fatigue',   text:'Wearing a headset for long stretches in transit was uncomfortable' },
+      ],
+      overlays: [
+        { time: 3000,  icon:'🔊', label:'Gate Announcement', x:28, y:30 },
+        { time: 8000,  icon:'📢', label:'Crowd Noise',       x:68, y:24 },
+        { time: 13000, icon:'👂', label:'Hard to Hear',      x:32, y:62 },
+        { time: 18000, icon:'🎙️', label:'Background Heard', x:70, y:55 },
+        { time: 23000, icon:'😣', label:'Call Stress',       x:50, y:76 },
+      ]
+    },
+    support: {
+      title: 'Noisy Customer Support Floor',
+      icon: '🎧',
+      bgGradient: 'linear-gradient(135deg,#0d3b2e,#1a6b4a)',
+      bgImage: '/images/poly-scenes/support-floor.png',
+      ytVideoId: null,
+      challenges: [
+        { id:'bg_noise',  text:'Open-floor noise bled into the call and distracted the customer' },
+        { id:'cant_hear', text:'Couldn\'t hear the customer clearly during loud periods on the floor' },
+        { id:'voice',     text:'Customer kept asking me to repeat myself or couldn\'t understand me' },
+        { id:'switching', text:'Switching between desk phone and PC constantly disrupts my workflow' },
+        { id:'fatigue',   text:'Headset discomfort after a long shift reduces focus and productivity' },
+      ],
+      overlays: [
+        { time: 3000,  icon:'🔊', label:'Office Noise',      x:30, y:28 },
+        { time: 8000,  icon:'❓', label:'Customer Confused', x:68, y:34 },
+        { time: 13000, icon:'🔇', label:'Accidental Mute',   x:28, y:62 },
+        { time: 18000, icon:'🔁', label:'Please Repeat',     x:70, y:57 },
+        { time: 23000, icon:'😣', label:'Agent Fatigue',     x:50, y:76 },
+      ]
+    },
+    home: {
+      title: 'Two-Device Meeting at Home',
+      icon: '🏠',
+      bgGradient: 'linear-gradient(135deg,#2d1b69,#4a2d9f)',
+      bgImage: '/images/poly-scenes/executive-home-devices.png',
+      ytVideoId: null,
+      challenges: [
+        { id:'switching', text:'Had to manually switch between laptop and phone mid-call' },
+        { id:'bg_noise',  text:'Household background noise disrupted an important meeting' },
+        { id:'voice',     text:'Echo or audio feedback affected call quality for everyone' },
+        { id:'cant_hear', text:'Couldn\'t focus across multiple devices or concurrent meetings' },
+        { id:'fatigue',   text:'Family or household noise interrupted a critical call at the worst moment' },
+      ],
+      overlays: [
+        { time: 3000,  icon:'💻', label:'Laptop Alert',      x:26, y:30 },
+        { time: 8000,  icon:'📱', label:'Switch to Phone',   x:70, y:26 },
+        { time: 13000, icon:'🔗', label:'Connection Break',  x:32, y:63 },
+        { time: 18000, icon:'🔁', label:'Audio Echo',        x:68, y:58 },
+        { time: 23000, icon:'😤', label:'Device Juggle',     x:50, y:76 },
+      ]
+    }
+  },
+
+  products: {
+    // Variants are keyed as "{wearingStyle}_{mobilityGroup}" where mobilityGroup is
+    // "mobile" (veryimportant / important) or "desk" (notvery / notimportant / null).
+    // Both dimensions independently drive which products appear, not just the label.
+    airport: {
+      variants: {
+        // ── Over-ear ──────────────────────────────────────────────────────────
+        overear_mobile: {
+          primary: {
+            name: 'HP Poly Focus 6',
+            tagline: 'Foldable ANC engineered for executives always on the move',
+            img: '/images/poly-headsets/poly-focus-6.png',
+            imgInitials: null, imgColor: null,
+            whyFit: 'The foldable over-ear design collapses into a carry-on pocket in seconds, so you never have to choose between ANC performance and packing light. Adaptive hybrid ANC silences gate crowds and jet engines from the moment you put it on.',
+            tech: 'Hybrid ANC · Foldable design · Enhanced noise reduction · Meeting-platform certified',
+            challengesFit: ['bg_noise','cant_hear'],
+            differentReason: 'The mobile exec pick — ANC power that folds flat and travels without compromise.',
+          },
+          alternate: {
+            name: 'Voyager Free 60',
+            tagline: 'True-wireless earbuds when you ditch the headband between gates',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'For the moments between calls — sprinting through terminals, security trays, or crowded lounges — true-wireless earbuds slip into a jacket pocket while the charging case keeps them ready for the next call.',
+            tech: 'True-wireless · ANC · Compact charging case · Meeting-platform certified',
+            challengesFit: ['switching','voice'],
+            differentReason: 'Maximally portable backup for when an over-ear headset is one item too many.',
+          }
+        },
+        overear_desk: {
+          primary: {
+            name: 'HP Poly Focus 6',
+            tagline: 'Hybrid ANC for sustained focus at the airport lounge desk',
+            img: '/images/poly-headsets/poly-focus-6.png',
+            imgInitials: null, imgColor: null,
+            whyFit: 'When your travel means long lounge sessions rather than constant movement, adaptive hybrid ANC creates a cone of silence so you can work and call without relocating. The plush over-ear cushions stay comfortable across hours of use.',
+            tech: 'Hybrid ANC · Enhanced noise reduction · Ergonomic comfort · Meeting-platform certified',
+            challengesFit: ['bg_noise','cant_hear'],
+            differentReason: 'The stationery-travel choice — maximum ANC endurance for lounge and hotel-desk sessions.',
+          },
+          alternate: {
+            name: 'Voyager 4300 UC',
+            tagline: 'Multi-device wireless for laptop-and-phone lounge work',
+            img: null, imgInitials: 'V4300', imgColor: '#0071A4',
+            whyFit: 'Acoustic Fence™ keeps lounge noise out of the microphone, and simultaneous dual-device pairing means calls switch seamlessly between laptop and mobile without ever re-pairing — ideal for executives who work across both.',
+            tech: 'Multi-device · Acoustic Fence™ · Wireless · Voice clarity',
+            challengesFit: ['switching','bg_noise'],
+            differentReason: 'Best for lounge sessions juggling laptop and mobile — no awkward device handoff.',
+          }
+        },
+        // ── On-ear ────────────────────────────────────────────────────────────
+        onear_mobile: {
+          primary: {
+            name: 'HP Poly Focus 6',
+            tagline: 'Lighter ANC for executives who move fast between gates',
+            img: '/images/poly-headsets/poly-focus-6.png',
+            imgInitials: null, imgColor: null,
+            whyFit: 'A lighter on-ear fit means less fatigue when you are gate-hopping across connecting flights. The hybrid ANC still silences terminal noise, and the foldable build means it fits in your bag without a dedicated case.',
+            tech: 'Hybrid ANC · Foldable design · Enhanced noise reduction · Meeting-platform certified',
+            challengesFit: ['bg_noise','cant_hear'],
+            differentReason: 'Travel-light ANC — strong noise blocking at a lower weight for the frequent connector.',
+          },
+          alternate: {
+            name: 'Voyager Free 60',
+            tagline: 'Zero-headband option for fast terminal sprints',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'When the gate-to-gate run starts, earbuds win on convenience. No headband to catch on jacket collars, no earcup to readjust — just pocket-sized call clarity ready in seconds.',
+            tech: 'True-wireless · ANC · Compact charging case · Meeting-platform certified',
+            challengesFit: ['switching','voice'],
+            differentReason: 'Pocket-fast alternative when headbands slow you down in transit.',
+          }
+        },
+        onear_desk: {
+          primary: {
+            name: 'HP Poly Focus 6',
+            tagline: 'On-ear ANC comfort for extended airport work sessions',
+            img: '/images/poly-headsets/poly-focus-6.png',
+            imgInitials: null, imgColor: null,
+            whyFit: 'For executives who park at the lounge desk rather than rush gates, the on-ear profile offers hours of comfort while hybrid ANC filters out constant ambient chatter and PA announcements.',
+            tech: 'Hybrid ANC · Enhanced noise reduction · On-ear comfort · Meeting-platform certified',
+            challengesFit: ['bg_noise','cant_hear'],
+            differentReason: 'Endurance ANC at a lighter weight — best when desk time outweighs transit time.',
+          },
+          alternate: {
+            name: 'Voyager 4300 UC',
+            tagline: 'Multi-device wireless for lounge desk productivity',
+            img: null, imgInitials: 'V4300', imgColor: '#0071A4',
+            whyFit: 'Staying put at a lounge desk means you get the full benefit of simultaneous dual-device pairing — laptop and mobile always connected, and Acoustic Fence™ directing only your voice into the call.',
+            tech: 'Multi-device · Acoustic Fence™ · Wireless · Voice clarity',
+            challengesFit: ['switching','bg_noise'],
+            differentReason: 'Desk-optimised multi-device comfort for less mobile travel styles.',
+          }
+        },
+        // ── In-ear ────────────────────────────────────────────────────────────
+        inear_mobile: {
+          primary: {
+            name: 'Voyager Free 60',
+            tagline: 'True-wireless for executives who never stop moving',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'True-wireless earbuds are the natural match for high-mobility travel: no headband, no cord, pockets seamlessly from ear to charging case mid-sprint. ANC handles gate noise and the small profile looks polished at any executive meeting.',
+            tech: 'True-wireless · ANC · Compact charging case · Meeting-platform certified',
+            challengesFit: ['bg_noise','voice'],
+            differentReason: 'The highest-mobility in-ear option — no wires, no headband, always ready.',
+          },
+          alternate: {
+            name: 'HP Poly Focus 6',
+            tagline: 'Over-ear ANC upgrade when the terminal gets extreme',
+            img: '/images/poly-headsets/poly-focus-6.png',
+            imgInitials: null, imgColor: null,
+            whyFit: 'On the occasions where gate noise becomes genuinely extreme — a packed hub during delays — switching to an over-ear foldable delivers the passive isolation that earbuds cannot match. Still fits in a carry-on.',
+            tech: 'Hybrid ANC · Over-ear isolation · Foldable design · Meeting-platform certified',
+            challengesFit: ['bg_noise','cant_hear'],
+            differentReason: 'Fallback to over-ear ANC when in-ear is not enough for the loudest environments.',
+          }
+        },
+        inear_desk: {
+          primary: {
+            name: 'Voyager Free 60',
+            tagline: 'Discreet in-ear for professional airport meetings',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'True-wireless earbuds keep the executive table looking polished — no headband or cable in sight. Meeting-platform certification guarantees call clarity, and the compact case doubles as a travel battery.',
+            tech: 'True-wireless · ANC · Compact charging case · Meeting-platform certified',
+            challengesFit: ['voice','bg_noise'],
+            differentReason: 'The understated in-ear pick for desk-bound airport sessions that demand a professional look.',
+          },
+          alternate: {
+            name: 'Voyager 4300 UC',
+            tagline: 'Multi-device wireless when device-juggling is the real pain',
+            img: null, imgInitials: 'V4300', imgColor: '#0071A4',
+            whyFit: 'If switching between laptop and mobile is the bigger friction point, Acoustic Fence™ and simultaneous dual-device pairing resolve it without re-pairing — keeping calls flowing no matter which device rings.',
+            tech: 'Multi-device · Acoustic Fence™ · Wireless · Voice clarity',
+            challengesFit: ['switching','bg_noise'],
+            differentReason: 'Upgrade when seamless multi-device switching matters more than minimal form factor.',
+          }
+        },
+        // ── No preference ─────────────────────────────────────────────────────
+        nopref_mobile: {
+          primary: {
+            name: 'Voyager Free 60',
+            tagline: 'Maximum portability for executives constantly in transit',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'When mobility is the top priority and you have no strong style preference, true-wireless earbuds remove the most constraints: no cord, no headband, ANC on demand, and a charging case that slips into any pocket.',
+            tech: 'True-wireless · ANC · Compact charging case · Meeting-platform certified',
+            challengesFit: ['bg_noise','switching'],
+            differentReason: 'The most portable all-rounder for high-frequency travel — nothing to snag, nothing to juggle.',
+          },
+          alternate: {
+            name: 'HP Poly Focus 6',
+            tagline: 'Foldable ANC when you need deeper noise isolation',
+            img: '/images/poly-headsets/poly-focus-6.png',
+            imgInitials: null, imgColor: null,
+            whyFit: 'When the terminal noise is relentless, the passive plus active isolation of a foldable over-ear headset steps up where earbuds leave off — without sacrificing the compact travel footprint.',
+            tech: 'Hybrid ANC · Foldable design · Enhanced noise reduction · Ergonomic comfort',
+            challengesFit: ['bg_noise','cant_hear'],
+            differentReason: 'ANC escalation pick — deeper isolation when the environment demands more than earbuds deliver.',
+          }
+        },
+        nopref_desk: {
+          primary: {
+            name: 'HP Poly Focus 6',
+            tagline: 'Hybrid ANC engineered for focus at any airport desk',
+            img: '/images/poly-headsets/poly-focus-6.png',
+            imgInitials: null, imgColor: null,
+            whyFit: 'Adaptive hybrid ANC shuts out gate announcements and crowd noise for executives who are more settled than on-the-move. The over-ear cushions create sustained passive isolation across long lounge work sessions.',
+            tech: 'Hybrid ANC · Enhanced noise reduction · Ergonomic comfort · Foldable design',
+            challengesFit: ['bg_noise','cant_hear'],
+            differentReason: 'The strongest overall ANC — ideal when stationary focus is the priority over compactness.',
+          },
+          alternate: {
+            name: 'Voyager 4300 UC',
+            tagline: 'Multi-device wireless for lounge desk productivity',
+            img: null, imgInitials: 'V4300', imgColor: '#0071A4',
+            whyFit: 'Staying put means you can harness simultaneous dual-device pairing fully — laptop and mobile always connected, with Acoustic Fence™ keeping lounge noise out of every call.',
+            tech: 'Multi-device · Acoustic Fence™ · Wireless · Voice clarity',
+            challengesFit: ['switching','bg_noise'],
+            differentReason: 'Chosen when device-juggling matters as much as noise — one headset, two devices, zero re-pairing.',
+          }
+        }
+      }
+    },
+
+    support: {
+      variants: {
+        // ── Over-ear ──────────────────────────────────────────────────────────
+        overear_mobile: {
+          primary: {
+            name: 'EncorePro 700',
+            tagline: 'All-day over-ear comfort for agents who move across the floor',
+            img: '/images/poly-headsets/encorepro-700.jpg',
+            imgInitials: null, imgColor: null,
+            whyFit: 'Agents who move between desks or roam the floor need a headset that travels with them. The EncorePro 700\'s reinforced build and cushioned fit keep performance consistent across an entire shift, wherever the agent ends up.',
+            tech: 'Voice clarity · All-day comfort · Durable build · Adjustable boom microphone',
+            challengesFit: ['cant_hear','fatigue'],
+            differentReason: 'Built for floor mobility — durable, comfortable, and consistent across the whole shift.',
+          },
+          alternate: {
+            name: 'Mission 800 USB',
+            tagline: 'AI noise reduction when you return to the desk',
+            img: '/images/poly-headsets/mission-800.jpg',
+            imgInitials: null, imgColor: null,
+            whyFit: 'For the desk stints in between floor rounds, the Mission 800 USB\'s four-microphone AI array scrubs ambient noise so customers always hear the agent clearly — plug-and-play dual USB means no setup at each workstation.',
+            tech: 'AI noise reduction · 4-microphone array · Busy light · USB-A & USB-C',
+            challengesFit: ['bg_noise','voice'],
+            differentReason: 'AI noise power for seated intervals — the desk complement to a mobile over-ear.',
+          }
+        },
+        overear_desk: {
+          primary: {
+            name: 'Mission 800 USB',
+            tagline: 'AI noise reduction built for the fixed contact-centre desk',
+            img: '/images/poly-headsets/mission-800.jpg',
+            imgInitials: null, imgColor: null,
+            whyFit: 'Desk-based agents get the full benefit of a wired AI setup: four-microphone array noise reduction on every call, an integrated busy light visible to supervisors, and zero battery management — it is always on.',
+            tech: 'AI noise reduction · 4-microphone array · Busy light · USB-A & USB-C',
+            challengesFit: ['bg_noise','voice'],
+            differentReason: 'The desk-agent gold standard — AI noise intelligence that never runs out of battery.',
+          },
+          alternate: {
+            name: 'EncorePro 700',
+            tagline: 'Comfort-first over-ear for long seated shifts',
+            img: '/images/poly-headsets/encorepro-700.jpg',
+            imgInitials: null, imgColor: null,
+            whyFit: 'When eight-hour shifts are the norm, plush cushioning and an adjustable boom microphone keep agents comfortable and voice-clear without the heat build-up of thicker over-ear designs.',
+            tech: 'Voice clarity · All-day comfort · Durable build · Adjustable microphone',
+            challengesFit: ['fatigue','cant_hear'],
+            differentReason: 'Long-shift endurance pick — designed for comfort across the whole day at the desk.',
+          }
+        },
+        // ── On-ear ────────────────────────────────────────────────────────────
+        onear_mobile: {
+          primary: {
+            name: 'EncorePro 700',
+            tagline: 'Lightweight on-ear for agents who move between workstations',
+            img: '/images/poly-headsets/encorepro-700.jpg',
+            imgInitials: null, imgColor: null,
+            whyFit: 'A lighter on-ear profile means agents can move between workstations without fatigue from a heavy headset. The adjustable boom microphone stays precisely positioned on the move, keeping voice clarity consistent.',
+            tech: 'Voice clarity · On-ear comfort · Durable build · Adjustable boom microphone',
+            challengesFit: ['fatigue','cant_hear'],
+            differentReason: 'Mobile-agent comfort — lighter than over-ear without sacrificing the boom-mic precision.',
+          },
+          alternate: {
+            name: 'Voyager Free 60',
+            tagline: 'Wireless earbuds when cables become a hazard on the floor',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'For agents who cover a lot of ground, true-wireless earbuds eliminate cable snags entirely. ANC handles floor noise and the compact design never restricts movement.',
+            tech: 'True-wireless · ANC · Compact charging case · Meeting-platform certified',
+            challengesFit: ['bg_noise','switching'],
+            differentReason: 'Cord-free option for the highest-mobility support roles — no cable, no limits.',
+          }
+        },
+        onear_desk: {
+          primary: {
+            name: 'EncorePro 700',
+            tagline: 'On-ear clarity and endurance for desk-based agents',
+            img: '/images/poly-headsets/encorepro-700.jpg',
+            imgInitials: null, imgColor: null,
+            whyFit: 'The on-ear fit is cooler and lighter for agents who wear a headset continuously. Crystal-clear voice reproduction and a reinforced build means the headset performs at shift-start and shift-end equally well.',
+            tech: 'Voice clarity · On-ear comfort · Durable build · Adjustable boom microphone',
+            challengesFit: ['cant_hear','fatigue'],
+            differentReason: 'Cooler and lighter than over-ear — the on-ear choice for all-day desk agents.',
+          },
+          alternate: {
+            name: 'Mission 800 USB',
+            tagline: 'AI noise reduction when the floor gets loud',
+            img: '/images/poly-headsets/mission-800.jpg',
+            imgInitials: null, imgColor: null,
+            whyFit: 'When background noise on the floor peaks, the Mission 800 USB\'s AI array takes over — isolating the agent voice completely so quality never dips even during the busiest call-surge periods.',
+            tech: 'AI noise reduction · 4-microphone array · Busy light · USB-A & USB-C',
+            challengesFit: ['bg_noise','voice'],
+            differentReason: 'AI noise fallback for noisier floors — stronger suppression when the environment escalates.',
+          }
+        },
+        // ── In-ear ────────────────────────────────────────────────────────────
+        inear_mobile: {
+          primary: {
+            name: 'Voyager Free 60',
+            tagline: 'True-wireless for agents who cover the entire floor',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'True-wireless earbuds let mobile agents roam freely without cable tangles. ANC filters ambient floor noise, and the compact charging case keeps the earbuds ready between breaks — no desk required.',
+            tech: 'True-wireless · ANC · Compact charging case · Meeting-platform certified',
+            challengesFit: ['bg_noise','switching'],
+            differentReason: 'Maximum floor mobility — cord-free call clarity that travels wherever the agent goes.',
+          },
+          alternate: {
+            name: 'EncorePro 700',
+            tagline: 'Wired boom-mic reliability when floors get extreme',
+            img: '/images/poly-headsets/encorepro-700.jpg',
+            imgInitials: null, imgColor: null,
+            whyFit: 'When the noise floor is severe and a wired boom microphone is needed for reliable voice isolation, the EncorePro 700 delivers consistent clarity without battery or pairing concerns — always on, always reliable.',
+            tech: 'Voice clarity · All-day comfort · Durable build · Adjustable boom microphone',
+            challengesFit: ['cant_hear','fatigue'],
+            differentReason: 'Wired fallback for extreme-noise floors where a boom mic beats in-ear every time.',
+          }
+        },
+        inear_desk: {
+          primary: {
+            name: 'Voyager Free 60',
+            tagline: 'In-ear professional sound for desk-based support agents',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'For desk-based agents who prefer an in-ear fit, the Voyager Free 60 delivers clear call quality without the weight or warmth of a full headset. ANC manages ambient floor noise so every customer call sounds clean.',
+            tech: 'True-wireless · ANC · Compact charging case · Meeting-platform certified',
+            challengesFit: ['bg_noise','voice'],
+            differentReason: 'In-ear comfort at the desk — professional call quality without the over-ear bulk.',
+          },
+          alternate: {
+            name: 'Mission 800 USB',
+            tagline: 'AI noise reduction when the desk demands the highest quality',
+            img: '/images/poly-headsets/mission-800.jpg',
+            imgInitials: null, imgColor: null,
+            whyFit: 'When customer satisfaction scores depend on crystal-clear audio, the Mission 800 USB\'s four-microphone AI array eliminates background noise completely — the wired reliability means it never drops a call.',
+            tech: 'AI noise reduction · 4-microphone array · Busy light · USB-A & USB-C',
+            challengesFit: ['bg_noise','voice'],
+            differentReason: 'Wired AI power for the highest-quality desk experience when in-ear isn\'t enough.',
+          }
+        },
+        // ── No preference ─────────────────────────────────────────────────────
+        nopref_mobile: {
+          primary: {
+            name: 'Voyager Free 60',
+            tagline: 'Wireless freedom for mobile support agents',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'When mobility is the priority and style is open, true-wireless earbuds solve the most problems at once: no cords to tangle on the floor, ANC for ambient noise, and a compact case that pockets between workstations.',
+            tech: 'True-wireless · ANC · Compact charging case · Meeting-platform certified',
+            challengesFit: ['bg_noise','switching'],
+            differentReason: 'The all-round mobile pick — cable-free, noise-cancelling, and style-agnostic.',
+          },
+          alternate: {
+            name: 'EncorePro 700',
+            tagline: 'Durable boom-mic reliability when clarity is non-negotiable',
+            img: '/images/poly-headsets/encorepro-700.jpg',
+            imgInitials: null, imgColor: null,
+            whyFit: 'A precision boom microphone and reinforced build keep voice quality consistent across the busiest shifts. When customers complain about call clarity, the EncorePro 700 eliminates the variable.',
+            tech: 'Voice clarity · All-day comfort · Durable build · Adjustable boom microphone',
+            challengesFit: ['cant_hear','fatigue'],
+            differentReason: 'Boom-mic clarity upgrade for environments where customer-facing quality is the top metric.',
+          }
+        },
+        nopref_desk: {
+          primary: {
+            name: 'Mission 800 USB',
+            tagline: 'AI noise reduction built for the fixed contact-centre desk',
+            img: '/images/poly-headsets/mission-800.jpg',
+            imgInitials: null, imgColor: null,
+            whyFit: 'A four-microphone array with AI noise reduction isolates the agent\'s voice even in the busiest call centre. The integrated busy light signals availability, and dual USB-A/C connectivity works on any workstation without drivers.',
+            tech: 'AI noise reduction · 4-microphone array · Busy light · USB-A & USB-C',
+            challengesFit: ['bg_noise','voice'],
+            differentReason: 'The desk-agent gold standard — AI noise intelligence that never needs charging.',
+          },
+          alternate: {
+            name: 'EncorePro 700',
+            tagline: 'All-day clarity and comfort for professional agents',
+            img: '/images/poly-headsets/encorepro-700.jpg',
+            imgInitials: null, imgColor: null,
+            whyFit: 'A voice-focused design with an adjustable boom microphone delivers crystal-clear call quality. Reinforced construction and plush cushioning keep agents comfortable and productive through the longest shift.',
+            tech: 'Voice clarity · All-day comfort · Durable build · Adjustable microphone',
+            challengesFit: ['cant_hear','fatigue'],
+            differentReason: 'Built for contact-centre durability — when the headset must last years, not months.',
+          }
+        }
+      }
+    },
+
+    home: {
+      variants: {
+        // ── Over-ear ──────────────────────────────────────────────────────────
+        overear_mobile: {
+          primary: {
+            name: 'Voyager 4300 UC',
+            tagline: 'Wireless multi-device for hybrid workers who roam the home',
+            img: null, imgInitials: 'V4300', imgColor: '#0071A4',
+            whyFit: 'Wireless freedom lets you move from desk to kitchen to garden without dropping a call. Acoustic Fence™ keeps household noise out of the microphone wherever you land, and dual-device pairing means laptop and mobile stay simultaneously connected.',
+            tech: 'Multi-device · Wireless · Acoustic Fence™ · Voice clarity',
+            challengesFit: ['switching','bg_noise'],
+            differentReason: 'The roaming home-worker pick — wireless range and multi-device freedom in one over-ear headset.',
+          },
+          alternate: {
+            name: 'HP Poly Focus 6',
+            tagline: 'Hybrid ANC for deep-focus stints between movements',
+            img: '/images/poly-headsets/poly-focus-6.png',
+            imgInitials: null, imgColor: null,
+            whyFit: 'When you settle at the desk for a focused call, hybrid ANC blocks out the household completely. The foldable design means it stays in a jacket pocket between those roaming stretches.',
+            tech: 'Hybrid ANC · Foldable design · Ergonomic comfort · Meeting-platform certified',
+            challengesFit: ['bg_noise','cant_hear'],
+            differentReason: 'ANC depth for the focused intervals — complements wireless range when both matter.',
+          }
+        },
+        overear_desk: {
+          primary: {
+            name: 'HP Poly Focus 6',
+            tagline: 'Hybrid ANC for deep focus at the home desk',
+            img: '/images/poly-headsets/poly-focus-6.png',
+            imgInitials: null, imgColor: null,
+            whyFit: 'Hybrid ANC blocks household distractions — kids, deliveries, appliances — so you can concentrate fully on the call. The over-ear design also acts as a visible "do not disturb" signal to family members in the same space.',
+            tech: 'Hybrid ANC · Voice clarity · Ergonomic comfort · Meeting-platform certified',
+            challengesFit: ['bg_noise','cant_hear'],
+            differentReason: 'Deep-focus desk pick — ANC plus a visual DND signal for busy households.',
+          },
+          alternate: {
+            name: 'Voyager 4300 UC',
+            tagline: 'Multi-device wireless for laptop-and-phone home workers',
+            img: null, imgInitials: 'V4300', imgColor: '#0071A4',
+            whyFit: 'Acoustic Fence™ creates a precise microphone sound zone at the desk, while simultaneous dual-device pairing means calls switch seamlessly between laptop and mobile — the practical choice when device-juggling is the daily friction.',
+            tech: 'Multi-device · Acoustic Fence™ · Wireless · Voice clarity',
+            challengesFit: ['switching','bg_noise'],
+            differentReason: 'Multi-device desk choice — Acoustic Fence™ isolation with no re-pairing across devices.',
+          }
+        },
+        // ── On-ear ────────────────────────────────────────────────────────────
+        onear_mobile: {
+          primary: {
+            name: 'Voyager 4300 UC',
+            tagline: 'Lightweight wireless for home workers who stay in motion',
+            img: null, imgInitials: 'V4300', imgColor: '#0071A4',
+            whyFit: 'A lighter wireless headset is the practical choice when you move around the home frequently. Acoustic Fence™ keeps the microphone clean regardless of which room you call from, and wireless range covers most home layouts.',
+            tech: 'Multi-device · Wireless · Acoustic Fence™ · Voice clarity',
+            challengesFit: ['switching','bg_noise'],
+            differentReason: 'Mobile home-worker comfort — wireless Acoustic Fence™ at a lighter on-ear weight.',
+          },
+          alternate: {
+            name: 'Voyager Free 60',
+            tagline: 'Earbuds when you need hands-free movement through the house',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'For completely hands-free movement — cooking, tidying, stepping outside — true-wireless earbuds remove every physical constraint. ANC handles variable background noise wherever the call takes you.',
+            tech: 'True-wireless · ANC · Compact charging case · Meeting-platform certified',
+            challengesFit: ['bg_noise','switching'],
+            differentReason: 'Fully untethered option for the most mobile home-working style.',
+          }
+        },
+        onear_desk: {
+          primary: {
+            name: 'Voyager 4300 UC',
+            tagline: 'On-ear multi-device comfort for full-day home desk sessions',
+            img: null, imgInitials: 'V4300', imgColor: '#0071A4',
+            whyFit: 'The on-ear profile distributes weight more evenly for all-day desk wear. Acoustic Fence™ keeps household noise out of calls, and dual-device pairing means laptop and mobile are both live simultaneously — no interruptions when the phone rings.',
+            tech: 'Multi-device · Acoustic Fence™ · Wireless · On-ear comfort',
+            challengesFit: ['switching','bg_noise'],
+            differentReason: 'Cooler all-day fit with full multi-device capability — the desk home-worker sweet spot.',
+          },
+          alternate: {
+            name: 'HP Poly Focus 6',
+            tagline: 'ANC boost for the noisiest home-desk environments',
+            img: '/images/poly-headsets/poly-focus-6.png',
+            imgInitials: null, imgColor: null,
+            whyFit: 'When Acoustic Fence™ is not enough — heavy construction noise, a busy household — hybrid ANC adds an active layer of isolation so call quality stays consistent regardless of what is happening around the desk.',
+            tech: 'Hybrid ANC · Voice clarity · Ergonomic comfort · Meeting-platform certified',
+            challengesFit: ['bg_noise','cant_hear'],
+            differentReason: 'ANC escalation for severe home distractions — active isolation on top of passive.',
+          }
+        },
+        // ── In-ear ────────────────────────────────────────────────────────────
+        inear_mobile: {
+          primary: {
+            name: 'Voyager Free 60',
+            tagline: 'True-wireless earbuds for hybrid workers always on the move',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'True-wireless earbuds let you stay live on a call while moving between rooms, making coffee, or stepping into the garden — without pausing or handing off. ANC handles variable home background noise wherever the call takes you.',
+            tech: 'True-wireless · ANC · All-day comfort · Meeting-platform certified',
+            challengesFit: ['switching','bg_noise'],
+            differentReason: 'Maximum in-home freedom — stay on call anywhere without cables or headbands.',
+          },
+          alternate: {
+            name: 'Voyager 4300 UC',
+            tagline: 'Multi-device wireless when the desk becomes the focus',
+            img: null, imgInitials: 'V4300', imgColor: '#0071A4',
+            whyFit: 'When you settle at the desk for an important call, the Voyager 4300 UC\'s Acoustic Fence™ provides precision microphone isolation and dual-device pairing keeps laptop and mobile simultaneously live.',
+            tech: 'Multi-device · Acoustic Fence™ · Wireless · Voice clarity',
+            challengesFit: ['bg_noise','switching'],
+            differentReason: 'Desk-mode upgrade with Acoustic Fence™ when precision microphone isolation is needed.',
+          }
+        },
+        inear_desk: {
+          primary: {
+            name: 'Voyager Free 60',
+            tagline: 'In-ear comfort for long home-desk call sessions',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'For desk-based home workers who prefer in-ear, the Voyager Free 60 combines professional call quality with a feather-light fit that stays comfortable across hours of back-to-back meetings. ANC handles the household without a headband in sight.',
+            tech: 'True-wireless · ANC · All-day comfort · Meeting-platform certified',
+            challengesFit: ['bg_noise','voice'],
+            differentReason: 'Light-on-ears comfort for desk-bound home workers who prefer in-ear over headbands.',
+          },
+          alternate: {
+            name: 'HP Poly Focus 6',
+            tagline: 'Over-ear ANC when the home environment escalates',
+            img: '/images/poly-headsets/poly-focus-6.png',
+            imgInitials: null, imgColor: null,
+            whyFit: 'When household distractions spike and in-ear ANC is not enough, hybrid over-ear ANC provides the extra isolation layer that makes every call sound professional regardless of what is happening around the desk.',
+            tech: 'Hybrid ANC · Voice clarity · Ergonomic comfort · Meeting-platform certified',
+            challengesFit: ['bg_noise','cant_hear'],
+            differentReason: 'ANC depth upgrade for severe home distractions — more isolation when earbuds are stretched.',
+          }
+        },
+        // ── No preference ─────────────────────────────────────────────────────
+        nopref_mobile: {
+          primary: {
+            name: 'Voyager Free 60',
+            tagline: 'Most portable option for home workers who keep moving',
+            img: '/images/poly-headsets/voyager-free-60.png', imgInitials: 'VF60', imgColor: '#0096D6',
+            whyFit: 'When mobility is high and style preference is open, true-wireless earbuds solve the most constraints: no cables, no headband, ANC wherever you roam, and a charging case that fits in any pocket.',
+            tech: 'True-wireless · ANC · Compact charging case · Meeting-platform certified',
+            challengesFit: ['switching','bg_noise'],
+            differentReason: 'The unconstrained mobile home-worker pick — no wires, no headband, no compromise.',
+          },
+          alternate: {
+            name: 'Voyager 4300 UC',
+            tagline: 'Wireless multi-device when device-juggling is the bigger pain',
+            img: null, imgInitials: 'V4300', imgColor: '#0071A4',
+            whyFit: 'Acoustic Fence™ and simultaneous dual-device pairing mean calls switch between laptop and mobile without re-pairing — ideal for hybrid workers whose biggest friction is the device handoff, not physical mobility.',
+            tech: 'Multi-device · Wireless · Acoustic Fence™ · Voice clarity',
+            challengesFit: ['switching','bg_noise'],
+            differentReason: 'Multi-device wireless when staying on both devices matters more than compactness.',
+          }
+        },
+        nopref_desk: {
+          primary: {
+            name: 'Voyager 4300 UC',
+            tagline: 'Multi-device wireless for seamless home-to-office calls',
+            img: null, imgInitials: 'V4300', imgColor: '#0071A4',
+            whyFit: 'Acoustic Fence™ technology creates a sound boundary around the microphone so only your voice reaches the meeting — whether you\'re on the laptop or the phone. Wireless multi-device pairing eliminates the awkward device handoff.',
+            tech: 'Multi-device connectivity · Wireless mobility · Acoustic Fence™ · Voice clarity',
+            challengesFit: ['switching','bg_noise'],
+            differentReason: 'The one headset that stays connected to both devices simultaneously — no re-pairing.',
+          },
+          alternate: {
+            name: 'HP Poly Focus 6',
+            tagline: 'Stronger ANC for deep focus at the home desk',
+            img: '/images/poly-headsets/poly-focus-6.png',
+            imgInitials: null, imgColor: null,
+            whyFit: 'When home distractions demand more, hybrid ANC blocks background sound so you can concentrate fully. The over-ear design also acts as a visual signal to household members that a call is in progress.',
+            tech: 'Hybrid ANC · Voice clarity · Ergonomic comfort · Meeting-platform certified',
+            challengesFit: ['cant_hear','bg_noise'],
+            differentReason: 'Chosen when deep focus matters more than multi-device switching at the home desk.',
+          }
+        }
+      }
+    }
+  }
+};
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── Analytics helper ──────────────────────────────────────────────────────────
+// Pushes to window.dataLayer when available. Dev fallback logs event name only —
+// never logs PII (names, emails, phone numbers).
+// ── Analytics ────────────────────────────────────────────────────────────────
+// Events and scenario-video settings are read from the configured contest
+// Journey. `poly-contest` is the canonical slug; the second value preserves the
+// live Journey that was created before the canonical slug was introduced.
+const _JOURNEY_SLUG = 'poly-contest';
+const _JOURNEY_SLUG_FALLBACK = '2-minute-meeting-rescue-1786861832577';
+let _activeJourneySlug = _JOURNEY_SLUG;
+if (window.parent !== window) document.documentElement.classList.add('pf-embedded');
+
+// In-memory session token: stable fallback when the pf_vt cookie write is
+// blocked by the browser (cross-domain iframe, Chromium partitioned storage,
+// Safari ITP).  All track() calls within this page load share the same token
+// so pre-registration events can be merged with the post-registration contact.
+let _sessionToken = null;
+
+// ── postMessage identity handshake ───────────────────────────────────────────
+// When embedded in a cross-origin iframe the embedding page may send:
+//   { type: 'pf:identify', cid: '<contactId>', email: '<email>' }
+// after the visitor is identified client-side (CRM widget, SSO, etc.).
+//
+// Events fired before the handshake arrives are held in _preIdentBuffer and
+// are NOT posted to the tracker yet.  On receipt of pf:identify the buffer is
+// flushed WITH identity attached — each event is therefore sent exactly once,
+// already carrying the contact link.  A short fallback timer ensures events
+// are not lost for visitors who are never identified.
+//
+// Trust model enforced by the listener (see below):
+//   • Only window.parent may send pf:identify (not any other window).
+//   • The sending origin must match this page's own origin OR the value of
+//     <meta name="pf:embed-trusted-origin" content="https://partner.com">.
+//   • Raw cid is only accepted from same-origin parents; cross-origin partners
+//     should send email only (same value the user would type in the form).
+let _parentCid = null;       // contact ID supplied by same-origin parent frame
+let _parentEmail = null;     // validated email supplied by a trusted parent
+const _preIdentBuffer = [];  // [{eventName, safeProps}] held until identity known
+let _identFlushTimer = null; // fallback timer — fires buffer anonymously after 2 s
+const _embedContext = {
+  parentUrl: null,
+  referrer: null,
+  utmSource: null,
+  utmMedium: null,
+  utmCampaign: null,
+};
+
+function _getTrustedEmbedOrigin() {
+  try {
+    const metaEl = document.querySelector('meta[name="pf:embed-trusted-origin"]');
+    const raw = metaEl && metaEl.getAttribute('content');
+    return raw ? new URL(raw).origin : window.location.origin;
+  } catch (_) {
+    return window.location.origin;
+  }
+}
+
+function _getEmbedParentTargetOrigin() {
+  try {
+    if (document.referrer) {
+      const referrerOrigin = new URL(document.referrer).origin;
+      if (referrerOrigin === window.location.origin || referrerOrigin === _getTrustedEmbedOrigin()) {
+        return referrerOrigin;
+      }
+    }
+  } catch (_) {}
+  return _getTrustedEmbedOrigin();
+}
+
+function _isValidEmbedEmail(value) {
+  if (typeof value !== 'string' || value.length > 254) return false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
+function _cleanEmbedValue(value, maxLength) {
+  return typeof value === 'string' && value.trim()
+    ? value.trim().slice(0, maxLength)
+    : null;
+}
+
+// Identity is established once we have a cid from the parent or an email from
+// the registration form.  Note: state is declared further down; wrapped in
+// try/catch so this is safe to call at any point including top-level page_view.
+function _isIdentified() {
+  if (_parentCid || _parentEmail) return true;
+  try { return !!(state && state.registration && state.registration.email); } catch (_) {}
+  return false;
+}
+
+function _getVisitorToken() {
+  // NOTE: every step is defensive — in sandboxed/cross-origin iframes,
+  // document.cookie access can throw SecurityError, and tracking identity
+  // must NEVER crash the page (a top-level throw here halts the whole script).
+  try {
+    // 1. Prefer the pf_vt cookie (set by the journey viewer or a prior visit).
+    const m = document.cookie.match(/(?:^|;\s*)pf_vt=([^;]+)/);
+    if (m) return m[1];
+  } catch (_) { /* cookie read blocked — fall through to in-memory token */ }
+
+  // 2. Partitioned localStorage usually survives iframe reloads even when the
+  // browser blocks third-party cookies. It is best-effort and may also throw.
+  try {
+    const stored = localStorage.getItem('pf_embed_vt');
+    if (stored && /^poly-[A-Za-z0-9-]{12,80}$/.test(stored)) _sessionToken = stored;
+  } catch (_) {}
+
+  // 3. Generate a new token (crypto with Math.random fallback), persist if allowed.
+  if (!_sessionToken) {
+    let rnd;
+    try {
+      rnd = c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
+    } catch (_) { rnd = null; }
+    if (!rnd) rnd = c => (c ^ (Math.random() * 256) & 15 >> c / 4).toString(16);
+    try {
+      _sessionToken = 'poly-' + ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, rnd);
+    } catch (_) {
+      _sessionToken = 'poly-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+    }
+    try { localStorage.setItem('pf_embed_vt', _sessionToken); } catch (_) {}
+  }
+  try {
+    document.cookie = `pf_vt=${_sessionToken}; path=/; max-age=${365*24*3600}; SameSite=Lax`;
+    // 4. Verify the write succeeded by reading back.  If the browser blocked the
+    //    write (third-party cookie partitioning), the in-memory _sessionToken is
+    //    returned so every track() call in this page load uses the same identity.
+    const m2 = document.cookie.match(/(?:^|;\s*)pf_vt=([^;]+)/);
+    return m2 ? m2[1] : _sessionToken;
+  } catch (_) {
+    return _sessionToken;
+  }
+}
+
+// _doTrack — sends one event to the PlayForge tracker.
+// Called either immediately (when already identified) or from _flushBuffer().
+// Separating the HTTP POST from track() ensures each event is sent exactly once.
+function _doTrack(eventName, safeProps) {
+  try {
+    const eventProps = Object.assign({}, safeProps || {});
+    if (_embedContext.parentUrl) eventProps.parent_url = _embedContext.parentUrl;
+    if (_embedContext.utmMedium) eventProps.utm_medium = _embedContext.utmMedium;
+    if (_embedContext.utmCampaign) eventProps.utm_campaign = _embedContext.utmCampaign;
+    if (window.parent !== window) eventProps.embed_host = _getEmbedParentTargetOrigin();
+    const body = {
+      event: eventName,
+      visitorToken: _getVisitorToken(),
+      pageUrl: location.href,
+      referrer: _embedContext.referrer || _embedContext.parentUrl || document.referrer || undefined,
+      utmSource: _embedContext.utmSource || (typeof utm !== 'undefined' && utm['utm_source']) || undefined,
+    };
+    // Include parent-supplied contact ID when available
+    if (_parentCid) body.cid = _parentCid;
+    // Attach email when registration has been completed so the contact is resolved.
+    // Guarded: track('page_view') fires at top level BEFORE `const state` is
+    // declared — touching state here would throw a TDZ ReferenceError and
+    // kill the entire script (breaking all buttons). try/catch makes it safe.
+    try {
+      // An email explicitly submitted in the contest is authoritative over a
+      // possibly stale parent-session identity.
+      if (state.registration && state.registration.email) body.contact = state.registration.email;
+      else if (_parentEmail) body.contact = _parentEmail;
+    } catch (_) { /* state not yet initialized during initial page_view */ }
+    // Include allowlisted non-PII props so journey_events.props is populated
+    if (Object.keys(eventProps).length > 0) body.props = eventProps;
+    fetch('/api/public/journeys/' + _activeJourneySlug + '/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      keepalive: true,
+    }).catch(() => {});
+  } catch (_) { /* must never throw */ }
+}
+
+// _flushBuffer — drains _preIdentBuffer and fires each event via _doTrack.
+// Cancels the fallback timer if it is still pending.
+function _flushBuffer() {
+  if (_identFlushTimer) { clearTimeout(_identFlushTimer); _identFlushTimer = null; }
+  const toFlush = _preIdentBuffer.splice(0);
+  if (toFlush.length > 0) {
+    console.debug('[poly-rescue] flushing', toFlush.length, 'buffered event(s)');
+    toFlush.forEach(function(e) { _doTrack(e.eventName, e.safeProps); });
+  }
+}
+
+function track(eventName, props) {
+ // Analytics is wholly best-effort: any throw here at top level (page_view)
+ // would halt the entire script and break every button on the page.
+ try {
+  props = props || {};
+  // GTM / dataLayer — pass allowed non-PII fields only; always fires immediately
+  const ALLOWED = ['scenario','challenges','demo_interest','step','persona','mobility','wearingStyle'];
+  const safeProps = {};
+  Object.keys(props).forEach(k => { if (ALLOWED.includes(k)) safeProps[k] = props[k]; });
+  if (window.dataLayer) window.dataLayer.push({ event: eventName, ...safeProps });
+  console.debug('[poly-rescue] track:', eventName, safeProps);
+
+  if (_isIdentified()) {
+    // Already have identity — fire directly to the tracker
+    _doTrack(eventName, safeProps);
+    return;
+  }
+
+  // Not yet identified: hold the event in the buffer so it is sent exactly
+  // once, WITH identity, when pf:identify arrives.
+  _preIdentBuffer.push({ eventName, safeProps });
+
+  // Start the anonymous-fallback timer on the first buffered event.
+  // After 2 s with no pf:identify the buffer fires without identity, matching
+  // the previous behaviour for visitors who are never identified by the parent.
+  if (!_identFlushTimer) {
+    _identFlushTimer = setTimeout(function() {
+      _identFlushTimer = null;
+      console.debug('[poly-rescue] identity timeout — flushing buffer anonymously');
+      const toFlush = _preIdentBuffer.splice(0);
+      toFlush.forEach(function(e) { _doTrack(e.eventName, e.safeProps); });
+    }, 2000);
+  }
+ } catch (_) { /* tracking must never break the page */ }
+}
+
+// ── postMessage listener — receives pf:init / pf:identify from the parent ─────
+window.addEventListener('message', function(evt) {
+  try {
+    const msg = evt.data;
+    if (!msg || !['pf:init', 'pf:identify'].includes(msg.type)) return;
+
+    // Gate 1: only the direct parent frame (not any other window with a ref).
+    if (evt.source !== window.parent) {
+      console.debug('[poly-rescue] pf:identify dropped — not from parent frame');
+      return;
+    }
+
+    // Gate 2: origin allowlist.  Same-origin embeds pass automatically.
+    // Cross-origin partners must be declared via:
+    //   <meta name="pf:embed-trusted-origin" content="https://partner.example.com">
+    const ownOrigin = window.location.origin;
+    const trustedOrigin = _getTrustedEmbedOrigin();
+
+    const isSameOrigin = (evt.origin === ownOrigin);
+    const isTrustedOrigin = (evt.origin === trustedOrigin);
+
+    if (!isSameOrigin && !isTrustedOrigin) {
+      console.debug('[poly-rescue] pf:identify dropped — untrusted origin:', evt.origin);
+      return;
+    }
+
+    let updated = false;
+
+    // Attribution is accepted only from the trusted parent. The parent URL must
+    // itself belong to that origin, preventing spoofed referrers in analytics.
+    if (msg.type === 'pf:init' && msg.attribution && typeof msg.attribution === 'object') {
+      const attribution = msg.attribution;
+      const parentUrl = _cleanEmbedValue(attribution.parentUrl, 2048);
+      if (parentUrl) {
+        try {
+          const parsedParentUrl = new URL(parentUrl);
+          if (parsedParentUrl.origin === evt.origin) {
+            // Deliberately discard search/hash: campaign values are accepted
+            // separately and parent query strings may contain private data.
+            _embedContext.parentUrl = parsedParentUrl.origin + parsedParentUrl.pathname;
+            _embedContext.referrer = _embedContext.parentUrl;
+            updated = true;
+          }
+        } catch (_) {}
+      }
+      _embedContext.utmSource = _cleanEmbedValue(attribution.utmSource, 120);
+      _embedContext.utmMedium = _cleanEmbedValue(attribution.utmMedium, 120);
+      _embedContext.utmCampaign = _cleanEmbedValue(attribution.utmCampaign, 180);
+      try {
+        if (_embedContext.utmSource) utm.utm_source = _embedContext.utmSource;
+        if (_embedContext.utmMedium) utm.utm_medium = _embedContext.utmMedium;
+        if (_embedContext.utmCampaign) utm.utm_campaign = _embedContext.utmCampaign;
+      } catch (_) { /* utm declarations initialize immediately after this block */ }
+    }
+
+    // cid: same-origin parent only (sequential IDs are guessable; cross-origin
+    // partners should use email or a server-signed embed token).
+    if (msg.cid && !_parentCid && isSameOrigin) {
+      _parentCid = String(msg.cid);
+      updated = true;
+      console.debug('[poly-rescue] pf:identify — cid accepted (same-origin)');
+    } else if (msg.cid && !isSameOrigin) {
+      console.debug('[poly-rescue] pf:identify — cid ignored (cross-origin)');
+    }
+
+    // email: accepted from any trusted origin.  Pre-fill registration so
+    // subsequent track() calls include body.contact automatically.
+    if (msg.email && _isValidEmbedEmail(msg.email)) {
+      try {
+        const normalizedEmail = String(msg.email).trim().toLowerCase();
+        if (!_parentEmail) {
+          _parentEmail = normalizedEmail;
+          // Prefill the visible form only. Do not write parent identity into
+          // submitted registration state: the visitor may correct a stale or
+          // shared-device email, and their explicit submission must win.
+          const emailInput = document.getElementById('f-email');
+          if (emailInput && !emailInput.value) emailInput.value = normalizedEmail;
+          updated = true;
+          console.debug('[poly-rescue] pf:identify — email accepted');
+        }
+      } catch (_) { /* form may not exist yet — identity still remains valid */ }
+    } else if (msg.email) {
+      console.debug('[poly-rescue] pf:identify — invalid email ignored');
+    }
+
+    // Attribution-only init still flushes anonymously with the correct source.
+    // Identity init flushes with contact attached.
+    if (updated) _flushBuffer();
+  } catch (_) { /* postMessage handler must never crash the page */ }
+});
+
+// ── Cross-origin automatic height protocol ───────────────────────────────────
+// The parent cannot inspect iframe DOM cross-origin, so the contest publishes a
+// bounded content height whenever layout changes. The host must validate both
+// event.origin and event.source before applying it.
+let _lastEmbedHeight = 0;
+let _embedResizeFrame = 0;
+function _publishEmbedHeight() {
+  if (window.parent === window) return;
+  if (_embedResizeFrame) cancelAnimationFrame(_embedResizeFrame);
+  _embedResizeFrame = requestAnimationFrame(function() {
+    _embedResizeFrame = 0;
+    // Do not use body/documentElement scrollHeight here. The page has
+    // min-height:100vh, so increasing the iframe would increase the measured
+    // document again and create a resize feedback loop. Visible top-level
+    // content bounds stay stable when only the viewport height changes.
+    let rawHeight = 0;
+    if (document.body) {
+      Array.prototype.forEach.call(document.body.children, function(el) {
+        if (!el || el.tagName === 'SCRIPT') return;
+        const style = window.getComputedStyle(el);
+        if (style.display === 'none' || style.position === 'fixed') return;
+        const rect = el.getBoundingClientRect();
+        if (rect.width || rect.height) rawHeight = Math.max(rawHeight, rect.bottom + window.scrollY);
+      });
+    }
+    rawHeight += 24;
+    const height = Math.max(600, Math.min(5000, Math.ceil(rawHeight)));
+    if (Math.abs(height - _lastEmbedHeight) < 2) return;
+    _lastEmbedHeight = height;
+    window.parent.postMessage({
+      type: 'pf:resize',
+      version: 1,
+      height: height,
+    }, _getEmbedParentTargetOrigin());
+  });
+}
+
+function _publishEmbedReady() {
+  if (window.parent === window) return;
+  window.parent.postMessage({ type: 'pf:ready', version: 1 }, _getEmbedParentTargetOrigin());
+  _publishEmbedHeight();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _publishEmbedReady, { once: true });
+} else {
+  _publishEmbedReady();
+}
+window.addEventListener('load', _publishEmbedHeight);
+window.addEventListener('resize', _publishEmbedHeight);
+if (typeof ResizeObserver !== 'undefined') {
+  const _embedResizeObserver = new ResizeObserver(_publishEmbedHeight);
+  _embedResizeObserver.observe(document.documentElement);
+  if (document.body) _embedResizeObserver.observe(document.body);
+} else if (typeof MutationObserver !== 'undefined') {
+  const _embedMutationObserver = new MutationObserver(_publishEmbedHeight);
+  _embedMutationObserver.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+  });
+}
+
+// ── UTM + persona capture ─────────────────────────────────────────────────────
+const utm = {};
+const _qs = new URLSearchParams(location.search);
+_qs.forEach((v, k) => { if (k.startsWith('utm_')) utm[k] = v; });
+// ?persona=executive  → pre-select airport scenario
+// ?persona=itmanager  → pre-select support scenario
+const PERSONA_MAP = { executive: 'airport', itmanager: 'support' };
+const PERSONA_TAGLINES = {
+  executive: 'Built for executives who can\'t afford a meeting to fall apart — wherever you are.',
+  itmanager: 'Built for IT managers who need to standardise on headsets that perform in every environment.',
+};
+const _persona = (_qs.get('persona') || '').toLowerCase();
+const _preselect = PERSONA_MAP[_persona] || null;
+
+// ── Iframe / cookie-partitioning identity note ───────────────────────────────
+// When embedded in a same-domain iframe the pf_vt cookie is set and read
+// normally — all tracking events are linked to the visitor's shadow contact.
+// When embedded cross-domain (third-party iframe), browsers may block the
+// pf_vt cookie (Chromium partitioned storage, Safari ITP):
+//   • pre-registration: events still fire and are written to journey_events,
+//     but they land on an anonymous shadow contact that has no contact link.
+//   • post-registration: track() includes body.contact = email, the server
+//     resolves the real contact, and all subsequent events are linked correctly.
+// This is a known limitation. Do NOT pass a raw contact ID in the embed URL
+// as a workaround — sequential contact IDs are guessable and would let any
+// third party attribute events to another contact's record.  If strong pre-
+// registration identity is needed, generate a short-lived signed embed token
+// server-side and validate it on the /track endpoint.
+
+// Fire page_view as soon as the script runs (UTM + persona already captured above)
+track('page_view', { persona: _persona || undefined });
+
+// ── Load scenario video IDs from the PlayForge journey editor ─────────────
+// The Journey editor exposes a "Contest Scenario Videos" panel where editors
+// can paste YouTube URLs per scenario. We load that Journey's settings here and
+// override the null defaults in CONTEST_DATA. The legacy Journey slug is a
+// compatibility fallback for the existing published contest configuration.
+// Failure is fully silent — the page falls back to the Ken Burns photo animation.
+// _svReady is awaited in startAnimation() so a fast scenario click never
+// misses a video that was still in-flight at click time.
+const _svReady = (async function loadScenarioVideos() {
+  try {
+    let j = null;
+    for (const slug of [_JOURNEY_SLUG, _JOURNEY_SLUG_FALLBACK]) {
+      const r = await fetch('/api/public/journeys/' + slug, { cache: 'no-store' });
+      if (!r.ok) continue;
+      j = await r.json();
+      _activeJourneySlug = slug;
+      break;
+    }
+    if (!j) return;
+    const sv = j.scenarioVideos;
+    if (!sv) return;
+    ['airport', 'support', 'home'].forEach(key => {
+      const raw = sv[key];
+      if (!raw) return;
+      // Accept a full YouTube URL OR a bare video ID
+      const m = raw.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+      CONTEST_DATA.scenarios[key].ytVideoId = m ? m[1] : raw.trim();
+    });
+  } catch (_) { /* silent */ }
+})();
+
+// ── App state ────────────────────────────────────────────────────────────────
+const state = {
+  scenario: null,
+  registration: {},
+  selectedChallenges: [],
+  mobility: null,
+  wearingStyle: null,
+  demoChoice: null,
+  animTimer: null,
+  animTimers: [],
+};
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function goTo(step) {
+  // The scenario video belongs exclusively to Step 2. Remove it before any
+  // forward or backward navigation so hidden iframes cannot keep playing audio.
+  if (step !== 2) {
+    clearAnimState();
+    stopScenarioVideo();
+  }
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('step-' + step);
+  if (el) { el.classList.add('active'); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  const pct = ((step - 1) / 3) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  for (let i = 1; i <= 4; i++) {
+    const t = document.getElementById('tab-' + i);
+    if (t) t.className = 'step-tab' + (i < step ? ' done' : i === step ? ' active' : '');
+  }
+  track('step_viewed', { step });
+}
+
+// ── Step 1: Cover → Scenario reveal ───────────────────────────────────────
+function revealScenarios() {
+  const sec = document.getElementById('scenario-section');
+  if (sec.style.display === 'none') {
+    sec.style.display = 'block';
+    // Smooth scroll to scenario picker
+    setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+  }
+  track('play_now_cover_clicked');
+}
+
+// ── Step 1: Scenario selection ─────────────────────────────────────────────
+let _hintResetTimer = null;
+
+function selectScenario(id, el) {
+  state.scenario = id;
+  // Cancel a pending "choose a scenario first" reset so it can't overwrite
+  // the "Ready" hint after the user selects during the 2.5s flash window.
+  if (_hintResetTimer) { clearTimeout(_hintResetTimer); _hintResetTimer = null; }
+  const grid = document.getElementById('scenario-grid');
+  if (grid) grid.style.outline = '';
+  document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  const btn = document.getElementById('play-now-btn');
+  if (btn) btn.classList.remove('btn-inactive');
+  const hint = document.getElementById('play-hint');
+  if (hint) hint.textContent = 'Ready — click START THE RESCUE';
+  track('scenario_selected', { scenario: id });
+
+  // Mobile UX: cards are stacked full-width and the START button sits below
+  // the fold — auto-advance to the registration step so the user doesn't
+  // have to scroll down and tap a second CTA. Brief delay lets the
+  // "selected" highlight render so the tap feels acknowledged.
+  if (window.matchMedia('(max-width: 640px)').matches) {
+    setTimeout(() => {
+      // Guard: only advance if this scenario is still the selected one and
+      // we're still on step 1 (user may have tapped another card).
+      const step1 = document.getElementById('step-1');
+      if (state.scenario === id && step1 && step1.classList.contains('active')) goToStep2();
+    }, 350);
+  }
+}
+
+function goToStep2() {
+  if (!state.scenario) {
+    // Prompt the user to pick a scenario first
+    document.getElementById('scenario-grid').style.outline = '2px solid var(--hp-orange)';
+    document.getElementById('play-hint').textContent = '⬆ Please choose a scenario first';
+    if (_hintResetTimer) clearTimeout(_hintResetTimer);
+    _hintResetTimer = setTimeout(() => {
+      _hintResetTimer = null;
+      document.getElementById('scenario-grid').style.outline = '';
+      document.getElementById('play-hint').textContent = 'Select a scenario to continue';
+    }, 2500);
+    return;
+  }
+  track('play_now_clicked', { scenario: state.scenario });
+  const sc = CONTEST_DATA.scenarios[state.scenario];
+  if (!sc) return;
+  document.getElementById('reg-modal-icon').textContent = sc.icon;
+  document.getElementById('reg-modal-scene-name').textContent = sc.title;
+  goTo(2);
+  document.getElementById('reg-modal-backdrop').classList.add('visible');
+}
+
+// ── Step 2: Prize registration modal ─────────────────────────────────────
+function submitRegistration(e) {
+  e.preventDefault();
+  const name  = document.getElementById('f-name').value.trim();
+  const org   = document.getElementById('f-org').value.trim();
+  const desig = document.getElementById('f-desig').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const privacy = document.getElementById('chk-privacy').checked;
+
+  setFieldError('f-name-field', !name);
+  setFieldError('f-org-field', !org);
+  setFieldError('f-desig-field', !desig);
+  setFieldError('f-email-field', !email || !isValidEmail(email));
+  if (!name || !org || !desig || !email || !isValidEmail(email) || !privacy) {
+    if (!privacy) { alert('Please accept the contest and privacy terms to continue.'); }
+    return;
+  }
+
+  state.registration = { name, org, desig, email };
+  // Prefill gift form
+  document.getElementById('gf-name').value = name;
+  document.getElementById('gf-org').value = org;
+
+  track('registration_completed', { scenario: state.scenario });
+
+  // The completed form submit is an explicit browser user gesture. Start the
+  // scenario video here (rather than behind the modal) so it can autoplay with
+  // sound when Step 2 becomes visible.
+  document.getElementById('reg-modal-backdrop').classList.remove('visible');
+  startAnimation({ withSound: true });
+  revealChallengeCol();
+}
+
+function revealChallengeCol() {
+  buildChallengeOptions();
+  // Always start at Q1 when the column first reveals
+  document.getElementById('challenge-section').style.display = 'block';
+  document.getElementById('q2-section').style.display = 'none';
+  document.getElementById('q3-section').style.display = 'none';
+  const col = document.getElementById('s2-challenge-col');
+  col.classList.add('revealed');
+  // Scroll so the TOP of the questionnaire is visible — 'nearest' left users
+  // stranded mid-card when the column is taller than the viewport.
+  setTimeout(() => col.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+}
+
+function closeRegModal() {
+  // Back button in the prize modal — cancel step 2, return to scenario picker
+  document.getElementById('reg-modal-backdrop').classList.remove('visible');
+  clearAnimState();
+  stopScenarioVideo();
+  goTo(1);
+}
+
+function resetStep2() {
+  // Back from any challenge question — reset col and return to scenario picker
+  clearAnimState();
+  stopScenarioVideo();
+  document.getElementById('s2-challenge-col').classList.remove('revealed');
+  document.getElementById('challenge-section').style.display = 'block';
+  document.getElementById('q2-section').style.display = 'none';
+  document.getElementById('q3-section').style.display = 'none';
+  state.mobility = null;
+  state.wearingStyle = null;
+  goTo(1);
+}
+
+// ── Q1 → Q2 → Q3 stepper ─────────────────────────────────────────────────────
+function selectSingleOpt(stateKey, value, optsId, nextBtnId) {
+  state[stateKey] = value;
+  document.getElementById(optsId).querySelectorAll('.challenge-opt')
+    .forEach(o => o.classList.remove('selected'));
+  document.getElementById(optsId).querySelector(`[data-val="${value}"]`)
+    .classList.add('selected');
+  document.getElementById(nextBtnId).disabled = false;
+}
+
+function goToQ1() {
+  document.getElementById('q2-section').style.display = 'none';
+  document.getElementById('challenge-section').style.display = 'block';
+}
+
+function goToQ2() {
+  if (state.selectedChallenges.length < 2) return;
+  document.getElementById('challenge-section').style.display = 'none';
+  document.getElementById('q3-section').style.display = 'none';
+  document.getElementById('q2-section').style.display = 'block';
+  track('q2_viewed', { scenario: state.scenario });
+}
+
+function goToQ3() {
+  if (!state.mobility) return;
+
+  // Contextualise Q3 copy to the chosen scenario
+  const q3Copy = {
+    airport: {
+      heading: 'What would you prefer for calls while travelling?',
+      sub:     'This helps us match you to the right Poly headset for on-the-go use.',
+      overear: 'Over-ear — maximum coverage and noise isolation',
+      onear:   'On-ear — compact and packable for travel',
+      inear:   'In-ear — lightweight and easy to carry',
+      nopref:  'No preference — call quality matters most',
+    },
+    support: {
+      heading: 'How do you prefer to wear your headset during a long call shift?',
+      sub:     'This helps us match you to the right Poly headset for all-day comfort.',
+      overear: 'Over-ear — full coverage for extended wear',
+      onear:   'On-ear — lighter fit for long shifts',
+      inear:   'In-ear — minimal and unobtrusive',
+      nopref:  'No preference — call quality matters most',
+    },
+    home: {
+      heading: 'What headset style suits you best when working from home?',
+      sub:     'This helps us match you to the right Poly headset for your home setup.',
+      overear: 'Over-ear — maximum focus and noise isolation',
+      onear:   'On-ear — comfortable for back-to-back meetings',
+      inear:   'In-ear — easy to grab between tasks',
+      nopref:  'No preference — call quality matters most',
+    },
+  };
+  const copy = q3Copy[state.scenario] || q3Copy.airport;
+  document.getElementById('q3-heading').textContent        = copy.heading;
+  document.getElementById('q3-sub').textContent            = copy.sub;
+  document.getElementById('q3-opt-overear').textContent    = copy.overear;
+  document.getElementById('q3-opt-onear').textContent      = copy.onear;
+  document.getElementById('q3-opt-inear').textContent      = copy.inear;
+  document.getElementById('q3-opt-nopref').textContent     = copy.nopref;
+
+  document.getElementById('q2-section').style.display = 'none';
+  document.getElementById('q3-section').style.display = 'block';
+  track('q3_viewed', { scenario: state.scenario });
+}
+
+// Legacy alias kept so any stale references don't break
+function resetToS2A() { resetStep2(); }
+
+function setFieldError(fieldId, hasError) {
+  const el = document.getElementById(fieldId);
+  if (el) el.classList.toggle('has-error', hasError);
+}
+function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+// ── Step 2B: Animation ───────────────────────────────────────────────────────
+let _scenarioVideoSession = 0;
+
+async function startAnimation({ withSound = false } = {}) {
+  const videoSession = ++_scenarioVideoSession;
+  // Wait for scenario video IDs to finish loading before deciding
+  // whether to show the YouTube embed or the Ken Burns photo fallback.
+  // When called from submitRegistration, this continuation runs from an
+  // explicit visitor action and can start the YouTube embed with sound.
+  await _svReady;
+  // The visitor may have advanced while video settings were loading. A stopped
+  // session must never recreate an audible iframe on a later hidden step.
+  const step2 = document.getElementById('step-2');
+  if (videoSession !== _scenarioVideoSession || !step2 || !step2.classList.contains('active')) return;
+  const sc = CONTEST_DATA.scenarios[state.scenario];
+  const scene = document.getElementById('anim-scene');
+  const bg = document.getElementById('anim-bg');
+
+  if (sc.ytVideoId) {
+    // ── YouTube embed (video ID set via the Journey editor) ─────────────────
+    // The registration submit starts this embed with sound enabled. Other
+    // callers retain muted playback as a browser-policy-safe fallback.
+    // Controls remain available for visitors to adjust volume.
+    // Built with DOM APIs (not innerHTML) so Trusted Types / sanitizer
+    // policies can never strip the src — an innerHTML-assigned iframe was
+    // observed rendering with an empty src in some environments.
+    const ytId = encodeURIComponent(sc.ytVideoId);
+    const ytFrame = document.createElement('iframe');
+    ytFrame.src = 'https://www.youtube.com/embed/' + ytId
+      + '?autoplay=1&mute=' + (withSound ? '0' : '1')
+      + '&controls=1&rel=0&modestbranding=1&playsinline=1&loop=1&playlist=' + ytId;
+    ytFrame.style.cssText = 'width:100%;height:100%;border:none;display:block;';
+    // Full allow string required for autoplay to work in modern Chromium/Safari
+    ytFrame.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    ytFrame.setAttribute('allowfullscreen', '');
+    bg.replaceChildren(ytFrame);
+    // Stop the Ken Burns CSS animation — it applies a scale transform to the
+    // parent which distorts the iframe and prevents proper YouTube rendering.
+    bg.style.cssText = 'position:absolute;inset:0;animation:none;transform:none;';
+  } else if (sc.bgImage) {
+    // ── Ken Burns photo fallback ─────────────────────────────────────────────
+    // Render a full-bleed photo; the Ken Burns CSS animation plays on the wrapper
+    bg.innerHTML = `<img src="${sc.bgImage}" alt="${sc.title}"
+      style="width:100%;height:100%;object-fit:cover;display:block;"
+      onerror="this.parentElement.innerHTML='${sc.icon}';this.parentElement.style.cssText='background:${sc.bgGradient};display:flex;align-items:center;justify-content:center;font-size:80px;'">`;
+    bg.style.cssText = 'position:absolute;inset:0;'; // clear emoji fallback styles
+  } else {
+    bg.innerHTML = sc.icon;
+    bg.style.cssText = `position:absolute;inset:0;background:${sc.bgGradient};display:flex;align-items:center;justify-content:center;font-size:80px;`;
+  }
+  document.getElementById('anim-caption-title').textContent = sc.title + ' — Meeting in Progress';
+  track('challenge_started', { scenario: state.scenario });
+
+  // Build problem badge slots
+  const badgesContainer = document.getElementById('prob-badges');
+  badgesContainer.innerHTML = sc.overlays.map((o, i) => `
+    <div class="prob-badge" id="pb-${i}" style="left:${o.x}%;top:${o.y}%;">
+      <div class="prob-badge-ring">${o.icon}</div>
+      <div class="prob-badge-label">${o.label}</div>
+    </div>`).join('');
+
+  // Timer bar countdown (25s)
+  const DURATION = 25000;
+  const bar = document.getElementById('anim-timer-bar');
+  bar.style.width = '100%';
+  const startTime = Date.now();
+  state.animTimer = setInterval(() => {
+    const elapsed = Date.now() - startTime;
+    const pct = Math.max(0, 100 - (elapsed / DURATION) * 100);
+    bar.style.width = pct + '%';
+    if (elapsed >= DURATION) {
+      clearInterval(state.animTimer);
+      showChallengeSection();
+    }
+  }, 200);
+
+  // Schedule badges
+  state.animTimers = sc.overlays.map((o, i) => setTimeout(() => {
+    const el = document.getElementById('pb-' + i);
+    if (el) {
+      el.classList.add('visible');
+      // Flash overlay
+      const flash = document.createElement('div');
+      flash.className = 'alert-flash';
+      scene.appendChild(flash);
+      setTimeout(() => flash.remove(), 700);
+      // Auto-hide badge
+      setTimeout(() => el.classList.remove('visible'), 5500);
+    }
+  }, o.time));
+}
+
+function skipAnimation() {
+  clearAnimState();
+  showChallengeSection();
+}
+
+function clearAnimState() {
+  // Clears countdown/badge timers ONLY. The YouTube video (if any) keeps
+  // playing alongside the questionnaire — clearing iframe.src here killed
+  // the video seconds after it started (timer end / registration submit
+  // both call this). Use stopScenarioVideo() on real exits instead.
+  if (state.animTimer) clearInterval(state.animTimer);
+  state.animTimer = null;
+  state.animTimers.forEach(clearTimeout);
+  state.animTimers = [];
+}
+
+function stopScenarioVideo() {
+  // Invalidate any startAnimation() still awaiting video configuration, then
+  // remove the iframe entirely so audio stops immediately on every Step 2 exit.
+  _scenarioVideoSession++;
+  const bg = document.getElementById('anim-bg');
+  if (!bg) return;
+  const iframe = bg.querySelector('iframe');
+  if (iframe) iframe.src = 'about:blank';
+  bg.replaceChildren();
+}
+
+function showChallengeSection() {
+  // Called when animation timer ends or "Skip animation" is clicked.
+  // Reveal challenge col only if the prize form has already been submitted.
+  clearAnimState();
+  document.getElementById('anim-timer-bar').style.width = '0%';
+  document.querySelectorAll('.prob-badge').forEach(b => b.classList.remove('visible'));
+  if (state.registration && state.registration.name) {
+    revealChallengeCol();
+  }
+}
+
+// ── Step 2B: Challenge picker ─────────────────────────────────────────────
+function buildChallengeOptions() {
+  state.selectedChallenges = [];
+  const container = document.getElementById('challenge-opts');
+  // Use the challenge list specific to the selected scenario
+  const challenges = CONTEST_DATA.scenarios[state.scenario].challenges;
+  container.innerHTML = challenges.map((c, i) => `
+    <div class="challenge-opt" id="co-${c.id}" onclick="toggleChallenge('${c.id}', this)">
+      <div class="copt-check" id="cc-${c.id}">✓</div>
+      <span>${c.text}</span>
+    </div>`).join('');
+  updateChallengeBadge();
+}
+
+function toggleChallenge(id, el) {
+  const idx = state.selectedChallenges.indexOf(id);
+  if (idx > -1) {
+    // Deselect
+    state.selectedChallenges.splice(idx, 1);
+    el.classList.remove('selected');
+  } else {
+    if (state.selectedChallenges.length >= 2) {
+      // Deselect oldest
+      const oldest = state.selectedChallenges.shift();
+      document.getElementById('co-' + oldest)?.classList.remove('selected');
+    }
+    state.selectedChallenges.push(id);
+    el.classList.add('selected');
+  }
+  updateChallengeBadge();
+}
+
+function updateChallengeBadge() {
+  const n = state.selectedChallenges.length;
+  const badge = document.getElementById('challenge-badge');
+  badge.textContent = n + ' / 2 selected';
+  badge.className = 'challenge-badge' + (n === 2 ? ' complete' : '');
+  document.getElementById('challenge-next-btn').disabled = (n !== 2);
+}
+
+// ── Step 3: Solutions ─────────────────────────────────────────────────────
+function revealSolutions() {
+  track('challenges_selected', {
+    scenario: state.scenario,
+    challenges: state.selectedChallenges.join(','),
+    mobility: state.mobility,
+    wearingStyle: state.wearingStyle,
+  });
+
+  const sc = CONTEST_DATA.scenarios[state.scenario];
+  const prodsMap = CONTEST_DATA.products[state.scenario];
+  // Use the scenario-specific challenge list so pill labels match what the user saw in Q1
+  const challenges = sc.challenges;
+  const selectedLabels = state.selectedChallenges.map(id => challenges.find(c => c.id === id)?.text || id);
+  const challengeShortLabels = {
+    bg_noise: 'Background noise',
+    cant_hear: 'Hearing clarity',
+    voice: 'Voice clarity',
+    switching: 'Device switching',
+    fatigue: 'Comfort & interruptions',
+  };
+  const selectedShortLabels = state.selectedChallenges.map(id => challengeShortLabels[id] || id);
+  const otherChallenges = challenges.filter(c => !state.selectedChallenges.includes(c.id));
+
+  // ── Pick variant using both wearingStyle and mobility ────────────────────
+  // mobilityGroup: 'mobile' when mobility is very/somewhat important, 'desk' otherwise
+  const mobilityHigh   = state.mobility === 'veryimportant' || state.mobility === 'important';
+  const mobilityGroup  = mobilityHigh ? 'mobile' : 'desk';
+  const styleKey       = state.wearingStyle || 'nopref';
+  const variantKey     = `${styleKey}_${mobilityGroup}`;
+
+  const variantData = (prodsMap.variants && prodsMap.variants[variantKey])
+    || (prodsMap.variants && prodsMap.variants[`nopref_${mobilityGroup}`])
+    || (prodsMap.variants && prodsMap.variants.nopref_desk)
+    || prodsMap; // safety fallback
+
+  // Shallow-clone so we can set personalised labels without mutating CONTEST_DATA
+  const primary   = Object.assign({}, variantData.primary);
+  const alternate = Object.assign({}, variantData.alternate);
+
+  // ── Personalise card labels ───────────────────────────────────────────────
+  const styleLabels  = { overear: 'Over-ear', onear: 'On-ear', inear: 'In-ear', nopref: null };
+  const styleLabel   = styleLabels[styleKey] || null;
+  primary.label = `BEST FOR YOUR PRIMARY 2 — ${selectedShortLabels.join(' + ').toUpperCase()}`;
+  alternate.label = styleLabel
+    ? `ALTERNATIVE — ${styleLabel.toUpperCase()}`
+    : (mobilityHigh ? 'ALTERNATIVE — MOBILE WORKSTYLE' : 'ALTERNATIVE WORKSTYLE');
+
+  // Step 3 left column — set scene photo
+  const sceneBg = document.getElementById('step3-scene-bg');
+  const sceneTitle = document.getElementById('step3-scene-title');
+  if (sceneBg && sc.bgImage) {
+    sceneBg.style.backgroundImage = `url('${sc.bgImage}')`;
+  }
+  if (sceneTitle) sceneTitle.textContent = sc.title;
+
+  // Populate challenge pills + scenario label in the left panel
+  document.getElementById('sol-pills').innerHTML = selectedLabels.map(l => `<div class="sol-pill">${l}</div>`).join('');
+  document.getElementById('sol-other-pills').innerHTML = otherChallenges.map(c =>
+    `<div class="sol-other-pill" title="${c.text.replace(/"/g, '&quot;')}">${challengeShortLabels[c.id] || c.id}</div>`
+  ).join('');
+  document.getElementById('sol-scenario-label').textContent = 'Scenario: ' + sc.title.toLowerCase();
+
+  // Build product cards
+  const grid = document.getElementById('rec-cards-grid');
+  grid.innerHTML = [
+    { prod: primary,   cls: 'primary' },
+    { prod: alternate, cls: 'alternate' },
+  ].map(({ prod, cls }) => buildRecCard(prod, cls, challenges)).join('');
+
+  // Store primary product name for LinkedIn share
+  state.primaryProduct = primary.name;
+
+  // Success screen recs
+  document.getElementById('success-recs').innerHTML = [primary, alternate].map(p => `
+    <div class="success-rec">
+      <div class="srec-label">${p.label}</div>
+      <div class="srec-name">${p.name}</div>
+    </div>`).join('');
+
+  track('solutions_viewed', { scenario: state.scenario });
+  goTo(3);
+}
+
+function buildRecCard(prod, headerCls, _challenges) {
+  const accentColor = headerCls === 'primary' ? '#0096D6' : '#111';
+
+  // ── Image HTML ─────────────────────────────────────────────────────────────
+  const productImageSrc = prod.img
+    ?.replace('encorepro-700.jpg', 'encorepro-700-transparent-tight.png')
+    .replace('mission-800.jpg', 'mission-800-transparent-tight.png');
+  const imgHtml = productImageSrc
+    ? `<img src="${productImageSrc}" alt="${prod.name}"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" loading="lazy">
+       <div class="rec-card-img-placeholder" style="background:${prod.imgColor||'#0096D6'};display:none;">${prod.imgInitials||''}</div>`
+    : `<div class="rec-card-img-placeholder" style="background:${prod.imgColor||'#0096D6'};">${prod.imgInitials||''}</div>`;
+
+  // ── Feature annotations (up to 3 from the tech string) ────────────────────
+  // Each annotation has: which side the label sits on, and where the SVG
+  // arrow endpoint (the dot on the headset) lands — in viewBox 0 0 100 100.
+  // x1/y1 = line start (near label), x2/y2 = dot target on the image.
+  const ANNOT_CFG = [
+    // top-left label → headband / top-of-headset zone
+    { side: 'left',  labelTop: 21, x1: 26, y1: 25, x2: 44, y2: 36 },
+    // bottom-left label → microphone / lower zone
+    { side: 'left',  labelTop: 65, x1: 26, y1: 66, x2: 43, y2: 57 },
+    // right label → earcup / speaker zone
+    { side: 'right', labelTop: 43, x1: 74, y1: 45, x2: 58, y2: 45 },
+  ];
+
+  const features = (prod.tech || '').split(' · ').filter(Boolean);
+  const annotated = features.slice(0, 3);
+
+  const svgLines = annotated.map((_, i) => {
+    const c = ANNOT_CFG[i];
+    return `<line x1="${c.x1}" y1="${c.y1}" x2="${c.x2}" y2="${c.y2}"
+                  stroke="${accentColor}" stroke-width="0.9"
+                  stroke-dasharray="3 2" stroke-linecap="round"/>
+            <circle cx="${c.x2}" cy="${c.y2}" r="2.2" fill="${accentColor}"/>`;
+  }).join('');
+
+  const callouts = annotated.map((feat, i) => {
+    const c = ANNOT_CFG[i];
+    const posStyle = `top:${c.labelTop}%`;
+    return `<div class="rec-callout ${c.side}" style="${posStyle}">
+              <span style="border-color:${accentColor};--feature-delay:${(i * 0.45).toFixed(2)}s">${feat}</span>
+            </div>`;
+  }).join('');
+
+  // ── Footer pills (all features) ────────────────────────────────────────────
+  const pills = features.map(f => `<li>${f}</li>`).join('');
+
+  return `
+    <div class="rec-card-v2">
+      <div class="rec-card-header ${headerCls}">${prod.label}</div>
+      <div class="rec-annot-wrap">
+        <div class="rec-annot-img">${imgHtml}</div>
+        <svg class="rec-annot-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${svgLines}</svg>
+        ${callouts}
+      </div>
+      <div class="rec-card-foot">
+        <div class="rec-card-name">${prod.name}</div>
+        <div class="rec-card-tagline">${prod.tagline}</div>
+        <ul class="rec-bullets-h">${pills}</ul>
+      </div>
+    </div>`;
+}
+
+// ── Step 4: Gift form ─────────────────────────────────────────────────────
+function goToStep4() {
+  track('gift_claim_clicked', { scenario: state.scenario });
+  const sc = CONTEST_DATA.scenarios[state.scenario];
+  const prizeReveal = document.querySelector('.prize-reveal');
+  if (sc && sc.bgImage && prizeReveal) {
+    prizeReveal.style.setProperty('--prize-bg', `url('${sc.bgImage}')`);
+    prizeReveal.classList.add('has-photo');
+  } else if (prizeReveal) {
+    prizeReveal.style.removeProperty('--prize-bg');
+    prizeReveal.classList.remove('has-photo');
+  }
+  goTo(4);
+}
+
+function selectDemo(val, el) {
+  state.demoChoice = val;
+  document.querySelectorAll('#demo-group .radio-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  track('demo_interest_selected', { demo_interest: val });
+}
+
+function submitEntry(e) {
+  e.preventDefault();
+  const mobile = document.getElementById('gf-mobile').value.trim();
+  const contest = document.getElementById('gf-chk-contest').checked;
+
+  setFieldError('gf-mobile-field', !mobile);
+  if (!mobile) return;
+  if (!contest) { alert('Please accept the contest rules to enter.'); return; }
+
+  // ── Pre-flight checks: catch missing state before hitting the server ──────
+  // These can happen if the session state was not fully populated (e.g. the
+  // user navigated directly to the page or skipped an earlier step).
+  const email = state.registration && state.registration.email;
+  if (!email || !isValidEmail(email)) {
+    alert('Your email address is missing. Please go back to Step 2 and re-enter your details.');
+    return;
+  }
+  if (!state.scenario) {
+    alert('No scenario selected. Please go back to Step 1 and choose a scenario.');
+    return;
+  }
+  if (!state.selectedChallenges || state.selectedChallenges.length === 0) {
+    alert('No challenges selected. Please go back to Step 3 and choose your challenges.');
+    return;
+  }
+
+  const btn = document.getElementById('gift-submit-btn');
+  btn.textContent = 'Submitting…'; btn.disabled = true;
+
+  const payload = {
+    // Read name/org from the live gift-form fields so any edits the user made
+    // in step 4 are captured; fall back to state.registration for safety.
+    name:        (document.getElementById('gf-name').value.trim()) || state.registration.name || '',
+    org:         (document.getElementById('gf-org').value.trim())  || state.registration.org  || '',
+    designation: state.registration.desig || '',
+    email:       email,
+    // From gift form (step 4)
+    mobile:           mobile,
+    currentBrand:     document.getElementById('gf-brand').value || null,
+    demoInterest:     state.demoChoice || null,
+    marketingConsent: document.getElementById('gf-chk-marketing').checked,
+    // Contest selections
+    scenario:    state.scenario,
+    // Include ALL three diagnostic answers so nothing is lost:
+    //   Q1 → 2 challenge picks  (selectedChallenges)
+    //   Q2 → mobility preference  (prefixed so it's distinguishable)
+    //   Q3 → wearing-style preference  (prefixed)
+    challenges: [
+      ...state.selectedChallenges,
+      ...(state.mobility    ? ['mobility:'    + state.mobility]    : []),
+      ...(state.wearingStyle ? ['wearingStyle:' + state.wearingStyle] : []),
+    ],
+    // UTM params captured at page load
+    utmSource:   utm.utm_source   || null,
+    utmMedium:   utm.utm_medium   || null,
+    utmCampaign: utm.utm_campaign || null,
+    // Persona from ?persona= query param — normalize to allowed enum values
+    persona: (['executive', 'itmanager'].includes(_persona) ? _persona : 'none'),
+  };
+
+  fetch('/api/contest/entries', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload),
+  })
+    .then(async r => {
+      if (!r.ok) {
+        const body = await r.json().catch(() => ({}));
+        // If the server returned field-level validation details, surface them
+        // so the user (and console) can see exactly which field failed.
+        let msg = body.error || 'Submission failed (' + r.status + ')';
+        if (body.details && body.details.fieldErrors) {
+          const fieldMsgs = Object.entries(body.details.fieldErrors)
+            .map(([f, errs]) => `${f}: ${Array.isArray(errs) ? errs.join(', ') : errs}`)
+            .join('\n');
+          console.error('[poly-rescue] validation details:\n' + fieldMsgs);
+          msg += '\n\nField errors:\n' + fieldMsgs;
+        }
+        throw new Error(msg);
+      }
+      return r.json();
+    })
+    .then(() => {
+      track('entry_submitted', { scenario: state.scenario, challenges: state.selectedChallenges.join(','), demo_interest: state.demoChoice, persona: _persona || 'none' });
+      // Populate success scene strip
+      const sc = CONTEST_DATA.scenarios[state.scenario];
+      const strip = document.getElementById('success-scene-strip');
+      if (sc && sc.bgImage && strip) {
+        strip.innerHTML = `
+          <img src="${sc.bgImage}" alt="${sc.title}" onerror="this.parentElement.style.display='none';" loading="eager">
+          <div class="success-scene-label">${sc.icon} ${sc.title}<small>Your selected scenario</small></div>`;
+        strip.style.display = '';
+      }
+      document.getElementById('step-4').style.display = 'none';
+      document.getElementById('success-screen').classList.add('active');
+      document.getElementById('success-screen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      launchConfetti();
+    })
+    .catch(err => {
+      console.error('[poly-rescue] submitEntry error:', err);
+      btn.textContent = 'SUBMIT MY ENTRY →';
+      btn.disabled = false;
+      alert('There was a problem saving your entry. Please check your connection and try again.\n\n(' + err.message + ')');
+    });
+}
+
+// ── LinkedIn share ─────────────────────────────────────────────────────────
+// iframe-safety checklist (verify manually when embedded on a third-party site):
+//   1. Share URL uses SHARE_BASE_URL (canonical HP URL), not window.location — ✓
+//   2. window.open may be blocked by the parent frame's sandbox="allow-popups"
+//      policy → the function detects a null return value (blocked) and falls
+//      back to copying the share link + text to the clipboard — ✓
+//      NOTE: 'noopener' is NOT used because it also returns null on success,
+//      making block detection impossible. Instead popup.opener is nullified
+//      immediately after a successful open (reverse-tabnabbing protection) — ✓
+//   3. Fallback toast message is visible inside the iframe — verify in situ
+//   4. UTM parameters are present on the canonical URL in the LinkedIn dialog
+function shareOnLinkedIn() {
+  const sc = CONTEST_DATA.scenarios[state.scenario] || {};
+  const scenarioLabel = sc.title || 'my workspace';
+  const productName   = state.primaryProduct || 'a Poly headset';
+
+  // Use the canonical production URL so it resolves correctly whether the page
+  // is loaded directly or embedded inside an iframe on a third-party event site.
+  const shareUrl = SHARE_BASE_URL +
+    '?utm_source=linkedin&utm_medium=social&utm_campaign=rescue_share&utm_content=' +
+    encodeURIComponent(state.scenario || 'unknown');
+
+  const shareText =
+    'I found the solution to fixing my meeting pains — and you can too! 🎧\n\n' +
+    'The HP Poly 2-Minute Meeting Rescue recommended the ' + productName +
+    ' for my ' + scenarioLabel + ' scenario. ' +
+    'Play the challenge, get your personalised headset pick, and enter to win a Poly headset.\n\n' +
+    '#HPPoly #FutureOfWork #MeetingRescue';
+
+  // LinkedIn shareArticle accepts url, title and summary pre-fills the share dialog
+  const linkedInUrl =
+    'https://www.linkedin.com/shareArticle?mini=true' +
+    '&url='     + encodeURIComponent(shareUrl) +
+    '&title='   + encodeURIComponent('My HP Poly Meeting Rescue result') +
+    '&summary=' + encodeURIComponent(shareText) +
+    '&source='  + encodeURIComponent('HP Poly');
+
+  track('linkedin_share_clicked', { scenario: state.scenario });
+
+  // window.open returns null when the popup is blocked (e.g. iframe sandbox
+  // without allow-popups). We intentionally omit the 'noopener' feature flag
+  // here because it causes the browser to also return null for *successful*
+  // opens, making it impossible to distinguish a blocked popup from a live one.
+  // Instead we disown the opener reference on the child window immediately
+  // after opening — this is the standard reverse-tabnabbing mitigation that
+  // works without sacrificing the return-value check.
+  let popup = null;
+  try {
+    popup = window.open(linkedInUrl, '_blank', 'width=600,height=600');
+    if (popup) {
+      // Prevent the opened page from navigating this window via window.opener.
+      // popup.opener is writable cross-origin and is the correct way to
+      // disown the reference when 'noopener' cannot be used.
+      popup.opener = null;
+    }
+  } catch (_) {
+    // some browsers throw instead of returning null when popups are blocked
+  }
+
+  if (!popup) {
+    const clipText = shareText + '\n\n' + shareUrl;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(clipText).then(() => {
+        showShareFallbackToast('Link copied! Paste it into a LinkedIn post.');
+      }).catch(() => {
+        showShareFallbackToast('Open LinkedIn and share: ' + shareUrl);
+      });
+    } else {
+      showShareFallbackToast('Open LinkedIn and share: ' + shareUrl);
+    }
+  }
+}
+
+function showShareFallbackToast(message) {
+  let toast = document.getElementById('share-fallback-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'share-fallback-toast';
+    toast.style.cssText =
+      'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
+      'background:#0071A4;color:#fff;padding:12px 22px;border-radius:8px;' +
+      'font-size:13px;font-weight:600;z-index:9999;max-width:90vw;text-align:center;' +
+      'box-shadow:0 4px 16px rgba(0,0,0,0.25);transition:opacity 0.4s ease;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.style.opacity = '1';
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 500);
+  }, 5000);
+}
+
+// ── Utilities ──────────────────────────────────────────────────────────────
+function toggleCheck(id, ev) {
+  // When the click lands on the checkbox itself the browser already toggled
+  // it natively — toggling again here would flip it straight back ("checkbox
+  // not working"). Links inside the row shouldn't toggle either.
+  if (ev && ev.target && (ev.target.tagName === 'INPUT' || ev.target.tagName === 'A')) return;
+  const el = document.getElementById(id);
+  if (el) el.checked = !el.checked;
+}
+
+function launchConfetti() {
+  const colors = ['#0096D6','#00C7D4','#6B46C1','#008542','#FFB800','#ffffff'];
+  for (let i = 0; i < 70; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.cssText = `left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};` +
+      `animation-duration:${1.6+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;` +
+      `width:${6+Math.random()*6}px;height:${6+Math.random()*6}px;`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5000);
+  }
+}
+
+function restartContest() {
+  state.scenario = null;
+  state.registration = {};
+  state.selectedChallenges = [];
+  state.mobility = null;
+  state.wearingStyle = null;
+  state.demoChoice = null;
+  clearAnimState();
+  stopScenarioVideo();
+  document.getElementById('success-screen').classList.remove('active');
+  document.getElementById('step-4').style.display = '';
+  document.getElementById('s2-challenge-col').classList.remove('revealed');
+  document.getElementById('challenge-section').style.display = 'block';
+  document.getElementById('q2-section').style.display = 'none';
+  document.getElementById('q3-section').style.display = 'none';
+  document.getElementById('reg-modal-backdrop').classList.remove('visible');
+  document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('play-now-btn').classList.add('btn-inactive');
+  document.getElementById('play-hint').textContent = 'Select a scenario to begin';
+  // Reset forms
+  document.getElementById('reg-form').reset();
+  document.getElementById('gift-form').reset();
+  document.querySelectorAll('.field').forEach(f => f.classList.remove('has-error'));
+  goTo(1);
+}
+
+// ── Persona pre-selection (runs once at page load) ───────────────────────────
+// Triggered by ?persona=executive or ?persona=itmanager in the URL.
+// 1. Updates the cover tagline with persona-specific copy.
+// 2. Reveals the scenario picker (same effect as clicking "Play Now").
+// 3. Highlights the matching scenario card with blue border + checkmark.
+// 4. Enables the "START THE RESCUE" button immediately.
+// Belt-and-suspenders: wire scenario cards and START button via addEventListener
+// in case inline onclick is silently blocked (CSP, proxy rewrite, browser quirk).
+(function wireScenarioInteractions() {
+  document.querySelectorAll('.scenario-card[data-scenario]').forEach(function(card) {
+    card.addEventListener('click', function() {
+      selectScenario(card.dataset.scenario, card);
+    });
+  });
+  const startBtn = document.getElementById('play-now-btn');
+  if (startBtn) {
+    startBtn.addEventListener('click', function() { goToStep2(); });
+  }
+})();
+
+(function applyPersona() {
+  if (!_preselect) return;
+
+  // 1 — Swap cover tagline for persona-specific copy
+  const taglineEl = document.querySelector('.hp-cover-tagline');
+  if (taglineEl && PERSONA_TAGLINES[_persona]) {
+    taglineEl.innerHTML = PERSONA_TAGLINES[_persona];
+  }
+
+  // 2 — Reveal the scenario picker (mirrors revealScenarios() but skips the
+  //     instant scroll so the user first sees the branded hero, then scrolls down)
+  const sec = document.getElementById('scenario-section');
+  if (sec) sec.style.display = 'block';
+  // cover-play-btn is a transparent overlay — no visual change needed
+
+  // 3 & 4 — Select the matching card and enable "START THE RESCUE"
+  const card = document.querySelector(`.scenario-card[data-scenario="${_preselect}"]`);
+  if (card) {
+    selectScenario(_preselect, card);
+  }
+
+  // Scroll to the scenario section after a short delay so the hero is visible first
+  setTimeout(() => {
+    if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 800);
+
+  track('persona_preselect', { persona: _persona, scenario: _preselect });
+})();
+
+// ── Preview shortcut: ?preview3 jumps straight to Step 3 with mock data ──────
+(function previewStep3() {
+  if (!new URLSearchParams(window.location.search).has('preview3')) return;
+  // Pick support scenario with mock challenge + wearingStyle selections
+  state.scenario       = 'support';
+  state.selectedChallenges = ['bg_noise', 'cant_hear'];
+  state.mobility       = 'important';
+  state.wearingStyle   = 'overear';
+  setTimeout(revealSolutions, 100);
+})();
+</script>
+</body>
+</html>

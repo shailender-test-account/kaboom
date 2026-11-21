@@ -1,0 +1,2 @@
+ALTER TABLE "intent_monitoring_configs" DROP CONSTRAINT IF EXISTS "intent_monitoring_configs_daily_limit_ck";--> statement-breakpoint
+ALTER TABLE "intent_monitoring_configs" ADD CONSTRAINT "intent_monitoring_configs_daily_limit_ck" CHECK ("daily_limit" IN (100,200,500,1000));

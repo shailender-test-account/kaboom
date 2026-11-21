@@ -1,0 +1,1 @@
+CREATE INDEX "intent_evidence_tenant_signal_idx" ON "intent_evidence" USING btree ("tenant_id","signal_id");

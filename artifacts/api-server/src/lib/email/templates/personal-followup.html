@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{subject}}</title>
+<style>
+  @media only screen and (max-width:600px){
+    .container{width:100%!important;padding:24px 16px!important;}
+    .cta-primary{display:block!important;width:100%!important;text-align:center!important;box-sizing:border-box!important;}
+    .cta-secondary{display:block!important;margin-top:8px!important;text-align:center!important;}
+    .cta-spacer{display:none!important;}
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#f9fafb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#f9fafb;">
+  <tr><td align="center" style="padding:40px 16px;">
+
+    <table class="container" width="600" cellpadding="0" cellspacing="0" role="presentation"
+           style="background:#ffffff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;">
+
+      <tr><td style="background:#4f46e5;height:4px;font-size:0;line-height:0;">&nbsp;</td></tr>
+
+      <tr>
+        <td style="padding:36px 40px 40px;">
+          <p style="margin:0 0 6px;font-size:15px;font-weight:700;color:#4f46e5;">KABOOM</p>
+
+          <p style="margin:20px 0 16px;font-size:16px;line-height:1.65;color:#111827;">
+            Hi {{firstName}},
+          </p>
+
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.7;color:#374151;">
+            Just circling back on the content I sent over about <strong>{{playName}}</strong>.
+            I know things get busy — I wanted to make sure it didn't get buried.
+          </p>
+
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.7;color:#374151;">
+            The key insight that's resonated most with teams at companies like
+            <strong>{{companyName}}</strong>:
+          </p>
+
+          <!-- Highlight question box with indigo left border -->
+          <table width="100%" cellpadding="0" cellspacing="0" role="presentation"
+                 style="margin:0 0 24px;">
+            <tr>
+              <td style="border-left:4px solid #4f46e5;padding:14px 20px;background:#f5f3ff;
+                          border-radius:0 8px 8px 0;">
+                <p style="margin:0;font-size:15px;line-height:1.65;color:#4338ca;font-style:italic;">
+                  "{{quoteText}}"
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <p style="margin:0 0 28px;font-size:15px;line-height:1.7;color:#374151;">
+            Does this sound like something worth a 15-minute call? I'd love to share a few
+            quick wins specific to {{companyName}}'s situation.
+          </p>
+
+          <!-- Two text-link CTAs -->
+          <table cellpadding="0" cellspacing="0" role="presentation">
+            <tr>
+              <td>
+                <a class="cta-primary" href="{{journeyUrl}}"
+                   style="display:inline-block;padding:12px 28px;font-size:15px;font-weight:600;
+                          color:#ffffff;text-decoration:none;border-radius:8px;background:#4f46e5;">
+                  View the Content &rarr;
+                </a>
+              </td>
+              <td class="cta-spacer" style="width:16px;">&nbsp;</td>
+              <td>
+                <a class="cta-secondary" href="mailto:{{senderEmail}}"
+                   style="display:inline-block;font-size:14px;font-weight:500;color:#4f46e5;
+                          text-decoration:underline;padding:12px 0;">
+                  Or just reply to chat
+                </a>
+              </td>
+            </tr>
+          </table>
+
+          <p style="margin:32px 0 0;font-size:14px;line-height:1.6;color:#6b7280;">
+            Best,<br />
+            <strong style="color:#374151;">{{senderName}}</strong><br />
+            {{senderTitle}}<br />
+            <a href="mailto:{{senderEmail}}" style="color:#4f46e5;text-decoration:none;">{{senderEmail}}</a>
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="background:#f3f4f6;padding:16px 40px;border-top:1px solid #e5e7eb;">
+          <p style="margin:0;font-size:12px;color:#9ca3af;">
+            <a href="{{unsubscribeUrl}}" style="color:#9ca3af;">Unsubscribe</a> ·
+            Acme Agency · San Francisco, CA
+          </p>
+        </td>
+      </tr>
+
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>

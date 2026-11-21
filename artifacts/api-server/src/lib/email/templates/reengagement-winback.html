@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{subject}}</title>
+<style>
+  @media only screen and (max-width:600px){
+    .container{width:100%!important;padding:24px 16px!important;}
+    .stat-cell{display:block!important;width:100%!important;text-align:center!important;padding:12px 0!important;}
+    .pill-btn{display:block!important;width:100%!important;text-align:center!important;box-sizing:border-box!important;}
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#f9fafb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#f9fafb;">
+  <tr><td align="center" style="padding:40px 16px;">
+
+    <table class="container" width="600" cellpadding="0" cellspacing="0" role="presentation"
+           style="background:#ffffff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;">
+
+      <!-- Purple header -->
+      <tr>
+        <td align="center"
+            style="background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);padding:36px 40px 32px;">
+          <p style="margin:0;font-size:32px;line-height:1;">👋</p>
+          <h2 style="margin:12px 0 6px;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;">
+            {{firstName}}, we've missed you
+          </h2>
+          <p style="margin:0;font-size:14px;color:rgba(255,255,255,.8);">
+            It's been a while since we last connected
+          </p>
+        </td>
+      </tr>
+
+      <!-- 3-column value stats row -->
+      <tr>
+        <td style="padding:0;">
+          <table width="100%" cellpadding="0" cellspacing="0" role="presentation"
+                 style="background:#f5f3ff;border-bottom:1px solid #ede9fe;">
+            <tr>
+              <td class="stat-cell" width="33%" align="center" style="padding:20px 12px;">
+                <p style="margin:0;font-size:26px;font-weight:700;color:#7c3aed;">3×</p>
+                <p style="margin:4px 0 0;font-size:12px;font-weight:500;color:#6b7280;">Pipeline Growth</p>
+              </td>
+              <td width="1" style="background:#ede9fe;">&nbsp;</td>
+              <td class="stat-cell" width="33%" align="center" style="padding:20px 12px;">
+                <p style="margin:0;font-size:26px;font-weight:700;color:#7c3aed;">40%</p>
+                <p style="margin:4px 0 0;font-size:12px;font-weight:500;color:#6b7280;">Less Outreach Time</p>
+              </td>
+              <td width="1" style="background:#ede9fe;">&nbsp;</td>
+              <td class="stat-cell" width="33%" align="center" style="padding:20px 12px;">
+                <p style="margin:0;font-size:26px;font-weight:700;color:#7c3aed;">90d</p>
+                <p style="margin:4px 0 0;font-size:12px;font-weight:500;color:#6b7280;">Time to Results</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Body -->
+      <tr>
+        <td style="padding:28px 40px 32px;">
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.7;color:#374151;">
+            Hi {{firstName}},
+          </p>
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.7;color:#374151;">
+            We noticed it's been a while since you engaged with our content on
+            <strong>{{playName}}</strong>. A lot has changed since then — and we'd love to
+            reconnect.
+          </p>
+
+          <!-- Product update items -->
+          <table width="100%" cellpadding="0" cellspacing="0" role="presentation"
+                 style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;margin:0 0 24px;">
+            <tr>
+              <td style="padding:20px 24px;">
+                <p style="margin:0 0 12px;font-size:13px;font-weight:600;color:#7c3aed;
+                           text-transform:uppercase;letter-spacing:.5px;">What's new since you left</p>
+                <p style="margin:0 0 8px;font-size:14px;color:#374151;line-height:1.6;">
+                  ✦ &nbsp;New personalised journey pages built around {{companyName}}'s goals
+                </p>
+                <p style="margin:0 0 8px;font-size:14px;color:#374151;line-height:1.6;">
+                  ✦ &nbsp;Updated case studies &amp; ROI calculators
+                </p>
+                <p style="margin:0;font-size:14px;color:#374151;line-height:1.6;">
+                  ✦ &nbsp;{{updateItem}}
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <p style="margin:0 0 28px;font-size:15px;line-height:1.7;color:#374151;">
+            We've put together something specifically for you. No hard sell — just valuable
+            content relevant to where {{companyName}} is heading.
+          </p>
+
+          <!-- Pill-shaped CTA -->
+          <table cellpadding="0" cellspacing="0" role="presentation" style="margin:0 0 12px;">
+            <tr>
+              <td style="border-radius:50px;background:#7c3aed;">
+                <a class="pill-btn" href="{{journeyUrl}}"
+                   style="display:inline-block;padding:14px 36px;font-size:15px;font-weight:600;
+                          color:#ffffff;text-decoration:none;border-radius:50px;">
+                  See What's New &rarr;
+                </a>
+              </td>
+              <td style="width:12px;">&nbsp;</td>
+              <td style="border-radius:50px;border:1px solid #e5e7eb;">
+                <a href="{{unsubscribeUrl}}"
+                   style="display:inline-block;padding:14px 24px;font-size:14px;font-weight:500;
+                          color:#6b7280;text-decoration:none;border-radius:50px;">
+                  Not interested
+                </a>
+              </td>
+            </tr>
+          </table>
+          <p style="margin:0;font-size:13px;color:#9ca3af;">
+            Clicking "Not interested" will stop future emails from us.
+          </p>
+
+          <p style="margin:32px 0 0;font-size:14px;line-height:1.6;color:#6b7280;">
+            Warmly,<br />
+            <strong style="color:#374151;">{{senderName}}</strong><br />
+            {{senderTitle}}
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="background:#f3f4f6;padding:16px 40px;border-top:1px solid #e5e7eb;">
+          <p style="margin:0;font-size:12px;color:#9ca3af;">
+            <a href="{{unsubscribeUrl}}" style="color:#9ca3af;">Unsubscribe</a> ·
+            Acme Agency · San Francisco, CA
+          </p>
+        </td>
+      </tr>
+
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>

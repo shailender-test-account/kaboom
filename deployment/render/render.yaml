@@ -1,0 +1,52 @@
+# Creates PAID services only when you explicitly approve the Blueprint in Render.
+# Keep the repository root as Root Directory. No preDeployCommand or auto-migrate.
+services:
+  - type: web
+    name: kaboom-remix-validation
+    runtime: node
+    plan: 0.5c-512mb
+    autoDeployTrigger: off
+    buildCommand: >-
+      corepack enable &&
+      corepack pnpm install --frozen-lockfile --prod=false &&
+      corepack pnpm --filter @workspace/playforge run build &&
+      corepack pnpm --filter @workspace/api-server run build
+    startCommand: node deployment/render/server.mjs
+    healthCheckPath: /api/healthz
+    envVars:
+      - key: NODE_VERSION
+        value: 24.22.3
+      - key: SKIP_INSTALL_DEPS
+        value: "true"
+      - key: NODE_ENV
+        value: production
+      - key: BASE_PATH
+        value: /
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: kaboom-remix-independent
+          property: connectionString
+      - key: RENDER_DATA_READY
+        value: "false"
+      - key: COPIED_DATA_SAFE_MODE
+        value: "true"
+      - key: MONITORING_RESEARCH_ENABLED
+        value: "false"
+      - key: HP_WARM_JOURNEY_ROUTING_ENABLED
+        value: "false"
+      - key: HP_RULE_SEQUENCE_ROUTING_ENABLED
+        value: "false"
+      - key: SALES_FEEDBACK_SYNC_ENABLED
+        value: "false"
+      - key: USER_WELCOME_EMAIL_ENABLED
+        value: "false"
+      - key: AUTO_APPLY_SCHEMA_DRIFT
+        value: "false"
+databases:
+  - name: kaboom-remix-independent
+    plan: 0.1c-256mb
+    databaseName: kaboom_render
+    user: kaboom_render
+    ipAllowList: []

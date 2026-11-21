@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HP Poly Contest Admin</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #f0f4f8;
+    color: #1a202c;
+    min-height: 100vh;
+  }
+
+  /* ── Login screen ── */
+  #login-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .login-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 48px 40px 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  }
+
+  .login-card .logo-bar {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .login-card .logo-bar .brand-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #0096D6;
+    margin-bottom: 6px;
+  }
+
+  .login-card h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #003087;
+    text-align: center;
+  }
+
+  .login-card .subtitle {
+    font-size: 13px;
+    color: #718096;
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+    margin-top: 20px;
+  }
+
+  input[type="email"], input[type="password"], select {
+    width: 100%;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #1a202c;
+    outline: none;
+    transition: border-color 0.15s;
+    background: #fff;
+  }
+
+  input[type="email"]:focus, input[type="password"]:focus, select:focus {
+    border-color: #0096D6;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #003087 0%, #0096D6 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #fff;
+    color: #003087;
+    border: 1.5px solid #003087;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    text-decoration: none;
+  }
+
+  .btn-secondary:hover { background: #f0f4f8; }
+
+  #login-submit-btn { width: 100%; margin-top: 28px; padding: 13px; font-size: 15px; }
+
+  .error-msg {
+    background: #fff5f5;
+    border: 1px solid #fc8181;
+    border-radius: 6px;
+    color: #c53030;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-top: 16px;
+    display: none;
+  }
+
+  .error-msg.visible { display: block; }
+
+  /* ── Admin screen ── */
+  #admin-screen { display: none; }
+
+  .topbar {
+    background: linear-gradient(135deg, #003087 0%, #0096D6 100%);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+
+  .topbar .brand { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.65); }
+  .topbar h1 { font-size: 18px; font-weight: 800; color: #fff; }
+
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+  .badge {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .logout-btn {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .logout-btn:hover { background: rgba(255,255,255,0.25); }
+
+  .toolbar {
+    background: #fff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .toolbar label { margin: 0; }
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+
+  .filter-group label { font-size: 13px; font-weight: 600; color: #4a5568; white-space: nowrap; }
+
+  .filter-group select { width: auto; min-width: 160px; }
+
+  .toolbar-actions { display: flex; gap: 8px; }
+
+  .main-content { padding: 24px 32px; }
+
+  /* ── Stats row ── */
+  .stats-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    padding: 18px 24px;
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .stat-card .stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #718096;
+    margin-bottom: 6px;
+  }
+
+  .stat-card .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: #003087;
+    line-height: 1;
+  }
+
+  .stat-card .stat-sub {
+    font-size: 12px;
+    color: #a0aec0;
+    margin-top: 4px;
+  }
+
+  /* ── Table ── */
+  .table-wrap {
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+  }
+
+  .table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .table-header h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a202c;
+  }
+
+  .table-header .showing {
+    font-size: 12px;
+    color: #718096;
+  }
+
+  .table-container { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead th {
+    background: #f7f9fc;
+    border-bottom: 1.5px solid #e2e8f0;
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #718096;
+    white-space: nowrap;
+  }
+
+  tbody tr { border-bottom: 1px solid #f0f4f8; transition: background 0.1s; }
+  tbody tr:hover { background: #f7f9fc; }
+  tbody tr:last-child { border-bottom: none; }
+
+  td {
+    padding: 11px 16px;
+    vertical-align: top;
+    color: #1a202c;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  td.wrap { white-space: normal; word-break: break-word; }
+
+  .scenario-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .scenario-airport  { background: #ebf8ff; color: #0096D6; }
+  .scenario-support  { background: #faf5ff; color: #6B46C1; }
+  .scenario-home     { background: #f0fff4; color: #276749; }
+  .scenario-other    { background: #f7f9fc; color: #718096; }
+
+  .email-link { color: #0096D6; text-decoration: none; }
+  .email-link:hover { text-decoration: underline; }
+
+  /* ── Pagination ── */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-top: 1px solid #e2e8f0;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .pagination .page-info { font-size: 12px; color: #718096; }
+
+  .pagination .page-btns { display: flex; gap: 6px; }
+
+  .page-btn {
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4a5568;
+    cursor: pointer;
+    transition: background 0.1s, border-color 0.1s;
+  }
+
+  .page-btn:hover:not(:disabled) { background: #f0f4f8; border-color: #cbd5e0; }
+  .page-btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* ── State overlays ── */
+  .state-overlay {
+    padding: 48px 24px;
+    text-align: center;
+    color: #718096;
+  }
+
+  .state-overlay .icon { font-size: 40px; margin-bottom: 12px; }
+  .state-overlay p { font-size: 14px; }
+
+  /* ── Loading spinner ── */
+  .spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+  }
+
+  .spinner-dark {
+    border-color: rgba(0,48,135,0.2);
+    border-top-color: #003087;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 640px) {
+    .topbar, .toolbar, .main-content { padding-left: 16px; padding-right: 16px; }
+    .topbar h1 { font-size: 15px; }
+    td { font-size: 12px; padding: 9px 10px; }
+    thead th { padding: 8px 10px; }
+  }
+</style>
+<script src="/contest-punctuation.js" defer></script>
+</head>
+<body>
+
+<!-- ═══ LOGIN SCREEN ═══ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="logo-bar">
+      <div class="brand-label">HP Poly</div>
+      <h1>Contest Admin</h1>
+      <p class="subtitle">2-Minute Meeting Rescue</p>
+    </div>
+    <form id="login-form" autocomplete="on">
+      <label for="login-email">Email</label>
+      <input type="email" id="login-email" name="email" placeholder="admin@example.com" required autocomplete="username">
+      <label for="login-password">Password</label>
+      <input type="password" id="login-password" name="password" placeholder="••••••••" required autocomplete="current-password">
+      <div class="error-msg" id="login-error"></div>
+      <button type="submit" class="btn-primary" id="login-submit-btn">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<!-- ═══ ADMIN SCREEN ═══ -->
+<div id="admin-screen">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div>
+        <div class="brand">HP Poly</div>
+        <h1>Contest Admin</h1>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="badge" id="total-badge">— entries</span>
+      <button class="logout-btn" id="logout-btn">Sign out</button>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="filter-group">
+      <label for="filter-scenario">Scenario:</label>
+      <select id="filter-scenario">
+        <option value="">All scenarios</option>
+        <option value="airport">Busy Airport Lounge</option>
+        <option value="support">Noisy Customer Support Floor</option>
+        <option value="home">Two-Device Meeting at Home</option>
+      </select>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn-secondary" id="refresh-btn">
+        ↺ Refresh
+      </button>
+      <a class="btn-primary" id="export-btn" href="#" download>
+        ↓ Export CSV
+      </a>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="stats-row" id="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total Entries</div>
+        <div class="stat-value" id="stat-total">—</div>
+        <div class="stat-sub">all time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Airport</div>
+        <div class="stat-value" id="stat-airport">—</div>
+        <div class="stat-sub">busy airport lounge</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Support</div>
+        <div class="stat-value" id="stat-support">—</div>
+        <div class="stat-sub">customer support floor</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Home</div>
+        <div class="stat-value" id="stat-home">—</div>
+        <div class="stat-sub">two-device at home</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-header">
+        <h2>Contest Entries</h2>
+        <span class="showing" id="showing-label"></span>
+      </div>
+      <div class="table-container" id="table-container">
+        <div class="state-overlay">
+          <div class="icon">⏳</div>
+          <p>Loading entries…</p>
+        </div>
+      </div>
+      <div class="pagination" id="pagination" style="display:none;">
+        <span class="page-info" id="page-info"></span>
+        <div class="page-btns">
+          <button class="page-btn" id="prev-btn">← Prev</button>
+          <button class="page-btn" id="next-btn">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ── Config ────────────────────────────────────────────────────────────────
+  const API_BASE   = "/api";
+  const PAGE_SIZE  = 50;
+
+  // ── State ──────────────────────────────────────────────────────────────────
+  let currentOffset = 0;
+  let currentTotal  = 0;
+  let currentScenario = "";
+  let loading = false;
+
+  // ── DOM refs ────────────────────────────────────────────────────────────────
+  const loginScreen    = document.getElementById("login-screen");
+  const adminScreen    = document.getElementById("admin-screen");
+  const loginForm      = document.getElementById("login-form");
+  const loginEmail     = document.getElementById("login-email");
+  const loginPassword  = document.getElementById("login-password");
+  const loginError     = document.getElementById("login-error");
+  const loginSubmitBtn = document.getElementById("login-submit-btn");
+  const logoutBtn      = document.getElementById("logout-btn");
+  const filterScenario = document.getElementById("filter-scenario");
+  const refreshBtn     = document.getElementById("refresh-btn");
+  const exportBtn      = document.getElementById("export-btn");
+  const totalBadge     = document.getElementById("total-badge");
+  const statTotal      = document.getElementById("stat-total");
+  const statAirport    = document.getElementById("stat-airport");
+  const statSupport    = document.getElementById("stat-support");
+  const statHome       = document.getElementById("stat-home");
+  const tableContainer = document.getElementById("table-container");
+  const showingLabel   = document.getElementById("showing-label");
+  const pagination     = document.getElementById("pagination");
+  const pageInfo       = document.getElementById("page-info");
+  const prevBtn        = document.getElementById("prev-btn");
+  const nextBtn        = document.getElementById("next-btn");
+
+  // ── Helpers ──────────────────────────────────────────────────────────────────
+  function showError(el, msg) {
+    el.textContent = msg;
+    el.classList.add("visible");
+  }
+
+  function hideError(el) {
+    el.classList.remove("visible");
+  }
+
+  function scenarioBadgeClass(s) {
+    if (!s) return "scenario-other";
+    const k = s.toLowerCase();
+    if (k === "airport") return "scenario-airport";
+    if (k === "support") return "scenario-support";
+    if (k === "home")    return "scenario-home";
+    return "scenario-other";
+  }
+
+  function scenarioLabel(s) {
+    if (!s) return "—";
+    const k = s.toLowerCase();
+    if (k === "airport") return "Airport";
+    if (k === "support") return "Support";
+    if (k === "home")    return "Home";
+    return s;
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return "—";
+    try {
+      return new Date(iso).toLocaleString(undefined, {
+        year: "numeric", month: "short", day: "numeric",
+        hour: "2-digit", minute: "2-digit",
+      });
+    } catch { return iso; }
+  }
+
+  function esc(str) {
+    if (str == null) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // ── Auth ──────────────────────────────────────────────────────────────────────
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hideError(loginError);
+    loginSubmitBtn.disabled = true;
+    loginSubmitBtn.innerHTML = '<span class="spinner"></span> Signing in…';
+
+    try {
+      const res = await fetch(`${API_BASE}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          email:    loginEmail.value.trim(),
+          password: loginPassword.value,
+        }),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        showError(loginError, body.error || "Invalid credentials. Please try again.");
+        return;
+      }
+
+      const data = await res.json();
+      if (data.user && data.user.role !== "admin") {
+        showError(loginError, "Your account does not have admin access.");
+        return;
+      }
+
+      // Logged in — show admin screen
+      loginScreen.style.display = "none";
+      adminScreen.style.display = "block";
+      loadStats();
+      loadEntries();
+    } catch (err) {
+      showError(loginError, "Connection error. Please try again.");
+    } finally {
+      loginSubmitBtn.disabled = false;
+      loginSubmitBtn.textContent = "Sign in";
+    }
+  });
+
+  logoutBtn.addEventListener("click", async () => {
+    try {
+      await fetch(`${API_BASE}/auth/logout`, { method: "POST", credentials: "include" });
+    } catch (_) {}
+    adminScreen.style.display = "none";
+    loginScreen.style.display = "flex";
+    loginPassword.value = "";
+    hideError(loginError);
+    loginEmail.focus();
+  });
+
+  // ── Filters ───────────────────────────────────────────────────────────────────
+  filterScenario.addEventListener("change", () => {
+    currentScenario = filterScenario.value;
+    currentOffset   = 0;
+    loadEntries();
+    updateExportLink();
+  });
+
+  refreshBtn.addEventListener("click", () => {
+    currentOffset = 0;
+    loadStats();
+    loadEntries();
+  });
+
+  // ── Export ────────────────────────────────────────────────────────────────────
+  function updateExportLink() {
+    const params = new URLSearchParams();
+    if (currentScenario) params.set("scenario", currentScenario);
+    const qs = params.toString();
+    exportBtn.href = `${API_BASE}/contest/entries/export${qs ? "?" + qs : ""}`;
+  }
+
+  updateExportLink();
+
+  // Handle the export link — needs credentials (cookies should be included automatically
+  // since it's same-origin). Trigger as a programmatic fetch → object URL so the
+  // session cookie is sent properly.
+  exportBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    exportBtn.textContent = "Downloading…";
+    try {
+      const params = new URLSearchParams();
+      if (currentScenario) params.set("scenario", currentScenario);
+      const qs = params.toString();
+      const url = `${API_BASE}/contest/entries/export${qs ? "?" + qs : ""}`;
+      const res = await fetch(url, { credentials: "include" });
+      if (!res.ok) throw new Error("Export failed");
+      const blob = await res.blob();
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      const today = new Date().toISOString().slice(0, 10);
+      a.download = `contest-entries-${today}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 1000);
+    } catch (err) {
+      alert("Export failed. Please try again.");
+    } finally {
+      exportBtn.innerHTML = "↓ Export CSV";
+    }
+  });
+
+  // ── Pagination ────────────────────────────────────────────────────────────────
+  prevBtn.addEventListener("click", () => {
+    if (currentOffset > 0) {
+      currentOffset = Math.max(0, currentOffset - PAGE_SIZE);
+      loadEntries();
+    }
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if (currentOffset + PAGE_SIZE < currentTotal) {
+      currentOffset += PAGE_SIZE;
+      loadEntries();
+    }
+  });
+
+  // ── API calls ─────────────────────────────────────────────────────────────────
+  async function loadStats() {
+    // Load counts for each scenario in parallel (plus overall total)
+    try {
+      const [all, airport, support, home] = await Promise.all([
+        fetchCount(""),
+        fetchCount("airport"),
+        fetchCount("support"),
+        fetchCount("home"),
+      ]);
+      statTotal.textContent   = all;
+      statAirport.textContent = airport;
+      statSupport.textContent = support;
+      statHome.textContent    = home;
+      totalBadge.textContent  = `${all} ${all === 1 ? "entry" : "entries"}`;
+    } catch (_) {}
+  }
+
+  async function fetchCount(scenario) {
+    const params = new URLSearchParams({ limit: "1", offset: "0" });
+    if (scenario) params.set("scenario", scenario);
+    const res = await fetch(`${API_BASE}/contest/entries?${params}`, { credentials: "include" });
+    if (!res.ok) return "—";
+    const data = await res.json();
+    return data.total ?? "—";
+  }
+
+  async function loadEntries() {
+    if (loading) return;
+    loading = true;
+
+    tableContainer.innerHTML = `
+      <div class="state-overlay">
+        <div class="icon"><span class="spinner spinner-dark"></span></div>
+        <p style="margin-top:12px">Loading…</p>
+      </div>`;
+    pagination.style.display = "none";
+    showingLabel.textContent = "";
+
+    const params = new URLSearchParams({
+      limit:  String(PAGE_SIZE),
+      offset: String(currentOffset),
+    });
+    if (currentScenario) params.set("scenario", currentScenario);
+
+    try {
+      const res = await fetch(`${API_BASE}/contest/entries?${params}`, { credentials: "include" });
+
+      if (res.status === 401 || res.status === 403) {
+        // Session expired
+        adminScreen.style.display = "none";
+        loginScreen.style.display = "flex";
+        return;
+      }
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      renderTable(data);
+    } catch (err) {
+      tableContainer.innerHTML = `
+        <div class="state-overlay">
+          <div class="icon">⚠️</div>
+          <p>Failed to load entries. Please refresh and try again.</p>
+        </div>`;
+    } finally {
+      loading = false;
+    }
+  }
+
+  // ── Render ────────────────────────────────────────────────────────────────────
+  function renderTable(data) {
+    const entries = data.entries ?? [];
+    currentTotal  = data.total  ?? 0;
+
+    // Showing label
+    const from = currentOffset + 1;
+    const to   = Math.min(currentOffset + entries.length, currentTotal);
+    if (currentTotal === 0) {
+      showingLabel.textContent = "No entries found";
+    } else {
+      showingLabel.textContent = `Showing ${from}–${to} of ${currentTotal}`;
+    }
+
+    if (entries.length === 0) {
+      tableContainer.innerHTML = `
+        <div class="state-overlay">
+          <div class="icon">📭</div>
+          <p>No contest entries match the current filter.</p>
+        </div>`;
+      pagination.style.display = "none";
+      return;
+    }
+
+    // Build table
+    let html = `
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Organisation</th>
+            <th>Designation</th>
+            <th>Email</th>
+            <th>Scenario</th>
+            <th>Demo Interest</th>
+            <th>Submitted</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+    entries.forEach((row, i) => {
+      const rowNum = currentOffset + i + 1;
+      const scenarioClass = scenarioBadgeClass(row.scenario);
+      html += `
+        <tr>
+          <td style="color:#a0aec0;font-size:11px;">${rowNum}</td>
+          <td>${esc(row.name) || "—"}</td>
+          <td>${esc(row.org) || "—"}</td>
+          <td>${esc(row.designation) || "—"}</td>
+          <td>
+            ${row.email
+              ? `<a class="email-link" href="mailto:${esc(row.email)}">${esc(row.email)}</a>`
+              : "—"}
+          </td>
+          <td>
+            <span class="scenario-badge ${scenarioClass}">${esc(scenarioLabel(row.scenario))}</span>
+          </td>
+          <td style="color:${row.demo_interest === 'yes' ? '#276749' : '#718096'}">
+            ${row.demo_interest === 'yes' ? '✓ Yes' : row.demo_interest === 'no' ? 'No' : '—'}
+          </td>
+          <td style="color:#718096;font-size:12px;">${fmtDate(row.submitted_at)}</td>
+        </tr>`;
+    });
+
+    html += `</tbody></table>`;
+    tableContainer.innerHTML = html;
+
+    // Pagination
+    if (currentTotal > PAGE_SIZE) {
+      pagination.style.display = "flex";
+      pageInfo.textContent = `Page ${Math.floor(currentOffset / PAGE_SIZE) + 1} of ${Math.ceil(currentTotal / PAGE_SIZE)}`;
+      prevBtn.disabled = currentOffset === 0;
+      nextBtn.disabled = currentOffset + PAGE_SIZE >= currentTotal;
+    } else {
+      pagination.style.display = "none";
+    }
+  }
+
+  // ── Check if already authenticated ────────────────────────────────────────────
+  // Try the entries endpoint silently on page load; if it works, skip the login screen.
+  (async function checkSession() {
+    try {
+      const res = await fetch(`${API_BASE}/contest/entries?limit=1&offset=0`, { credentials: "include" });
+      if (res.ok) {
+        loginScreen.style.display = "none";
+        adminScreen.style.display = "block";
+        loadStats();
+        loadEntries();
+      }
+    } catch (_) {}
+  })();
+})();
+</script>
+</body>
+</html>
