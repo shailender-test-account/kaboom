@@ -3,10 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "scripts": {
+ "scripts": {
     "dev": "export NODE_ENV=development && pnpm run build && pnpm run start",
     "build": "node ./build.mjs",
     "start": "node --enable-source-maps ./dist/index.mjs",
+    "start:prod": "NODE_ENV=production node --enable-source-maps ./dist/index.mjs",
+    "render:build": "pnpm run typecheck && pnpm run build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "research:reassess": "node scripts/run-research-reassessment.mjs",
     "test": "vitest run",
